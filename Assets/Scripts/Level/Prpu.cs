@@ -20,9 +20,15 @@ namespace PigeonB1587.prpu
             {
                 public int formatVersion { get; set; }
                 public float offset { get; set; }
+                public StoryBoard storyBoard { get; set; }
                 public JudgeLine[] judgeLineList { get; set; }
             }
-
+            [Serializable]
+            public class StoryBoard
+            {
+                public int[] eventType { get; set; }
+                public JudgeLineEvent[] events { get; set; }
+            }
             [Serializable]
             public class JudgeLineEvent
             {
@@ -71,7 +77,7 @@ namespace PigeonB1587.prpu
             }
 
             [Serializable]
-            public class Storyboard
+            public class Transform
             {
                 [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
                 public JudgeLineEvent[] judgeLineColorEvents { get; set; }
@@ -110,7 +116,7 @@ namespace PigeonB1587.prpu
                 public NoteControl[] noteControls { get; set; }
                 public JudgeLineEvent[] speedEvents { get; set; }
                 public JudgeLineEventLayer[] judgeLineEventLayers { get; set; }
-                public Storyboard storyboard { get; set; }
+                public Transform transform { get; set; }
             }
         }
     }

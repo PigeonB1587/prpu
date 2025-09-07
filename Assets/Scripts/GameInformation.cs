@@ -140,9 +140,16 @@ namespace PigeonB1587.prpu
         [Serializable]
         public class Root
         {
-            public int formatVersion;
             public float offset;
+            public StoryBoard storyBoard;
             public JudgeLine[] judgeLineList;
+        }
+
+        [Serializable]
+        public class StoryBoard
+        {
+            public int[] eventType { get; set; }
+            public JudgeLineEvent[] events { get; set; }
         }
 
         [Serializable]
@@ -178,6 +185,10 @@ namespace PigeonB1587.prpu
             public Time endTime;
             public float start;
             public float end;
+            public int easing;
+            public float easingLeft;
+            public float easingRight;
+            public float[] bezierPoints;
             public float floorPosition;
         }
 
@@ -216,7 +227,7 @@ namespace PigeonB1587.prpu
         }
 
         [Serializable]
-        public class Storyboard
+        public class Transform
         {
             public JudgeLineColorEvent[] judgeLineColorEvents;
             public JudgeLineEvent[] judgeLineScaleXEvents;
@@ -251,7 +262,7 @@ namespace PigeonB1587.prpu
             public NoteControl[] noteControls;
             public SpeedEvent[] speedEvents;
             public JudgeLineEventLayer[] judgeLineEventLayers;
-            public Storyboard storyboard;
+            public Transform transform;
         }
     }
 }

@@ -5,7 +5,7 @@ namespace PigeonB1587.prpu
 {
     public static class Easings
     {
-        public const float invalidValueDefault = 114514f;
+        public const float invalidValueDefault = 5000f;
         public static float Lerp(int type, double nowTime, double startTime, double endTime, float valueStart, float valueEnd, float el = 0, float er = 1, bool bezier = false, float[] bezierPoint = null)
         {
             if (nowTime <= startTime || nowTime >= endTime) return valueEnd;
