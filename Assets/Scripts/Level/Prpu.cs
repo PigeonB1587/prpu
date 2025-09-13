@@ -1,8 +1,5 @@
 using Newtonsoft.Json;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace PigeonB1587.prpu
 {
@@ -20,6 +17,7 @@ namespace PigeonB1587.prpu
             {
                 public int formatVersion { get; set; }
                 public float offset { get; set; }
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
                 public StoryBoard storyBoard { get; set; }
                 public JudgeLine[] judgeLineList { get; set; }
             }
@@ -36,6 +34,19 @@ namespace PigeonB1587.prpu
                 public int[] endTime { get; set; }
                 public float start { get; set; }
                 public float end { get; set; }
+                public int easing { get; set; }
+                public float easingLeft { get; set; }
+                public float easingRight { get; set; }
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+                public float[] bezierPoints { get; set; }
+            }
+            [Serializable]
+            public class TextEvent
+            {
+                public int[] startTime { get; set; }
+                public int[] endTime { get; set; }
+                public string start { get; set; }
+                public string end { get; set; }
                 public int easing { get; set; }
                 public float[] easingCutting { get; set; }
 
@@ -58,15 +69,17 @@ namespace PigeonB1587.prpu
                 public int type { get; set; }
                 public bool isFake { get; set; }
                 public bool above { get; set; }
-                public int[] time { get; set; }
-                [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+                public int[] startTime { get; set; }
                 public float visibleTime { get; set; }
                 public float speed { get; set; }
                 public float size { get; set; }
-                public int[] holdTime { get; set; }
+                public int[] endTime { get; set; }
                 public float positionX { get; set; }
                 public float positionY { get; set; }
                 public int color { get; set; }
+                public bool autoPlayHitSound { get; set; }
+                public int hitFXColor { get; set; }
+                public float judgeSize { get; set; }
             }
 
             [Serializable]
@@ -82,9 +95,17 @@ namespace PigeonB1587.prpu
                 [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
                 public JudgeLineEvent[] judgeLineColorEvents { get; set; }
                 [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-                public JudgeLineEvent[] judgeLineScaleXEvents { get; set; }
+                public TextEvent[] judgeLineTextEvents { get; set; }
+                public float[] judgeLineTextureSize { get; set; }
+                public int fatherLineIndex { get; set; }
+                public float[] anchor { get; set; }
+                public bool localPositionMode { get; set; }
+                public bool localEulerAnglesMode { get; set; }
+                public int zOrder { get; set; }
                 [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-                public JudgeLineEvent[] judgeLineScaleYEvents { get; set; }
+                public JudgeLineEvent[] judgeLineTextureScaleXEvents { get; set; }
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+                public JudgeLineEvent[] judgeLineTextureScaleYEvents { get; set; }
             }
 
             [Serializable]
@@ -109,10 +130,6 @@ namespace PigeonB1587.prpu
             {
                 public BpmItems[] bpms { get; set; }
                 public Note[] notes { get; set; }
-                public int fatherLineIndex { get; set; }
-                public bool inheritanceAngle { get; set; }
-                public int zOrder { get; set; }
-                [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
                 public NoteControl[] noteControls { get; set; }
                 public JudgeLineEvent[] speedEvents { get; set; }
                 public JudgeLineEventLayer[] judgeLineEventLayers { get; set; }

@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: bc646b9d8a341484985b7704feba0d9c
+  m_SerializeEntries:
+  - m_GUID: dab0b71c7beace3488fbc2c70639219e
+    m_Address: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/Chart_EZ.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 88c0df8cc22ad0c46a32a75ed8faddb6
+    m_Address: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/Chart_AT.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a83be5eb1083f7840b1a8a9714924c1b
+    m_Address: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/Chart_HD.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6600a5d81e6845e47bd71ee75c4be6e1
+    m_Address: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/Chart_IN.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f4756d5456bba7e419656e31e7e4fcce
+    m_Address: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/Illustration.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d57c94a72f0f857409c50c1ebc8acaef
+    m_Address: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/music.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: e6a40a86fb970444782fe9655e98c6bf, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 28fe650f06908084193573ed09049966, type: 2}
+    - {fileID: 11400000, guid: bdab510a5252cee47be939424dfe4458, type: 2}

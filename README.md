@@ -2,11 +2,15 @@
 
 A fan-made Phigros chart player and renderer developed with Unity Engine.
 
-## Acknowledgement
+## Editor Requirements
 
-Interpolation calculation refers to [@Z1029](https://gitee.com/z-1029).
+An editor version greater than or equal to Unity [2021.3.20f1c1](https://unity.cn/release-notes/lts/2021/2021.3.20f1) is required.
 
-The chart format and level details of Phigros refer to [@lchzh3473](https://github.com/lchzh3473).
+## The open-source project used
+
+Source Han Sans [Fonts Version 2.005R](https://github.com/adobe-fonts/source-han-sans/tree/release)
+
+Saira [Saira family](https://github.com/Omnibus-Type/Saira)
 
 ## License
 

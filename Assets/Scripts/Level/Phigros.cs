@@ -1,8 +1,7 @@
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 
 namespace PigeonB1587.prpu
 {
@@ -126,12 +125,193 @@ namespace PigeonB1587.prpu
                 storyBoard = null,
             };
 
+            obj.judgeLineList = new Prpu.Chart.JudgeLine[chartObject.judgeLineList.Length];
+            for (int i = 0; i < chartObject.judgeLineList.Length; i++)
+            {
+                obj.judgeLineList[i] = new Prpu.Chart.JudgeLine
+                {
+                    bpms = new Prpu.Chart.BpmItems[1]
+                    {
+                        new Prpu.Chart.BpmItems
+                        {
+                            time = new int[3] { 0, 0, 1 },
+                            bpm = chartObject.judgeLineList[i].bpm
+                        }
+                    },
+                    noteControls = null,
+                    transform = new Prpu.Chart.Transform
+                    {
+                        judgeLineColorEvents = null,
+                        judgeLineTextEvents = null,
+                        judgeLineTextureSize = new float[2] { 57.6f, 0.075f },
+                        fatherLineIndex = -1,
+                        anchor = new float[2] { 0.5f, 0.5f },
+                        localPositionMode = true,
+                        localEulerAnglesMode = true,
+                        zOrder = 0,
+                        judgeLineTextureScaleXEvents = null,
+                        judgeLineTextureScaleYEvents = null
+                    },
+                    notes = new Prpu.Chart.Note[chartObject.judgeLineList[i].notesAbove.Length +
+                    chartObject.judgeLineList[i].notesBelow.Length],
+                    speedEvents = new Prpu.Chart.JudgeLineEvent[chartObject.judgeLineList[i].speedEvents.Length],
+                    judgeLineEventLayers = new Prpu.Chart.JudgeLineEventLayer[1]
+                    {
+                        new Prpu.Chart.JudgeLineEventLayer
+                        {
+                            judgeLineMoveXEvents = new Prpu.Chart.JudgeLineEvent[chartObject.judgeLineList[i].judgeLineMoveEvents.Length],
+                            judgeLineMoveYEvents = new Prpu.Chart.JudgeLineEvent[chartObject.judgeLineList[i].judgeLineMoveEvents.Length],
+                            judgeLineDisappearEvents = new Prpu.Chart.JudgeLineEvent[chartObject.judgeLineList[i].judgeLineDisappearEvents.Length],
+                            judgeLineRotateEvents = new Prpu.Chart.JudgeLineEvent[chartObject.judgeLineList[i].judgeLineRotateEvents.Length]
+                        }
+                    },
+
+                };
+
+                double GetBeatTime(int[] k)
+                {
+                    return k[0] + k[1] / (double)k[2];
+                };
+
+                List<Prpu.Chart.Note> _notes = new();
+                if(chartObject.judgeLineList[i].notesAbove != null && chartObject.judgeLineList[i].notesAbove.Length != 0)
+                {
+                    for (int j = 0; j < chartObject.judgeLineList[i].notesAbove.Length; j++)
+                    {
+                        _notes.Add(new Prpu.Chart.Note
+                        {
+                            type = chartObject.judgeLineList[i].notesAbove[j].type,
+                            isFake = false,
+                            above = true,
+                            startTime = CTMF(new int[2] { chartObject.judgeLineList[i].notesAbove[j].time, 32 }),
+                            visibleTime = -1,
+                            speed = chartObject.judgeLineList[i].notesAbove[j].speed,
+                            size = 1,
+                            endTime = CTMF(new int[2] { chartObject.judgeLineList[i].notesAbove[j].time
+                        + chartObject.judgeLineList[i].notesAbove[j].holdTime, 32 }),
+                            positionX = chartObject.judgeLineList[i].notesAbove[j].positionX,
+                            positionY = 0,
+                            color = -1,
+                            autoPlayHitSound = false,
+                            hitFXColor = -1,
+                            judgeSize = 1
+                        });
+                    }
+                }
+
+                if (chartObject.judgeLineList[i].notesBelow != null && chartObject.judgeLineList[i].notesBelow.Length != 0)
+                {
+                    for (int j = 0; j < chartObject.judgeLineList[i].notesBelow.Length; j++)
+                    {
+                        _notes.Add(new Prpu.Chart.Note
+                        {
+                            type = chartObject.judgeLineList[i].notesBelow[j].type,
+                            isFake = false,
+                            above = false,
+                            startTime = CTMF(new int[2] { chartObject.judgeLineList[i].notesBelow[j].time, 32 }),
+                            visibleTime = -1,
+                            speed = chartObject.judgeLineList[i].notesBelow[j].speed,
+                            size = 1,
+                            endTime = CTMF(new int[2] { chartObject.judgeLineList[i].notesBelow[j].time
+                        + chartObject.judgeLineList[i].notesBelow[j].holdTime, 32 }),
+                            positionX = chartObject.judgeLineList[i].notesBelow[j].positionX,
+                            positionY = 0,
+                            color = -1,
+                            autoPlayHitSound = false,
+                            hitFXColor = -1,
+                            judgeSize = 1
+                        });
+                    }
+                }
+                _notes = _notes.OrderBy(note => GetBeatTime(note.startTime)).ToList();
+
+                obj.judgeLineList[i].notes = _notes.ToArray();
+
+                for (int k = 0; k < chartObject.judgeLineList[i].speedEvents.Length; k++)
+                {
+                    obj.judgeLineList[i].speedEvents[k] = new Prpu.Chart.JudgeLineEvent
+                    {
+                        startTime = CTMF(new int[2] { chartObject.judgeLineList[i].speedEvents[k].startTime, 32 }),
+                        endTime = CTMF(new int[2] { chartObject.judgeLineList[i].speedEvents[k].endTime, 32 }),
+                        start = chartObject.judgeLineList[i].speedEvents[k].value * (float)speedScale,
+                        end = chartObject.judgeLineList[i].speedEvents[k].value * (float)speedScale,
+                        easing = 1,
+                        easingLeft = 0,
+                        easingRight = 1,
+                        bezierPoints = null
+                    };
+                }
+
+                obj.judgeLineList[i].speedEvents = obj.judgeLineList[i].speedEvents
+     .OrderBy(s => GetBeatTime(s.startTime))
+     .ToArray();
+
+                for (int k = 0; k < chartObject.judgeLineList[i].judgeLineMoveEvents.Length; k++)
+                {
+                    obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineMoveXEvents[k] = new Prpu.Chart.JudgeLineEvent
+                    {
+                        startTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineMoveEvents[k].startTime, 32 }),
+                        endTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineMoveEvents[k].endTime, 32 }),
+                        start = chartObject.judgeLineList[i].judgeLineMoveEvents[k].start - 0.5f,
+                        end = chartObject.judgeLineList[i].judgeLineMoveEvents[k].end - 0.5f,
+                        easing = 1,
+                        easingLeft = 0,
+                        easingRight = 1,
+                        bezierPoints = null
+                    };
+                }
+
+                for (int k = 0; k < chartObject.judgeLineList[i].judgeLineMoveEvents.Length; k++)
+                {
+                    obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineMoveYEvents[k] = new Prpu.Chart.JudgeLineEvent
+                    {
+                        startTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineMoveEvents[k].startTime, 32 }),
+                        endTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineMoveEvents[k].endTime, 32 }),
+                        start = chartObject.judgeLineList[i].judgeLineMoveEvents[k].start2.Value - 0.5f,
+                        end = chartObject.judgeLineList[i].judgeLineMoveEvents[k].end2.Value - 0.5f,
+                        easing = 1,
+                        easingLeft = 0,
+                        easingRight = 1,
+                        bezierPoints = null
+                    };
+                }
+
+                for (int k = 0; k < chartObject.judgeLineList[i].judgeLineRotateEvents.Length; k++)
+                {
+                    obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineRotateEvents[k] = new Prpu.Chart.JudgeLineEvent
+                    {
+                        startTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineRotateEvents[k].startTime, 32 }),
+                        endTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineRotateEvents[k].endTime, 32}),
+                        start = chartObject.judgeLineList[i].judgeLineRotateEvents[k].start,
+                        end = chartObject.judgeLineList[i].judgeLineRotateEvents[k].end,
+                        easing = 1,
+                        easingLeft = 0,
+                        easingRight = 1,
+                        bezierPoints = null
+                    };
+                }
+
+                for (int k = 0; k < chartObject.judgeLineList[i].judgeLineDisappearEvents.Length; k++)
+                {
+                    obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineDisappearEvents[k] = new Prpu.Chart.JudgeLineEvent
+                    {
+                        startTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineDisappearEvents[k].startTime, 32 }),
+                        endTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineDisappearEvents[k].endTime, 32 }),
+                        start = chartObject.judgeLineList[i].judgeLineDisappearEvents[k].start,
+                        end = chartObject.judgeLineList[i].judgeLineDisappearEvents[k].end,
+                        easing = 1,
+                        easingLeft = 0,
+                        easingRight = 1,
+                        bezierPoints = null
+                    };
+                }
+            }
 
             return obj;
         }
 
         public const double speedScale = 6d;
-        public int[] CTMF(int[] f)
+        public static int[] CTMF(int[] f)
         {
             if (f[0] == 0) return new[] { 0, 0, 1 };
 
@@ -146,7 +326,7 @@ namespace PigeonB1587.prpu
             int num = n - i * d;
             return new[] { i, num, num == 0 ? 1 : d };
         }
-        private int GCD(int a, int b)
+        private static int GCD(int a, int b)
         {
             while (b != 0) (a, b) = (b, a % b);
             return a;

@@ -123,6 +123,70 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &144982126
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 144982128}
+  - component: {fileID: 144982127}
+  - component: {fileID: 144982129}
+  m_Layer: 0
+  m_Name: LevelController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &144982127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144982126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99938e1f25340fd4eb8c90356991e5ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chart:
+    storyBoard:
+      eventType: 
+      events: []
+    judgeLineList: []
+  formatVersion: 0
+  offset: 0
+--- !u!4 &144982128
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144982126}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &144982129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144982126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 372e2557e56bf404e845a17aceb4150b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &883297629
 GameObject:
   m_ObjectHideFlags: 0
@@ -353,26 +417,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   screenW: 0
   screenH: 0
+  chart: {fileID: 4900000, guid: 88c0df8cc22ad0c46a32a75ed8faddb6, type: 3}
+  illustration: {fileID: 21300000, guid: f4756d5456bba7e419656e31e7e4fcce, type: 3}
+  music: {fileID: 8300000, guid: d57c94a72f0f857409c50c1ebc8acaef, type: 3}
   isHitFXEnabled: 0
+  autoPlay: 0
   offset: 0
-  levelSpeed: 0
-  noteScale: 0
-  hitFXVolume: 0
-  soundEffectVolume: 0
-  musicVolume: 0
-  backgroundAlpha: 0
+  levelSpeed: 1
+  noteScale: 1
+  hitFXVolume: 1
+  soundEffectVolume: 1
+  musicVolume: 1
+  backgroundAlpha: 0.5
   useLowResolution: 0
   levelStartInfo:
-    songsId: 
-    songsName: 
-    composer: 
-    charter: 
-    illustrator: 
-    songsLevel: 
-    songsDifficulty: 
-    musicAddressableKey: 
-    chartAddressableKey: 
-    illustrationKey: 
+    songsId: AbsoluTedisoRdeR.AcuteDisarray.0
+    songsName: AbsoluTe disoRdeR
+    composer: Acute Disarray
+    charter: JKy
+    illustrator: Kyuare & Wsx
+    songsLevel: AT
+    songsDifficulty: 17
+    musicAddressableKey: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/music.wav
+    chartAddressableKey: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/Chart_AT.json
+    illustrationKey: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/Illustration.png
     judgeLineImages: []
     noteAssets: []
     levelMods: []

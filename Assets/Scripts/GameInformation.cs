@@ -1,6 +1,9 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace PigeonB1587.prpu
 {
@@ -11,7 +14,12 @@ namespace PigeonB1587.prpu
         public float screenW;
         public float screenH;
 
+        public TextAsset chart;
+        public Sprite illustration;
+        public AudioClip music;
+
         public bool isHitFXEnabled;
+        public bool autoPlay;
         public float offset;
         public float levelSpeed;
         public float noteScale;
@@ -52,6 +60,41 @@ namespace PigeonB1587.prpu
         {
 
         }
+
+        public async UniTask LoadLevelAsset()
+        {
+            if (Instance.levelStartInfo == null)
+                return;
+
+            chart = await LoadAddressableAsset<TextAsset>(Instance.levelStartInfo.chartAddressableKey);
+            illustration = await LoadAddressableAsset<Sprite>(Instance.levelStartInfo.illustrationKey);
+            music = await LoadAddressableAsset<AudioClip>(Instance.levelStartInfo.musicAddressableKey);
+
+            Debug.Log("Completed");
+
+            await UniTask.CompletedTask;
+            return;
+        }
+
+        async UniTask<T> LoadAddressableAsset<T>(string address) where T : UnityEngine.Object
+        {
+            var handle = Addressables.LoadAssetAsync<T>(address);
+            await handle;
+
+            if (handle.Status != AsyncOperationStatus.Succeeded)
+            {
+                Debug.LogError($"Failed to load {address}: {handle.OperationException.Message}");
+                return null;
+            }
+            return handle.Result;
+        }
+
+        private void OnDestroy()
+        {
+            Addressables.Release(chart);
+            Addressables.Release(illustration);
+            Addressables.Release(music);
+        }
     }
 
     [Serializable]
@@ -77,81 +120,68 @@ namespace PigeonB1587.prpu
     {
         public int judgeLineIndex;
         public string imageAddressableKey;
-        public float xSize;
-        public float ySize;
     }
 
     [Serializable]
     public class NoteAsset
     {
-        public int noteIndex;
+        public int noteType;
         public string hitSoundAddressableKey;
-        public bool autoPlayHitSound;
-        public Color hitFXColor;
     }
 
     public class ChartObject
     {
         [Serializable]
+        public class Root
+        {
+            public StoryBoard storyBoard;
+            public JudgeLine[] judgeLineList;
+        }
+        [Serializable]
         public struct Time
         {
-            public int[] beatTime;
-            public double realTime;
-
-            public Time Set(int[] t, BpmItems[] s)
+            public double curTime;
+            public double beatTime;
+            public Time GetTime(Prpu.Chart.BpmItems[] bpmItems, int[] beatTime)
             {
-                beatTime = t;
-                realTime = Beat2Sec(GetBeatTime(t), s);
-                return this;
-            }
-            public double Beat2Sec(double t, BpmItems[] BPMArray)
-            {
+                var time = new Time();
+                time.beatTime = beatTime[0] + (double)beatTime[1] / (double)beatTime[2];
                 double sec = 0.0;
-                for (int i = 0; i < BPMArray.Length; i++)
+                for (int i = 0; i < bpmItems.Length; i++)
                 {
-                    BpmItems e = BPMArray[i];
+                    Prpu.Chart.BpmItems e = bpmItems[i];
                     double bpmv = e.bpm;
 
-                    if (i != BPMArray.Length - 1)
+                    if (i != bpmItems.Length - 1)
                     {
-                        double etBeat = (BPMArray[i + 1].time.beatTime[0] + BPMArray[i + 1].time.beatTime[1] / BPMArray[i + 1].time.beatTime[2])
-                            - (e.time.beatTime[0] + e.time.beatTime[1] / e.time.beatTime[2]);
-                        if (t >= etBeat)
+                        double etBeat = (bpmItems[i + 1].time[0] + bpmItems[i + 1].time[1] / bpmItems[i + 1].time[2])
+                            - (e.time[0] + e.time[1] / e.time[2]);
+                        if (time.beatTime >= etBeat)
                         {
                             sec += etBeat * (60 / bpmv);
-                            t -= etBeat;
+                            time.beatTime -= etBeat;
                         }
                         else
                         {
-                            sec += t * (60 / bpmv);
+                            sec += time.beatTime * (60 / bpmv);
                             break;
                         }
                     }
                     else
                     {
-                        sec += t * (60 / bpmv);
+                        sec += time.beatTime * (60 / bpmv);
                     }
                 }
-                return sec;
+                time.curTime = sec;
+                return time;
             }
-            public double GetBeatTime(int[] t1) => t1[0] + t1[1] / (double)t1[2];
         }
-
-        [Serializable]
-        public class Root
-        {
-            public float offset;
-            public StoryBoard storyBoard;
-            public JudgeLine[] judgeLineList;
-        }
-
         [Serializable]
         public class StoryBoard
         {
-            public int[] eventType { get; set; }
-            public JudgeLineEvent[] events { get; set; }
+            public int[] eventType;
+            public JudgeLineEvent[] events;
         }
-
         [Serializable]
         public class JudgeLineEvent
         {
@@ -164,32 +194,29 @@ namespace PigeonB1587.prpu
             public float easingRight;
             public float[] bezierPoints;
         }
-
-        [Serializable]
-        public class JudgeLineColorEvent
-        {
-            public Time startTime;
-            public Time endTime;
-            public Color start;
-            public Color end;
-            public int easing;
-            public float easingLeft;
-            public float easingRight;
-            public float[] bezierPoints;
-        }
-
         [Serializable]
         public class SpeedEvent
         {
             public Time startTime;
             public Time endTime;
-            public float start;
-            public float end;
+            public float start = 0;
+            public float end = 0;
             public int easing;
+            public float floorPosition = 0;
             public float easingLeft;
             public float easingRight;
             public float[] bezierPoints;
-            public float floorPosition;
+        }
+        [Serializable]
+        public class TextEvent
+        {
+            public Time startTime;
+            public Time endTime;
+            public string start;
+            public string end;
+            public int easing;
+            public float[] easingCutting;
+            public float[] bezierPoints;
         }
 
         [Serializable]
@@ -207,16 +234,20 @@ namespace PigeonB1587.prpu
             public int type;
             public bool isFake;
             public bool above;
-            public bool isHl;
             public Time startTime;
             public float visibleTime;
             public float speed;
             public float size;
+            public bool isHL;
             public Time endTime;
             public float positionX;
             public float positionY;
-            public float floorPosition;
             public int color;
+            public bool autoPlayHitSound;
+            public int hitFXColor;
+            public float judgeSize;
+            public float floorPosition = 0;
+            public float endfloorPosition;
         }
 
         [Serializable]
@@ -229,9 +260,16 @@ namespace PigeonB1587.prpu
         [Serializable]
         public class Transform
         {
-            public JudgeLineColorEvent[] judgeLineColorEvents;
-            public JudgeLineEvent[] judgeLineScaleXEvents;
-            public JudgeLineEvent[] judgeLineScaleYEvents;
+            public JudgeLineEvent[] judgeLineColorEvents;
+            public TextEvent[] judgeLineTextEvents;
+            public float[] judgeLineTextureSize;
+            public int fatherLineIndex;
+            public float[] anchor;
+            public bool localPositionMode;
+            public bool localEulerAnglesMode;
+            public int zOrder;
+            public JudgeLineEvent[] judgeLineTextureScaleXEvents;
+            public JudgeLineEvent[] judgeLineTextureScaleYEvents;
         }
 
         [Serializable]
@@ -244,7 +282,7 @@ namespace PigeonB1587.prpu
         }
 
         [Serializable]
-        public struct ControlItem
+        public class ControlItem
         {
             public int easing;
             public float value;
@@ -256,9 +294,6 @@ namespace PigeonB1587.prpu
         {
             public BpmItems[] bpms;
             public Note[] notes;
-            public int fatherLineIndex;
-            public bool inheritanceAngle;
-            public int zOrder;
             public NoteControl[] noteControls;
             public SpeedEvent[] speedEvents;
             public JudgeLineEventLayer[] judgeLineEventLayers;
