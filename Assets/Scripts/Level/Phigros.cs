@@ -261,6 +261,10 @@ namespace PigeonB1587.prpu
                     };
                 }
 
+                obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineMoveXEvents = obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineMoveXEvents
+     .OrderBy(s => GetBeatTime(s.startTime))
+     .ToArray();
+
                 for (int k = 0; k < chartObject.judgeLineList[i].judgeLineMoveEvents.Length; k++)
                 {
                     obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineMoveYEvents[k] = new Prpu.Chart.JudgeLineEvent
@@ -275,6 +279,10 @@ namespace PigeonB1587.prpu
                         bezierPoints = null
                     };
                 }
+
+                obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineMoveYEvents = obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineMoveYEvents
+     .OrderBy(s => GetBeatTime(s.startTime))
+     .ToArray();
 
                 for (int k = 0; k < chartObject.judgeLineList[i].judgeLineRotateEvents.Length; k++)
                 {
@@ -291,6 +299,10 @@ namespace PigeonB1587.prpu
                     };
                 }
 
+                obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineRotateEvents = obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineRotateEvents
+     .OrderBy(s => GetBeatTime(s.startTime))
+     .ToArray();
+
                 for (int k = 0; k < chartObject.judgeLineList[i].judgeLineDisappearEvents.Length; k++)
                 {
                     obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineDisappearEvents[k] = new Prpu.Chart.JudgeLineEvent
@@ -305,6 +317,10 @@ namespace PigeonB1587.prpu
                         bezierPoints = null
                     };
                 }
+
+                obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineDisappearEvents = obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineDisappearEvents
+     .OrderBy(s => GetBeatTime(s.startTime))
+     .ToArray();
             }
 
             return obj;

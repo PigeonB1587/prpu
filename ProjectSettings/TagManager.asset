@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: JudgmentLine
+    uniqueID: 3360810463
+    locked: 0
+  - name: Note
+    uniqueID: 431947705
+    locked: 0
+  - name: UI
+    uniqueID: 3677064049
+    locked: 0

@@ -7,16 +7,17 @@ namespace PigeonB1587.prpu
 {
     public class Reader : MonoBehaviour
     {
-        public ChartObject.Root chart;
+        public static ChartObject.Root chart;
         public int formatVersion;
         public float offset;
 
-        public async UniTask ReadChart(Prpu.Chart.Root root)
+        public async UniTask ReadChart(Prpu.Chart.Root root, string songID)
         {
             formatVersion = root.formatVersion;
             offset = root.offset;
             chart = new ChartObject.Root
             {
+                songID = songID,
                 storyBoard = ConvertStoryBoard(root.storyBoard),
                 judgeLineList = ConvertJudgeLines(root.judgeLineList)
             };

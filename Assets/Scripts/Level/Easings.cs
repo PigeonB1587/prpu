@@ -73,7 +73,10 @@ namespace PigeonB1587.prpu
 
     Ease.InBounce,
     Ease.OutBounce,
-    Ease.InOutBounce
+    Ease.InOutBounce,
+
+    Ease.Zero,
+    Ease.One,
         };
 
         public static double EasingFunction(int type, double t)
@@ -193,6 +196,8 @@ namespace PigeonB1587.prpu
                 }
                 return fx(x);
             }
+            public static double Zero(double x) => x * 0;
+            public static double One(double x) => x / x;
             public static double CubicBezier(double a, double b, double c, double d, double e)
             {
                 double z = e;

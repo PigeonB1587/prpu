@@ -14,11 +14,14 @@ namespace PigeonB1587.prpu
         public float screenW;
         public float screenH;
 
+        public float screenRadio;
+
         public TextAsset chart;
         public Sprite illustration;
         public AudioClip music;
 
         public bool isHitFXEnabled;
+        public bool isFCAPIndicator;
         public bool autoPlay;
         public float offset;
         public float levelSpeed;
@@ -58,7 +61,7 @@ namespace PigeonB1587.prpu
 
         void Update()
         {
-
+            screenRadio = Mathf.Min((float)Screen.width / Screen.height, 16f / 9f);
         }
 
         public async UniTask LoadLevelAsset()
@@ -87,13 +90,6 @@ namespace PigeonB1587.prpu
                 return null;
             }
             return handle.Result;
-        }
-
-        private void OnDestroy()
-        {
-            Addressables.Release(chart);
-            Addressables.Release(illustration);
-            Addressables.Release(music);
         }
     }
 
@@ -134,6 +130,7 @@ namespace PigeonB1587.prpu
         [Serializable]
         public class Root
         {
+            public string songID;
             public StoryBoard storyBoard;
             public JudgeLine[] judgeLineList;
         }

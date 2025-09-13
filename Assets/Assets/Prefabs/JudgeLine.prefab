@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9046135035613553692}
   - component: {fileID: 3094300152631381743}
+  - component: {fileID: -759799208233690131}
   m_Layer: 0
   m_Name: JudgeLine
   m_TagString: Untagged
@@ -70,8 +71,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -934156833
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: -1471921640, guid: 6d4f002e230165541b28842a04bb96b2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -84,3 +85,43 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-759799208233690131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8968837484667413541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81a28cb4f31b354468b4b5c2a8b3ac0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jugdeLineData:
+    bpms: []
+    notes: []
+    noteControls: []
+    speedEvents: []
+    judgeLineEventLayers: []
+    transform:
+      judgeLineColorEvents: []
+      judgeLineTextEvents: []
+      judgeLineTextureSize: []
+      fatherLineIndex: 0
+      anchor: []
+      localPositionMode: 0
+      localEulerAnglesMode: 0
+      zOrder: 0
+      judgeLineTextureScaleXEvents: []
+      judgeLineTextureScaleYEvents: []
+  lineRenderer: {fileID: 3094300152631381743}
+  levelController: {fileID: 0}
+  usingCustomColor: 0
+  perfectLine: {r: 0.99607843, g: 1, b: 0.6627451, a: 1}
+  goodLine: {r: 0.63529414, g: 0.93333334, b: 1, a: 1}
+  defaultLine: {r: 1, g: 1, b: 1, a: 1}
+  moveX: 0
+  moveY: 0
+  rotate: 0
+  disappear: 0
+  endColor: {r: 0, g: 0, b: 0, a: 1}

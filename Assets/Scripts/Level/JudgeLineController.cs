@@ -1,0 +1,84 @@
+using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+namespace PigeonB1587.prpu
+{
+    public class JudgeLineController : MonoBehaviour
+    {
+        public GameObject judgmentLinePrefab;
+        public LevelController levelController;
+        public Transform jugdeLineFather;
+
+        public List<JudgeLine> judgeLines = new List<JudgeLine>();
+
+        public async UniTask SpawnJudgmentLine()
+        {
+            if (Reader.chart.judgeLineList.Length == 0)
+                return;
+            for (int i = 0; i < Reader.chart.judgeLineList.Length; i++)
+            {
+                GameObject lineObj = Instantiate(judgmentLinePrefab, jugdeLineFather);
+                lineObj.name = $"JudgeLine {i}";
+                JudgeLine line = lineObj.GetComponent<JudgeLine>();
+                judgeLines.Add(line);
+                line.jugdeLineData = Reader.chart.judgeLineList[i];
+                line.levelController = levelController;
+            }
+            judgeLines = SortByHierarchy(judgeLines);
+            await UniTask.CompletedTask;
+            return;
+        }
+
+        public void LateUpdate()
+        {
+            if (!levelController.isLoading)
+            {
+                for (int i = 0; i < judgeLines.Count(); i++)
+                {
+                    judgeLines[i].UpdateTransform();
+                }
+            }
+        }
+
+        public List<JudgeLine> SortByHierarchy(List<JudgeLine> lines)
+        {
+            if (lines == null || lines.Count == 0)
+                return new List<JudgeLine>();
+
+            int count = lines.Count;
+            var children = new Dictionary<int, List<int>>();
+            var roots = new List<int>();
+
+            for (int i = 0; i < count; i++)
+            {
+                int father = lines[i].jugdeLineData.transform.fatherLineIndex;
+
+                if (father == -1 || father < 0 || father >= count)
+                    roots.Add(i);
+                else
+                {
+                    if (!children.ContainsKey(father))
+                        children[father] = new List<int>();
+                    children[father].Add(i);
+                }
+            }
+
+            var sorted = new List<int>();
+            var queue = new Queue<int>(roots);
+
+            while (queue.Count > 0)
+            {
+                int curr = queue.Dequeue();
+                sorted.Add(curr);
+
+                if (children.TryGetValue(curr, out var kids))
+                    foreach (var kid in kids)
+                        queue.Enqueue(kid);
+            }
+
+            return sorted.Select(i => lines[i]).ToList();
+        }
+    }
+}
