@@ -8,9 +8,9 @@ An editor version greater than or equal to Unity [2021.3.20f1c1](https://unity.c
 
 ## Assets
 
-Source Han Sans [Fonts Version 2.005R](https://github.com/adobe-fonts/source-han-sans)
+Adobe - Source Han Sans [Source han sans](https://github.com/adobe-fonts/source-han-sans)
 
-Saira [Saira family](https://github.com/Omnibus-Type/Saira)
+Omnibus Type - Saira [Saira family](https://github.com/Omnibus-Type/Saira)
 
 ## License
 
