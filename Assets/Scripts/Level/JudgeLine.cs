@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace PigeonB1587.prpu
@@ -7,6 +9,9 @@ namespace PigeonB1587.prpu
         public ChartObject.JudgeLine jugdeLineData;
         public SpriteRenderer lineRenderer;
         public LevelController levelController;
+        public NotePool notePool;
+
+        public List<ChartObject.Note> notes;
 
         public bool usingCustomColor;
         public Color perfectLine;
@@ -17,6 +22,8 @@ namespace PigeonB1587.prpu
         public float moveY = 0;
         public float rotate = 0;
         public float disappear = 0;
+
+        public float floorPosition = 0;
 
         public Transform fatherLine;
         public Color endColor;
@@ -31,6 +38,8 @@ namespace PigeonB1587.prpu
             {
                 usingCustomColor = true;
             }
+
+            notes = jugdeLineData.notes.ToList();
         }
 
         public void Update()
@@ -43,6 +52,38 @@ namespace PigeonB1587.prpu
                 rotate = 0;
                 disappear = 0;
                 UpdateEventLayers(curTime);
+                UpdateNote();
+            }
+        }
+
+        public void UpdateNote()
+        {
+            for(int i = 0; i < notes.Count; i++)
+            {
+                var f = notes[i].floorPosition - floorPosition + notes[i].positionY;
+                var v = transform.TransformPoint(new Vector3(notes[i].positionX, f * notes[i].speed, 0)).y;
+
+                if(v >= -10 && v <= 10)
+                {
+                    TapController n;
+                    switch (notes[i].type)
+                    {
+                        case 1:
+                            n = notePool.GetTap(transform);
+                            break;
+                        case 2:
+                            n = notePool.GetDrag(transform);
+                            break;
+                        default:
+                            n = notePool.GetDrag(transform);
+                            break;
+                    }
+                    n.noteData = notes[i];
+                    n.judgeLine = this;
+                    n.Start();
+                    notes.RemoveAt(i);
+                    i--;
+                }
             }
         }
 
@@ -99,8 +140,15 @@ namespace PigeonB1587.prpu
                 UpdateEvent(currentTime, ref jugdeLineData.judgeLineEventLayers[i].judgeLineRotateEvents, ref rotate);
                 UpdateEvent(currentTime, ref jugdeLineData.judgeLineEventLayers[i].judgeLineDisappearEvents, ref disappear);
             }
+            floorPosition = Reader.GetCurFloorPosition(currentTime, jugdeLineData.speedEvents);
         }
 
+        /// <summary>
+        /// 事件的逻辑就是 根据当前时间，获取对应的事件对象，并插值计算
+        /// </summary>
+        /// <param name="currentTime"></param>
+        /// <param name="events"></param>
+        /// <param name="value">增量</param>
         private void UpdateEvent(double currentTime, ref ChartObject.JudgeLineEvent[] events, ref float value)
         {
             if (events.Length == 0)

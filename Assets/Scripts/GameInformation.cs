@@ -131,6 +131,7 @@ namespace PigeonB1587.prpu
         public class Root
         {
             public string songID;
+            public string level;
             public StoryBoard storyBoard;
             public JudgeLine[] judgeLineList;
         }
@@ -244,7 +245,7 @@ namespace PigeonB1587.prpu
             public int hitFXColor;
             public float judgeSize;
             public float floorPosition = 0;
-            public float endfloorPosition;
+            public float endfloorPosition = 0;
         }
 
         [Serializable]

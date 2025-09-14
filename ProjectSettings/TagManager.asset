@@ -47,6 +47,9 @@ TagManager:
   - name: Note
     uniqueID: 431947705
     locked: 0
+  - name: HitFX
+    uniqueID: 1152866701
+    locked: 0
   - name: UI
     uniqueID: 3677064049
     locked: 0

@@ -238,7 +238,7 @@ namespace PigeonB1587.prpu
                         easing = 1,
                         easingLeft = 0,
                         easingRight = 1,
-                        bezierPoints = null
+                        bezierPoints = Array.Empty<float>()
                     };
                 }
 
@@ -257,7 +257,7 @@ namespace PigeonB1587.prpu
                         easing = 1,
                         easingLeft = 0,
                         easingRight = 1,
-                        bezierPoints = null
+                        bezierPoints = Array.Empty<float>()
                     };
                 }
 
@@ -276,7 +276,7 @@ namespace PigeonB1587.prpu
                         easing = 1,
                         easingLeft = 0,
                         easingRight = 1,
-                        bezierPoints = null
+                        bezierPoints = Array.Empty<float>()
                     };
                 }
 
@@ -295,7 +295,7 @@ namespace PigeonB1587.prpu
                         easing = 1,
                         easingLeft = 0,
                         easingRight = 1,
-                        bezierPoints = null
+                        bezierPoints = Array.Empty<float>()
                     };
                 }
 
@@ -314,7 +314,7 @@ namespace PigeonB1587.prpu
                         easing = 1,
                         easingLeft = 0,
                         easingRight = 1,
-                        bezierPoints = null
+                        bezierPoints = Array.Empty<float>()
                     };
                 }
 

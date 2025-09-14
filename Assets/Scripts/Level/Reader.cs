@@ -10,14 +10,16 @@ namespace PigeonB1587.prpu
         public static ChartObject.Root chart;
         public int formatVersion;
         public float offset;
-
-        public async UniTask ReadChart(Prpu.Chart.Root root, string songID)
+        private Prpu.Chart.Root chartRoot;
+        public async UniTask ReadChart(Prpu.Chart.Root root, string songID, string level)
         {
             formatVersion = root.formatVersion;
             offset = root.offset;
+            chartRoot = root;
             chart = new ChartObject.Root
             {
                 songID = songID,
+                level = level,
                 storyBoard = ConvertStoryBoard(root.storyBoard),
                 judgeLineList = ConvertJudgeLines(root.judgeLineList)
             };
@@ -96,7 +98,7 @@ namespace PigeonB1587.prpu
                     visibleTime = prpuNote.visibleTime,
                     speed = prpuNote.speed,
                     size = prpuNote.size,
-                    isHL = false,
+                    isHL = GetHL(chartRoot, prpuNote),
                     endTime = prpuNote.endTime != null ? new ChartObject.Time().GetTime(prpuBpmItems, prpuNote.endTime) : default,
                     positionX = prpuNote.positionX,
                     positionY = prpuNote.positionY,

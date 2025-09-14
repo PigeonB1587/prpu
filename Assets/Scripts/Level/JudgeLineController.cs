@@ -25,8 +25,14 @@ namespace PigeonB1587.prpu
                 judgeLines.Add(line);
                 line.jugdeLineData = Reader.chart.judgeLineList[i];
                 line.levelController = levelController;
+                line.notePool = levelController.notePool;
             }
-            judgeLines = SortByHierarchy(judgeLines);
+            for (int i = 0; i < judgeLines.Count; i++)
+            {
+                if (judgeLines[i].jugdeLineData.transform.fatherLineIndex != -1)
+                    judgeLines[i].fatherLine = judgeLines[judgeLines[i].jugdeLineData.transform.fatherLineIndex].transform;
+            }
+            judgeLines = SortJudgmentLine(judgeLines);
             await UniTask.CompletedTask;
             return;
         }
@@ -42,7 +48,7 @@ namespace PigeonB1587.prpu
             }
         }
 
-        public List<JudgeLine> SortByHierarchy(List<JudgeLine> lines)
+        public List<JudgeLine> SortJudgmentLine(List<JudgeLine> lines)
         {
             if (lines == null || lines.Count == 0)
                 return new List<JudgeLine>();
