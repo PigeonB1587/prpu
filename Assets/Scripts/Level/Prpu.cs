@@ -136,7 +136,7 @@ namespace PigeonB1587.prpu
                 public BpmItems[] bpms { get; set; }
                 public Note[] notes { get; set; }
                 [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-                public NoteControl[] noteControls { get; set; }
+                public NoteControl noteControls { get; set; }
                 public JudgeLineEvent[] speedEvents { get; set; }
                 public JudgeLineEventLayer[] judgeLineEventLayers { get; set; }
                 public Transform transform { get; set; }

@@ -30,7 +30,7 @@ namespace PigeonB1587.prpu
 
         private ChartObject.StoryBoard ConvertStoryBoard(Prpu.Chart.StoryBoard prpuStoryBoard)
         {
-            if (prpuStoryBoard == null) return null;
+            if (prpuStoryBoard == null) return new ChartObject.StoryBoard();
 
             return new ChartObject.StoryBoard
             {
@@ -115,24 +115,18 @@ namespace PigeonB1587.prpu
             return notes;
         }
 
-        private ChartObject.NoteControl[] ConvertNoteControls(Prpu.Chart.NoteControl[] prpuNoteControls)
+        private ChartObject.NoteControl ConvertNoteControls(Prpu.Chart.NoteControl prpuControl)
         {
-            if (prpuNoteControls == null) return Array.Empty<ChartObject.NoteControl>();
-
-            var noteControls = new ChartObject.NoteControl[prpuNoteControls.Length];
-            for (int i = 0; i < prpuNoteControls.Length; i++)
+            if (prpuControl == null) return new ChartObject.NoteControl();
+            var noteControl = new ChartObject.NoteControl()
             {
-                var prpuControl = prpuNoteControls[i];
-                noteControls[i] = new ChartObject.NoteControl
-                {
-                    disappearControls = ConvertControlItems(prpuControl.disappearControls),
-                    rotateControls = ConvertControlItems(prpuControl.rotateControls),
-                    sizeControl = ConvertControlItems(prpuControl.sizeControl),
-                    xPosControl = ConvertControlItems(prpuControl.xPosControl),
-                    yPosControl = ConvertControlItems(prpuControl.yPosControl)
-                };
-            }
-            return noteControls;
+                disappearControls = ConvertControlItems(prpuControl.disappearControls),
+                rotateControls = ConvertControlItems(prpuControl.rotateControls),
+                sizeControl = ConvertControlItems(prpuControl.sizeControl),
+                xPosControl = ConvertControlItems(prpuControl.xPosControl),
+                yPosControl = ConvertControlItems(prpuControl.yPosControl)
+            };
+            return noteControl;
         }
 
         private ChartObject.ControlItem[] ConvertControlItems(Prpu.Chart.ControlItem[] prpuControlItems)
@@ -255,7 +249,7 @@ namespace PigeonB1587.prpu
 
         private ChartObject.Transform ConvertTransform(Prpu.Chart.Transform prpuTransform, Prpu.Chart.BpmItems[] prpuBpmItems)
         {
-            if (prpuTransform == null) return null;
+            if (prpuTransform == null) return new ChartObject.Transform();
 
             return new ChartObject.Transform
             {

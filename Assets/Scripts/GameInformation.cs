@@ -329,7 +329,7 @@ namespace PigeonB1587.prpu
         {
             public BpmItems[] bpms;
             public Note[] notes;
-            public NoteControl[] noteControls;
+            public NoteControl noteControls;
             public SpeedEvent[] speedEvents;
             public JudgeLineEventLayer[] judgeLineEventLayers;
             public Transform transform;
