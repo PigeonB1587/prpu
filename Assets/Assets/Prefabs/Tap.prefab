@@ -73,7 +73,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 431947705
   m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 0fe580b7c28126e47beb0532292b273c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -127,4 +127,5 @@ MonoBehaviour:
   noteRenderer: {fileID: 8057995374338834756}
   hlImage: {fileID: 21300000, guid: 9b88387c64e012a45946666a6fe50d1d, type: 3}
   defaultImage: {fileID: 21300000, guid: 0fe580b7c28126e47beb0532292b273c, type: 3}
+  floorPosition: 0
   isJudge: 0

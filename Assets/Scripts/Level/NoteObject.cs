@@ -14,7 +14,7 @@ namespace PigeonB1587.prpu
         public SpriteRenderer noteRenderer;
         public Sprite hlImage;
         public Sprite defaultImage;
-
+        public float floorPosition = 0f;
         public bool isJudge = false;
 
         public virtual void Awake()
@@ -29,7 +29,18 @@ namespace PigeonB1587.prpu
 
         public virtual void Update()
         {
-            transform.localPosition = new Vector2(transform.localPosition.x, noteData.above ? GetFloorPosY() : -GetFloorPosY());
+            floorPosition = GetFloorPosY();
+            transform.localPosition = new Vector2(transform.localPosition.x, noteData.above ? floorPosition : -floorPosition);
+            bool visable = false;
+            if (transform.position.y >= -10 && transform.position.y <= 10)
+                visable = true;
+            if (floorPosition >= - 0.001)
+                visable = true;
+            if (useVisableTime && noteData.startTime.curTime - judgeLine.levelController.time <= visableTimeData.curTime)
+                visable = true;
+            if (judgeLine.disappear >= 0)
+                visable = true;
+            noteRenderer.enabled = visable;
             if (judgeLine.levelController.time >= noteData.startTime.curTime)
                 Judge();
         }
@@ -37,6 +48,7 @@ namespace PigeonB1587.prpu
         public virtual void ResetNote()
         {
             isJudge = false;
+            floorPosition = 0f;
             if (noteData.isHL)
             {
                 noteRenderer.sprite = hlImage;
@@ -62,7 +74,19 @@ namespace PigeonB1587.prpu
             {
                 useVisableTime = false;
             }
-            transform.localPosition = new Vector2(noteData.positionX * GameInformation.Instance.screenRadioScale, noteData.above ? GetFloorPosY() : -GetFloorPosY());
+            noteRenderer.color = Utils.IntToColor(noteData.color);
+            floorPosition = GetFloorPosY();
+            transform.localPosition = new Vector2(noteData.positionX * GameInformation.Instance.screenRadioScale, noteData.above ? floorPosition : -floorPosition);
+            bool visable = false;
+            if (transform.localPosition.y >= -10 && transform.localPosition.y <= 10)
+                visable = true;
+            if (floorPosition >= -0.001)
+                visable = true;
+            if (useVisableTime && noteData.startTime.curTime - judgeLine.levelController.time <= visableTimeData.curTime)
+                visable = true;
+            if (judgeLine.disappear >= 0)
+                visable = true;
+            noteRenderer.enabled = visable;
         }
 
         public virtual void Judge()

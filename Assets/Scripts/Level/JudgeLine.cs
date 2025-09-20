@@ -11,9 +11,11 @@ namespace PigeonB1587.prpu
         public SpriteRenderer lineRenderer;
         public LevelController levelController;
 
-        public List<ChartObject.Note> notes;
-        public GameObject tapPrefab;
+        public List<ChartObject.Note> localNotes;
+        public GameObject tapPrefab, dragPrefab, flickPrefab;
         public ObjectPool<Tap> tapPool;
+        public ObjectPool<Drag> dragPool;
+        public ObjectPool<Flick> flickPool;
 
         public bool usingCustomColor;
         public Color perfectLine;
@@ -40,7 +42,7 @@ namespace PigeonB1587.prpu
             {
                 usingCustomColor = true;
             }
-            notes = jugdeLineData.notes.ToList();
+            localNotes = jugdeLineData.notes.ToList();
             SetNotePool();
         }
         private void SetNotePool()
@@ -54,6 +56,30 @@ namespace PigeonB1587.prpu
                 },
                 actionOnRelease: (tap) => tap.gameObject.SetActive(false),
                 actionOnDestroy: (tap) => Destroy(tap.gameObject),
+                defaultCapacity: 20,
+                maxSize: 3000
+            );
+            dragPool = new ObjectPool<Drag>(
+                createFunc: () => Instantiate(dragPrefab, transform).GetComponent<Drag>(),
+                actionOnGet: (drag) =>
+                {
+                    drag.gameObject.SetActive(true);
+                    drag.isJudge = false;
+                },
+                actionOnRelease: (drag) => drag.gameObject.SetActive(false),
+                actionOnDestroy: (drag) => Destroy(drag.gameObject),
+                defaultCapacity: 20,
+                maxSize: 3000
+            );
+            flickPool = new ObjectPool<Flick>(
+                createFunc: () => Instantiate(flickPrefab, transform).GetComponent<Flick>(),
+                actionOnGet: (flick) =>
+                {
+                    flick.gameObject.SetActive(true);
+                    flick.isJudge = false;
+                },
+                actionOnRelease: (flick) => flick.gameObject.SetActive(false),
+                actionOnDestroy: (flick) => Destroy(flick.gameObject),
                 defaultCapacity: 20,
                 maxSize: 3000
             );
@@ -118,29 +144,38 @@ namespace PigeonB1587.prpu
 
         public void UpdateNote()
         {
-            for(int i = 0; i < notes.Count; i++)
+            for(int i = 0; i < localNotes.Count; i++)
             {
-                var f = notes[i].floorPosition - floorPosition + notes[i].positionY;
-                var v = transform.TransformVector(new Vector3(notes[i].positionX * GameInformation.Instance.screenRadioScale,
-                    f * notes[i].speed,
-                    0)).y;
+                var f = localNotes[i].floorPosition - floorPosition + localNotes[i].positionY;
+                var v = Utils.LocalToWorld(new Vector3(
+                    localNotes[i].positionX * GameInformation.Instance.screenRadioScale,
+                    f * localNotes[i].speed,
+                    0), transform.position, transform.eulerAngles.z
+                    );
 
-                if (v >= -10 && v <= 10)
+                if (v.y > GameInformation.Instance.visableY[0] && v.y < GameInformation.Instance.visableY[1]
+                    && v.x > GameInformation.Instance.visableX[0] && v.x < GameInformation.Instance.visableX[1])
                 {
                     NoteObject n;
-                    switch (notes[i].type)
+                    switch (localNotes[i].type)
                     {
                         case 1:
                             n = tapPool.Get();
+                            break;
+                        case 2:
+                            n = dragPool.Get();
+                            break;
+                        case 4:
+                            n = flickPool.Get();
                             break;
                         default:
                             n = tapPool.Get();
                             break;
                     }
-                    n.noteData = notes[i];
+                    n.noteData = localNotes[i];
                     n.judgeLine = this;
                     n.Start();
-                    notes.RemoveAt(i);
+                    localNotes.RemoveAt(i);
                     i--;
                 }
             }

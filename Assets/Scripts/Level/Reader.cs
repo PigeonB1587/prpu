@@ -167,7 +167,7 @@ namespace PigeonB1587.prpu
                     start = prpuEvent.start,
                     end = prpuEvent.end,
                     easing = prpuEvent.easing,
-                    floorPosition = 0,
+                    floorPosition = 1,
                     easingLeft = prpuEvent.easingLeft,
                     easingRight = prpuEvent.easingRight,
                     bezierPoints = prpuEvent.bezierPoints

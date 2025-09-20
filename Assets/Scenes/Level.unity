@@ -560,10 +560,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   screenW: 0
   screenH: 0
+  visableX:
+  - -10
+  - 10
+  visableY:
+  - -127
+  - 127
   screenRadioScale: 0
-  chart: {fileID: 4900000, guid: 6600a5d81e6845e47bd71ee75c4be6e1, type: 3}
+  chart: {fileID: 4900000, guid: 88c0df8cc22ad0c46a32a75ed8faddb6, type: 3}
   illustration: {fileID: 21300000, guid: f4756d5456bba7e419656e31e7e4fcce, type: 3}
-  music: {fileID: 8300000, guid: d57c94a72f0f857409c50c1ebc8acaef, type: 3}
+  music: {fileID: 8300000, guid: 2bf67db8152b435439882a7024169983, type: 3}
   isHitFXEnabled: 0
   isFCAPIndicator: 0
   autoPlay: 0

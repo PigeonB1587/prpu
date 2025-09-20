@@ -14,6 +14,9 @@ namespace PigeonB1587.prpu
         public float screenW;
         public float screenH;
 
+        public float[] visableX;
+        public float[] visableY;
+
         public float screenRadioScale;
 
         public TextAsset chart;

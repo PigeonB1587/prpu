@@ -185,7 +185,7 @@ namespace PigeonB1587.prpu
                             above = true,
                             startTime = CTMF(new int[2] { chartObject.judgeLineList[i].notesAbove[j].time, 32 }),
                             visibleTime = Array.Empty<int>(),
-                            speed = chartObject.judgeLineList[i].notesAbove[j].speed,
+                            speed = chartObject.judgeLineList[i].notesAbove[j].type == 3 ? 1 : chartObject.judgeLineList[i].notesAbove[j].speed,
                             size = 1,
                             endTime = CTMF(new int[2] { chartObject.judgeLineList[i].notesAbove[j].time
                         + chartObject.judgeLineList[i].notesAbove[j].holdTime, 32 }),
@@ -209,7 +209,7 @@ namespace PigeonB1587.prpu
                             above = false,
                             startTime = CTMF(new int[2] { chartObject.judgeLineList[i].notesBelow[j].time, 32 }),
                             visibleTime = Array.Empty<int>(),
-                            speed = chartObject.judgeLineList[i].notesBelow[j].speed,
+                            speed = chartObject.judgeLineList[i].notesAbove[j].type == 3 ? 1 : chartObject.judgeLineList[i].notesAbove[j].speed,
                             size = 1,
                             endTime = CTMF(new int[2] { chartObject.judgeLineList[i].notesBelow[j].time
                         + chartObject.judgeLineList[i].notesBelow[j].holdTime, 32 }),
@@ -248,7 +248,7 @@ namespace PigeonB1587.prpu
                 {
                     obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineMoveXEvents[k] = new Prpu.Chart.JudgeLineEvent
                     {
-                        startTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineMoveEvents[k].startTime, 32 }),
+                        startTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineMoveEvents[k].startTime < -1 ? 0 : chartObject.judgeLineList[i].judgeLineMoveEvents[k].startTime, 32 }),
                         endTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineMoveEvents[k].endTime, 32 }),
                         start = chartObject.judgeLineList[i].judgeLineMoveEvents[k].start - 0.5f,
                         end = chartObject.judgeLineList[i].judgeLineMoveEvents[k].end - 0.5f,
@@ -267,7 +267,7 @@ namespace PigeonB1587.prpu
                 {
                     obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineMoveYEvents[k] = new Prpu.Chart.JudgeLineEvent
                     {
-                        startTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineMoveEvents[k].startTime, 32 }),
+                        startTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineMoveEvents[k].startTime < -1 ? 0 : chartObject.judgeLineList[i].judgeLineMoveEvents[k].startTime, 32 }),
                         endTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineMoveEvents[k].endTime, 32 }),
                         start = chartObject.judgeLineList[i].judgeLineMoveEvents[k].start2.Value - 0.5f,
                         end = chartObject.judgeLineList[i].judgeLineMoveEvents[k].end2.Value - 0.5f,
@@ -286,7 +286,7 @@ namespace PigeonB1587.prpu
                 {
                     obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineRotateEvents[k] = new Prpu.Chart.JudgeLineEvent
                     {
-                        startTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineRotateEvents[k].startTime, 32 }),
+                        startTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineRotateEvents[k].startTime < -1 ? 0 : chartObject.judgeLineList[i].judgeLineRotateEvents[k].startTime, 32 }),
                         endTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineRotateEvents[k].endTime, 32}),
                         start = chartObject.judgeLineList[i].judgeLineRotateEvents[k].start,
                         end = chartObject.judgeLineList[i].judgeLineRotateEvents[k].end,
@@ -305,7 +305,7 @@ namespace PigeonB1587.prpu
                 {
                     obj.judgeLineList[i].judgeLineEventLayers[0].judgeLineDisappearEvents[k] = new Prpu.Chart.JudgeLineEvent
                     {
-                        startTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineDisappearEvents[k].startTime, 32 }),
+                        startTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineDisappearEvents[k].startTime < -1 ? 0 : chartObject.judgeLineList[i].judgeLineDisappearEvents[k].startTime, 32 }),
                         endTime = CTMF(new int[2] { chartObject.judgeLineList[i].judgeLineDisappearEvents[k].endTime, 32 }),
                         start = chartObject.judgeLineList[i].judgeLineDisappearEvents[k].start,
                         end = chartObject.judgeLineList[i].judgeLineDisappearEvents[k].end,

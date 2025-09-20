@@ -100,5 +100,37 @@ namespace PigeonB1587.prpu
             }
             return p;
         }
+
+        public static Vector2 LocalToWorld(Vector2 localPos, Vector2 parentPos, float parentRot)
+        {
+            float rad = parentRot * Mathf.Deg2Rad;
+            float cos = Mathf.Cos(rad);
+            float sin = Mathf.Sin(rad);
+
+            float rotatedX = localPos.x * cos - localPos.y * sin;
+            float rotatedY = localPos.x * sin + localPos.y * cos;
+
+            return new Vector2(rotatedX + parentPos.x, rotatedY + parentPos.y);
+        }
+
+        public static int RgbaToInt(byte r, byte g, byte b, byte a)
+        {
+            return (r << 24) | (g << 16) | (b << 8) | a;
+        }
+
+        public static Color IntToColor(int colorInt)
+        {
+            byte r = (byte)(colorInt >> 24);
+            byte g = (byte)(colorInt >> 16);
+            byte b = (byte)(colorInt >> 8);
+            byte a = (byte)colorInt;
+
+            return new Color(
+                r / 255f,
+                g / 255f,
+                b / 255f,
+                a / 255f
+            );
+        }
     }
 }
