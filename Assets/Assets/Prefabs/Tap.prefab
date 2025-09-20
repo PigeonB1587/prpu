@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6439222641745122478}
   - component: {fileID: 8057995374338834756}
-  - component: {fileID: 3270262267180061842}
+  - component: {fileID: -2637455461578951937}
   m_Layer: 0
   m_Name: Tap
   m_TagString: Untagged
@@ -71,9 +71,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 431947705
+  m_SortingLayer: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 0fe580b7c28126e47beb0532292b273c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3270262267180061842
+--- !u!114 &-2637455461578951937
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1722302901583039603}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 533f4baff6c6bd046a7a40cad4a5e619, type: 3}
+  m_Script: {fileID: 11500000, guid: e51e80aab7e3aca4ca4759d12ef91c0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   noteData:
@@ -104,7 +104,7 @@ MonoBehaviour:
     startTime:
       curTime: 0
       beatTime: 0
-    visibleTime: 0
+    visibleTime: 
     speed: 0
     size: 0
     isHL: 0
@@ -119,6 +119,10 @@ MonoBehaviour:
     judgeSize: 0
     floorPosition: 0
     endfloorPosition: 0
+  useVisableTime: 0
+  visableTimeData:
+    curTime: 0
+    beatTime: 0
   judgeLine: {fileID: 0}
   noteRenderer: {fileID: 8057995374338834756}
   hlImage: {fileID: 21300000, guid: 9b88387c64e012a45946666a6fe50d1d, type: 3}

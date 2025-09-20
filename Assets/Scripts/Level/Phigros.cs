@@ -184,7 +184,7 @@ namespace PigeonB1587.prpu
                             isFake = false,
                             above = true,
                             startTime = CTMF(new int[2] { chartObject.judgeLineList[i].notesAbove[j].time, 32 }),
-                            visibleTime = -1,
+                            visibleTime = Array.Empty<int>(),
                             speed = chartObject.judgeLineList[i].notesAbove[j].speed,
                             size = 1,
                             endTime = CTMF(new int[2] { chartObject.judgeLineList[i].notesAbove[j].time
@@ -192,7 +192,6 @@ namespace PigeonB1587.prpu
                             positionX = chartObject.judgeLineList[i].notesAbove[j].positionX,
                             positionY = 0,
                             color = -1,
-                            autoPlayHitSound = false,
                             hitFXColor = -1,
                             judgeSize = 1
                         });
@@ -209,7 +208,7 @@ namespace PigeonB1587.prpu
                             isFake = false,
                             above = false,
                             startTime = CTMF(new int[2] { chartObject.judgeLineList[i].notesBelow[j].time, 32 }),
-                            visibleTime = -1,
+                            visibleTime = Array.Empty<int>(),
                             speed = chartObject.judgeLineList[i].notesBelow[j].speed,
                             size = 1,
                             endTime = CTMF(new int[2] { chartObject.judgeLineList[i].notesBelow[j].time
@@ -217,7 +216,6 @@ namespace PigeonB1587.prpu
                             positionX = chartObject.judgeLineList[i].notesBelow[j].positionX,
                             positionY = 0,
                             color = -1,
-                            autoPlayHitSound = false,
                             hitFXColor = -1,
                             judgeSize = 1
                         });

@@ -1,6 +1,5 @@
 using Cysharp.Threading.Tasks;
 using System;
-using System.Linq;
 using UnityEngine;
 
 namespace PigeonB1587.prpu
@@ -98,118 +97,21 @@ namespace PigeonB1587.prpu
                     visibleTime = prpuNote.visibleTime,
                     speed = prpuNote.speed,
                     size = prpuNote.size,
-                    isHL = GetHL(chartRoot, prpuNote),
+                    isHL = Utils.GetHL(chartRoot, prpuNote),
                     endTime = prpuNote.endTime != null ? new ChartObject.Time().GetTime(prpuBpmItems, prpuNote.endTime) : default,
                     positionX = prpuNote.positionX,
                     positionY = prpuNote.positionY,
                     color = prpuNote.color,
-                    autoPlayHitSound = prpuNote.autoPlayHitSound,
                     hitFXColor = prpuNote.hitFXColor,
                     judgeSize = prpuNote.judgeSize,
                     floorPosition = 0,
                     endfloorPosition = 0
                 };
 
-                notes[i].floorPosition = GetCurFloorPosition(notes[i].startTime.curTime, speedEvents);
-                notes[i].endfloorPosition = GetCurFloorPosition(notes[i].endTime.curTime, speedEvents);
+                notes[i].floorPosition = Utils.GetCurFloorPosition(notes[i].startTime.curTime, speedEvents);
+                notes[i].endfloorPosition = Utils.GetCurFloorPosition(notes[i].endTime.curTime, speedEvents);
             }
             return notes;
-        }
-
-        public static bool GetHL(Prpu.Chart.Root chart, Prpu.Chart.Note thisNote)
-        {
-            double targetTime = thisNote.startTime[0] + thisNote.startTime[1] / (double)thisNote.startTime[2];
-
-            for (int i = 0; i < chart.judgeLineList.Length; i++)
-            {
-                var judgeLine = chart.judgeLineList[i];
-                int left = 0;
-                int right = judgeLine.notes.Length - 1;
-
-                while (left <= right)
-                {
-                    int mid = left + (right - left) / 2;
-                    var note = judgeLine.notes[mid];
-                    double noteTime = note.startTime[0] + note.startTime[1] / (double)note.startTime[2];
-
-                    if (noteTime == targetTime)
-                    {
-                        if (!thisNote.Equals(note))
-                        {
-                            return true;
-                        }
-
-                        int temp = mid;
-                        while (--temp >= 0)
-                        {
-                            var leftNote = judgeLine.notes[temp];
-                            double leftTime = leftNote.startTime[0] + leftNote.startTime[1] / (double)leftNote.startTime[2];
-                            if (leftTime != targetTime) break;
-                            if (!thisNote.Equals(leftNote)) return true;
-                        }
-
-                        temp = mid;
-                        while (++temp < judgeLine.notes.Length)
-                        {
-                            var rightNote = judgeLine.notes[temp];
-                            double rightTime = rightNote.startTime[0] + rightNote.startTime[1] / (double)rightNote.startTime[2];
-                            if (rightTime != targetTime) break;
-                            if (!thisNote.Equals(rightNote)) return true;
-                        }
-
-                        break;
-                    }
-                    else if (noteTime < targetTime)
-                    {
-                        left = mid + 1;
-                    }
-                    else
-                    {
-                        right = mid - 1;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        public static float GetCurFloorPosition(double t, ChartObject.SpeedEvent[] e)
-        {
-            float p = 0.0f;
-            for (int i = 0; i < e.Length; i++)
-            {
-                var s = e[i];
-                double st = s.startTime.curTime, et = s.endTime.curTime, d = et - st;
-
-                if (d <= 0)
-                {
-                    p += s.floorPosition;
-                    continue;
-                }
-
-                bool a = t >= et, b = t >= st && t < et;
-                if (!a && !b) continue;
-
-                double ss = st, se = a ? et : t, sd = se - ss;
-                if (sd <= 0)
-                {
-                    if (a) p += s.floorPosition;
-                    continue;
-                }
-
-                int n = 100;
-                double stm = sd / n, td = 0;
-                for (int j = 0; j < n; j++)
-                {
-                    double ct = ss + j * stm;
-                    td += Easings.Lerp(s.easing, ct, st, et, s.start, s.end, s.easingLeft, s.easingRight,
-                        s.bezierPoints != null && s.bezierPoints.Length >= 4, s.bezierPoints) * stm;
-                }
-
-                p += (float)(s.floorPosition + td);
-                if (b) break;
-            }
-            return p;
         }
 
         private ChartObject.NoteControl[] ConvertNoteControls(Prpu.Chart.NoteControl[] prpuNoteControls)
@@ -273,38 +175,38 @@ namespace PigeonB1587.prpu
 
                 if (i > 0)
                 {
-                    var lastEvent = speedEvents[i - 1];
-                    double totalDistance = 0;
+                    var last = speedEvents[i - 1];
+                    double totalDist = 0;
 
-                    double eventDuration = lastEvent.endTime.curTime - lastEvent.startTime.curTime;
-                    if (eventDuration > 0)
+                    double dur = last.endTime.curTime - last.startTime.curTime;
+                    if (dur > 0)
                     {
-                        int steps = 100;
-                        double stepTime = eventDuration / steps;
+                        int steps = 64;
+                        double stepT = dur / steps;
 
                         for (int s = 0; s < steps; s++)
                         {
-                            double currentTime = lastEvent.startTime.curTime + s * stepTime;
-                            float currentSpeed = Easings.Lerp(
-    type: lastEvent.easing,
-    nowTime: currentTime,
-    startTime: lastEvent.startTime.curTime,
-    endTime: lastEvent.endTime.curTime,
-    valueStart: lastEvent.start,
-    valueEnd: lastEvent.end,
-    el: lastEvent.easingLeft,
-    er: lastEvent.easingRight,
-    bezier: lastEvent.bezierPoints != null && lastEvent.bezierPoints.Length >= 4,
-    bezierPoint: lastEvent.bezierPoints
-);
-                            totalDistance += currentSpeed * stepTime;
+                            double t = last.startTime.curTime + s * stepT;
+                            float speed = Easings.Lerp(
+                                last.easing,
+                                t,
+                                last.startTime.curTime,
+                                last.endTime.curTime,
+                                last.start,
+                                last.end,
+                                last.easingLeft,
+                                last.easingRight,
+                                last.bezierPoints != null && last.bezierPoints.Length >= 4,
+                                last.bezierPoints
+                            );
+                            totalDist += speed * stepT;
                         }
                     }
 
-                    double gapTime = speedEvents[i].startTime.curTime - lastEvent.endTime.curTime;
-                    double gapDistance = lastEvent.end * gapTime;
+                    double gapT = speedEvents[i].startTime.curTime - last.endTime.curTime;
+                    double gapDist = last.end * gapT;
 
-                    speedEvents[i].floorPosition += (float)(lastEvent.floorPosition + totalDistance + gapDistance);
+                    speedEvents[i].floorPosition += (float)(last.floorPosition + totalDist + gapDist);
                 }
             }
             return speedEvents;

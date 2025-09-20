@@ -9,7 +9,6 @@ namespace PigeonB1587.prpu
     {
         public Reader reader;
         public JudgeLineController lineController;
-        public NotePool notePool;
 
         public AudioSource musicPlayer;
 

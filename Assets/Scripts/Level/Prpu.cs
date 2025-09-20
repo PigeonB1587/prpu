@@ -70,14 +70,13 @@ namespace PigeonB1587.prpu
                 public bool isFake { get; set; }
                 public bool above { get; set; }
                 public int[] startTime { get; set; }
-                public float visibleTime { get; set; }
+                public int[] visibleTime { get; set; }
                 public float speed { get; set; }
                 public float size { get; set; }
                 public int[] endTime { get; set; }
                 public float positionX { get; set; }
                 public float positionY { get; set; }
                 public int color { get; set; }
-                public bool autoPlayHitSound { get; set; }
                 public int hitFXColor { get; set; }
                 public float judgeSize { get; set; }
             }

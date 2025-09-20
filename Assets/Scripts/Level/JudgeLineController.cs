@@ -20,12 +20,11 @@ namespace PigeonB1587.prpu
             for (int i = 0; i < Reader.chart.judgeLineList.Length; i++)
             {
                 GameObject lineObj = Instantiate(judgmentLinePrefab, jugdeLineFather);
-                lineObj.name = $"JudgeLine {i}";
+                lineObj.name = $"JudgeLine ({i})";
                 JudgeLine line = lineObj.GetComponent<JudgeLine>();
                 judgeLines.Add(line);
                 line.jugdeLineData = Reader.chart.judgeLineList[i];
                 line.levelController = levelController;
-                line.notePool = levelController.notePool;
             }
             for (int i = 0; i < judgeLines.Count; i++)
             {
@@ -37,13 +36,21 @@ namespace PigeonB1587.prpu
             return;
         }
 
-        public void LateUpdate()
+        public void Update()
         {
             if (!levelController.isLoading)
             {
                 for (int i = 0; i < judgeLines.Count(); i++)
                 {
+                    judgeLines[i].UpdateLine();
+                }
+                for (int i = 0; i < judgeLines.Count(); i++)
+                {
                     judgeLines[i].UpdateTransform();
+                }
+                for (int i = 0; i < judgeLines.Count(); i++)
+                {
+                    judgeLines[i].UpdateNote();
                 }
             }
         }

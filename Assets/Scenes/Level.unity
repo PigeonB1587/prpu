@@ -219,7 +219,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reader: {fileID: 144982127}
   lineController: {fileID: 144982130}
-  notePool: {fileID: 1550588261}
   musicPlayer: {fileID: 185789262}
   time: 0
   isLoading: 1
@@ -397,7 +396,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1257359622}
-  - {fileID: 1550588260}
   m_Father: {fileID: 144911738}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -437,7 +435,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -562,8 +560,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   screenW: 0
   screenH: 0
-  screenRadio: 0
-  chart: {fileID: 4900000, guid: 88c0df8cc22ad0c46a32a75ed8faddb6, type: 3}
+  screenRadioScale: 0
+  chart: {fileID: 4900000, guid: 6600a5d81e6845e47bd71ee75c4be6e1, type: 3}
   illustration: {fileID: 21300000, guid: f4756d5456bba7e419656e31e7e4fcce, type: 3}
   music: {fileID: 8300000, guid: d57c94a72f0f857409c50c1ebc8acaef, type: 3}
   isHitFXEnabled: 0
@@ -659,51 +657,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1550588259
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1550588260}
-  - component: {fileID: 1550588261}
-  m_Layer: 0
-  m_Name: NotePool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1550588260
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1550588259}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 271596923}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1550588261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1550588259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d76999595706afd42958284c17ca9c9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tapPrefab: {fileID: 1722302901583039603, guid: 2a235ecd62e47b347ab099b32bf24981, type: 3}
-  dragPrefab: {fileID: 750897680319454010, guid: 522de36e4487707409b6350527b1b308, type: 3}
-  defaultSize: 60
-  maxSize: 10000

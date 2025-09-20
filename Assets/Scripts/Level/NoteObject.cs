@@ -1,12 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace PigeonB1587.prpu
 {
-    public class TapController : MonoBehaviour
+    public class NoteObject : MonoBehaviour
     {
         public ChartObject.Note noteData;
+        public bool useVisableTime = false;
+        public ChartObject.Time visableTimeData;
         public JudgeLine judgeLine;
         public SpriteRenderer noteRenderer;
         public Sprite hlImage;
@@ -33,7 +36,8 @@ namespace PigeonB1587.prpu
 
         public virtual void ResetNote()
         {
-            if(noteData.isHL)
+            isJudge = false;
+            if (noteData.isHL)
             {
                 noteRenderer.sprite = hlImage;
             }
@@ -49,12 +53,21 @@ namespace PigeonB1587.prpu
             {
                 transform.localEulerAngles = new Vector3(0, 0, 180);
             }
-            transform.localPosition = new Vector2(noteData.positionX, noteData.above ? GetFloorPosY() : -GetFloorPosY());
+            if(noteData.visibleTime != Array.Empty<int>())
+            {
+                visableTimeData.GetTimeLast(judgeLine.jugdeLineData.bpms, noteData.visibleTime);
+                useVisableTime = true;
+            }
+            else
+            {
+                useVisableTime = false;
+            }
+            transform.localPosition = new Vector2(noteData.positionX * GameInformation.Instance.screenRadioScale, noteData.above ? GetFloorPosY() : -GetFloorPosY());
         }
 
         public virtual void Judge()
         {
-            judgeLine.notePool.tapPool.Release(this);
+            
         }
 
         public virtual float GetFloorPosY() => (noteData.floorPosition - judgeLine.floorPosition + noteData.positionY) * noteData.speed;

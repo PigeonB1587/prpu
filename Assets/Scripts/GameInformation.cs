@@ -14,7 +14,7 @@ namespace PigeonB1587.prpu
         public float screenW;
         public float screenH;
 
-        public float screenRadio;
+        public float screenRadioScale;
 
         public TextAsset chart;
         public Sprite illustration;
@@ -61,7 +61,7 @@ namespace PigeonB1587.prpu
 
         void Update()
         {
-            screenRadio = Mathf.Min((float)Screen.width / Screen.height, 16f / 9f);
+            screenRadioScale = Mathf.Min((float)Screen.width / Screen.height, 16f / 9f) / (16f / 9f);
         }
 
         public async UniTask LoadLevelAsset()
@@ -173,6 +173,39 @@ namespace PigeonB1587.prpu
                 time.curTime = sec;
                 return time;
             }
+            public Time GetTimeLast(ChartObject.BpmItems[] bpmItems, int[] beatTime)
+            {
+                var time = new Time();
+                time.beatTime = beatTime[0] + (double)beatTime[1] / (double)beatTime[2];
+                double sec = 0.0;
+                for (int i = 0; i < bpmItems.Length; i++)
+                {
+                    ChartObject.BpmItems e = bpmItems[i];
+                    double bpmv = e.bpm;
+
+                    if (i != bpmItems.Length - 1)
+                    {
+                        double etBeat = bpmItems[i + 1].time.beatTime
+                            - e.time.beatTime;
+                        if (time.beatTime >= etBeat)
+                        {
+                            sec += etBeat * (60 / bpmv);
+                            time.beatTime -= etBeat;
+                        }
+                        else
+                        {
+                            sec += time.beatTime * (60 / bpmv);
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        sec += time.beatTime * (60 / bpmv);
+                    }
+                }
+                time.curTime = sec;
+                return time;
+            }
         }
         [Serializable]
         public class StoryBoard
@@ -233,7 +266,7 @@ namespace PigeonB1587.prpu
             public bool isFake;
             public bool above;
             public Time startTime;
-            public float visibleTime;
+            public int[] visibleTime;
             public float speed;
             public float size;
             public bool isHL;

@@ -215,9 +215,9 @@ namespace PigeonB1587.prpu
                     double l = 3 * a * i - 6 * a * f * h + 3 * c * f * (2 - 3 * f) + 3 * j;
                     if (System.Math.Abs(l) < 0.000001) break;
                     double m = k - z;
-                    f = f - m / l;
+                    f -= m / l;
                     if (f < 0) f = 0; else if (f > 1) f = 1;
-                    g = g + 1;
+                    g++;
                 }
                 double n = 1 - f;
                 double o = n * n;

@@ -116,6 +116,8 @@ MonoBehaviour:
       judgeLineTextureScaleYEvents: []
   lineRenderer: {fileID: 3094300152631381743}
   levelController: {fileID: 0}
+  notes: []
+  tapPrefab: {fileID: 1722302901583039603, guid: 2a235ecd62e47b347ab099b32bf24981, type: 3}
   usingCustomColor: 0
   perfectLine: {r: 0.99607843, g: 1, b: 0.6627451, a: 1}
   goodLine: {r: 0.63529414, g: 0.93333334, b: 1, a: 1}
@@ -124,4 +126,6 @@ MonoBehaviour:
   moveY: 0
   rotate: 0
   disappear: 0
+  floorPosition: 0
+  fatherLine: {fileID: 0}
   endColor: {r: 0, g: 0, b: 0, a: 1}

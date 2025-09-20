@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace PigeonB1587.prpu
 {
-    public class DragController : TapController
+    public class Tap : NoteObject
     {
         public override void Judge()
         {
-            judgeLine.notePool.dragPool.Release(this);
+            judgeLine.tapPool.Release(this);
         }
     }
 }

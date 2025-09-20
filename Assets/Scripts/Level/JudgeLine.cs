@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace PigeonB1587.prpu
 {
@@ -9,9 +10,10 @@ namespace PigeonB1587.prpu
         public ChartObject.JudgeLine jugdeLineData;
         public SpriteRenderer lineRenderer;
         public LevelController levelController;
-        public NotePool notePool;
 
         public List<ChartObject.Note> notes;
+        public GameObject tapPrefab;
+        public ObjectPool<Tap> tapPool;
 
         public bool usingCustomColor;
         public Color perfectLine;
@@ -38,11 +40,26 @@ namespace PigeonB1587.prpu
             {
                 usingCustomColor = true;
             }
-
             notes = jugdeLineData.notes.ToList();
+            SetNotePool();
+        }
+        private void SetNotePool()
+        {
+            tapPool = new ObjectPool<Tap>(
+                createFunc: () => Instantiate(tapPrefab, transform).GetComponent<Tap>(),
+                actionOnGet: (tap) =>
+                {
+                    tap.gameObject.SetActive(true);
+                    tap.isJudge = false;
+                },
+                actionOnRelease: (tap) => tap.gameObject.SetActive(false),
+                actionOnDestroy: (tap) => Destroy(tap.gameObject),
+                defaultCapacity: 20,
+                maxSize: 3000
+            );
         }
 
-        public void Update()
+        public void UpdateLine()
         {
             if (!levelController.isLoading)
             {
@@ -52,44 +69,12 @@ namespace PigeonB1587.prpu
                 rotate = 0;
                 disappear = 0;
                 UpdateEventLayers(curTime);
-                UpdateNote();
-            }
-        }
-
-        public void UpdateNote()
-        {
-            for(int i = 0; i < notes.Count; i++)
-            {
-                var f = notes[i].floorPosition - floorPosition + notes[i].positionY;
-                var v = transform.TransformPoint(new Vector3(notes[i].positionX, f * notes[i].speed, 0)).y;
-
-                if(v >= -10 && v <= 10)
-                {
-                    TapController n;
-                    switch (notes[i].type)
-                    {
-                        case 1:
-                            n = notePool.GetTap(transform);
-                            break;
-                        case 2:
-                            n = notePool.GetDrag(transform);
-                            break;
-                        default:
-                            n = notePool.GetDrag(transform);
-                            break;
-                    }
-                    n.noteData = notes[i];
-                    n.judgeLine = this;
-                    n.Start();
-                    notes.RemoveAt(i);
-                    i--;
-                }
             }
         }
 
         public void UpdateTransform()
         {
-            float x = moveX * 17.77778f * (GameInformation.Instance.screenRadio / (16f / 9f));
+            float x = moveX * 17.77778f * GameInformation.Instance.screenRadioScale;
             float y = moveY * 10f;
             Vector2 basePos = new Vector2(x, y);
 
@@ -131,6 +116,36 @@ namespace PigeonB1587.prpu
             lineRenderer.color = endColor;
         }
 
+        public void UpdateNote()
+        {
+            for(int i = 0; i < notes.Count; i++)
+            {
+                var f = notes[i].floorPosition - floorPosition + notes[i].positionY;
+                var v = transform.TransformVector(new Vector3(notes[i].positionX * GameInformation.Instance.screenRadioScale,
+                    f * notes[i].speed,
+                    0)).y;
+
+                if (v >= -10 && v <= 10)
+                {
+                    NoteObject n;
+                    switch (notes[i].type)
+                    {
+                        case 1:
+                            n = tapPool.Get();
+                            break;
+                        default:
+                            n = tapPool.Get();
+                            break;
+                    }
+                    n.noteData = notes[i];
+                    n.judgeLine = this;
+                    n.Start();
+                    notes.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
         private void UpdateEventLayers(double currentTime)
         {
             for (int i = 0; i < jugdeLineData.judgeLineEventLayers.Length; i++)
@@ -140,15 +155,9 @@ namespace PigeonB1587.prpu
                 UpdateEvent(currentTime, ref jugdeLineData.judgeLineEventLayers[i].judgeLineRotateEvents, ref rotate);
                 UpdateEvent(currentTime, ref jugdeLineData.judgeLineEventLayers[i].judgeLineDisappearEvents, ref disappear);
             }
-            floorPosition = Reader.GetCurFloorPosition(currentTime, jugdeLineData.speedEvents);
+            floorPosition = Utils.GetCurFloorPosition(currentTime, jugdeLineData.speedEvents);
         }
 
-        /// <summary>
-        /// 事件的逻辑就是 根据当前时间，获取对应的事件对象，并插值计算
-        /// </summary>
-        /// <param name="currentTime"></param>
-        /// <param name="events"></param>
-        /// <param name="value">增量</param>
         private void UpdateEvent(double currentTime, ref ChartObject.JudgeLineEvent[] events, ref float value)
         {
             if (events.Length == 0)
