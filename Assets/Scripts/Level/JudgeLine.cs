@@ -12,10 +12,11 @@ namespace PigeonB1587.prpu
         public LevelController levelController;
 
         public List<ChartObject.Note> localNotes;
-        public GameObject tapPrefab, dragPrefab, flickPrefab;
+        public GameObject tapPrefab, dragPrefab, flickPrefab, holdPrefab;
         public ObjectPool<Tap> tapPool;
         public ObjectPool<Drag> dragPool;
         public ObjectPool<Flick> flickPool;
+        public ObjectPool<Hold> holdPool;
 
         public bool usingCustomColor;
         public Color perfectLine;
@@ -80,6 +81,20 @@ namespace PigeonB1587.prpu
                 },
                 actionOnRelease: (flick) => flick.gameObject.SetActive(false),
                 actionOnDestroy: (flick) => Destroy(flick.gameObject),
+                defaultCapacity: 20,
+                maxSize: 3000
+            );
+            holdPool = new ObjectPool<Hold>(
+                createFunc: () => Instantiate(holdPrefab, transform).GetComponent<Hold>(),
+                actionOnGet: (hold) =>
+                {
+                    hold.gameObject.SetActive(true);
+                    hold.isFirstJudge = true;
+                    hold.overJudge = false;
+                    hold.isJudge = false;
+                },
+                actionOnRelease: (hold) => hold.gameObject.SetActive(false),
+                actionOnDestroy: (hold) => Destroy(hold.gameObject),
                 defaultCapacity: 20,
                 maxSize: 3000
             );
@@ -161,6 +176,9 @@ namespace PigeonB1587.prpu
                             break;
                         case 2:
                             n = dragPool.Get();
+                            break;
+                        case 3:
+                            n = holdPool.Get();
                             break;
                         case 4:
                             n = flickPool.Get();

@@ -100,7 +100,12 @@ MonoBehaviour:
   jugdeLineData:
     bpms: []
     notes: []
-    noteControls: []
+    noteControls:
+      disappearControls: []
+      rotateControls: []
+      sizeControl: []
+      xPosControl: []
+      yPosControl: []
     speedEvents: []
     judgeLineEventLayers: []
     transform:
@@ -120,6 +125,7 @@ MonoBehaviour:
   tapPrefab: {fileID: 1722302901583039603, guid: 2a235ecd62e47b347ab099b32bf24981, type: 3}
   dragPrefab: {fileID: 750897680319454010, guid: 522de36e4487707409b6350527b1b308, type: 3}
   flickPrefab: {fileID: 7749243044742340948, guid: 2796a18458baff3418e4c97d74588d15, type: 3}
+  holdPrefab: {fileID: 4099813030507992694, guid: f4d2c391eb4c398458edc4926b9e51d7, type: 3}
   usingCustomColor: 0
   perfectLine: {r: 0.99607843, g: 1, b: 0.6627451, a: 1}
   goodLine: {r: 0.63529414, g: 0.93333334, b: 1, a: 1}

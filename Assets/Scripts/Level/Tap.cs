@@ -8,6 +8,7 @@ namespace PigeonB1587.prpu
     {
         public override void Judge()
         {
+            isJudge = true;
             judgeLine.tapPool.Release(this);
         }
     }
