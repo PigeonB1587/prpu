@@ -20,6 +20,7 @@ namespace PigeonB1587.prpu
         public virtual void Awake()
         {
             noteRenderer = GetComponent<SpriteRenderer>();
+            visableTimeData = new ChartObject.Time();
         }
 
         public virtual void Start()
@@ -89,14 +90,25 @@ namespace PigeonB1587.prpu
             floorPosition = GetFloorPosY();
             transform.localPosition = new Vector2(noteData.positionX * GameInformation.Instance.screenRadioScale, noteData.above ? floorPosition : -floorPosition);
             bool visable = false;
-            if (transform.localPosition.y >= -10 && transform.localPosition.y <= 10)
-                visable = true;
-            if (floorPosition >= -0.001)
-                visable = true;
-            if (useVisableTime && noteData.startTime.curTime - judgeLine.levelController.time <= visableTimeData.curTime)
-                visable = true;
-            if (judgeLine.disappear >= 0)
-                visable = true;
+            if (transform.position.y >= -10 && transform.position.y <= 10 && floorPosition >= -0.001)
+            {
+                if (floorPosition >= -0.001)
+                {
+                    if (useVisableTime)
+                    {
+                        if (noteData.startTime.curTime - judgeLine.levelController.time <= visableTimeData.curTime)
+                        {
+                            visable = true;
+                        }
+                    }
+                    else
+                    {
+                        visable = true;
+                    }
+                }
+            }
+            if (judgeLine.disappear < 0)
+                visable = false;
             noteRenderer.enabled = visable;
         }
 
