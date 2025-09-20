@@ -110,9 +110,15 @@ namespace PigeonB1587.prpu
             [Serializable]
             public class NoteControl
             {
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
                 public ControlItem[] disappearControls { get; set; }
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+                public ControlItem[] rotateControls { get; set; }
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
                 public ControlItem[] sizeControl { get; set; }
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
                 public ControlItem[] xPosControl { get; set; }
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
                 public ControlItem[] yPosControl { get; set; }
             }
 
@@ -129,6 +135,7 @@ namespace PigeonB1587.prpu
             {
                 public BpmItems[] bpms { get; set; }
                 public Note[] notes { get; set; }
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
                 public NoteControl[] noteControls { get; set; }
                 public JudgeLineEvent[] speedEvents { get; set; }
                 public JudgeLineEventLayer[] judgeLineEventLayers { get; set; }

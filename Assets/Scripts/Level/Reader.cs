@@ -9,6 +9,7 @@ namespace PigeonB1587.prpu
         public static ChartObject.Root chart;
         public int formatVersion;
         public float offset;
+        public const float bottomSpeed = 1;
         private Prpu.Chart.Root chartRoot;
         public async UniTask ReadChart(Prpu.Chart.Root root, string songID, string level)
         {
@@ -125,6 +126,7 @@ namespace PigeonB1587.prpu
                 noteControls[i] = new ChartObject.NoteControl
                 {
                     disappearControls = ConvertControlItems(prpuControl.disappearControls),
+                    rotateControls = ConvertControlItems(prpuControl.rotateControls),
                     sizeControl = ConvertControlItems(prpuControl.sizeControl),
                     xPosControl = ConvertControlItems(prpuControl.xPosControl),
                     yPosControl = ConvertControlItems(prpuControl.yPosControl)
@@ -167,46 +169,43 @@ namespace PigeonB1587.prpu
                     start = prpuEvent.start,
                     end = prpuEvent.end,
                     easing = prpuEvent.easing,
-                    floorPosition = 1,
+                    floorPosition = 0,
                     easingLeft = prpuEvent.easingLeft,
                     easingRight = prpuEvent.easingRight,
                     bezierPoints = prpuEvent.bezierPoints
                 };
-
+                //µæµ×ÊÂ¼þ
+                if(i == 0 && speedEvents[i].startTime.curTime > 0)
+                {
+                    speedEvents[i].floorPosition = (float)(speedEvents[i].startTime.curTime) * bottomSpeed;
+                }
                 if (i > 0)
                 {
                     var last = speedEvents[i - 1];
-                    double totalDist = 0;
+                    double td = 0;
+                    double d = last.endTime.curTime - last.startTime.curTime;
 
-                    double dur = last.endTime.curTime - last.startTime.curTime;
-                    if (dur > 0)
+                    if (d > 0)
                     {
-                        int steps = 64;
-                        double stepT = dur / steps;
+                        int n = 128;
+                        double stm = d / n;
+                        double prevSpeed = Easings.Lerp(last.easing, last.startTime.curTime,
+                            last.startTime.curTime, last.endTime.curTime,
+                            last.start, last.end, last.easingLeft, last.easingRight,
+                            last.bezierPoints?.Length >= 4, last.bezierPoints);
 
-                        for (int s = 0; s < steps; s++)
+                        for (int s = 1; s <= n; s++)
                         {
-                            double t = last.startTime.curTime + s * stepT;
-                            float speed = Easings.Lerp(
-                                last.easing,
-                                t,
-                                last.startTime.curTime,
-                                last.endTime.curTime,
-                                last.start,
-                                last.end,
-                                last.easingLeft,
-                                last.easingRight,
-                                last.bezierPoints != null && last.bezierPoints.Length >= 4,
-                                last.bezierPoints
-                            );
-                            totalDist += speed * stepT;
+                            double ct = last.startTime.curTime + s * stm;
+                            double currSpeed = Easings.Lerp(last.easing, ct,
+                                last.startTime.curTime, last.endTime.curTime,
+                                last.start, last.end, last.easingLeft, last.easingRight,
+                                last.bezierPoints?.Length >= 4, last.bezierPoints);
+
+                            td += (prevSpeed + currSpeed) * stm / 2;
+                            prevSpeed = currSpeed;
                         }
                     }
-
-                    double gapT = speedEvents[i].startTime.curTime - last.endTime.curTime;
-                    double gapDist = last.end * gapT;
-
-                    speedEvents[i].floorPosition += (float)(last.floorPosition + totalDist + gapDist);
                 }
             }
             return speedEvents;

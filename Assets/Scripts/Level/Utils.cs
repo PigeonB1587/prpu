@@ -86,13 +86,20 @@ namespace PigeonB1587.prpu
                     continue;
                 }
 
-                int n = 64;
+                int n = 128;
                 double stm = sd / n, td = 0;
-                for (int j = 0; j < n; j++)
+
+                double prevSpeed = Easings.Lerp(s.easing, ss, st, et, s.start, s.end,
+                    s.easingLeft, s.easingRight, s.bezierPoints != null && s.bezierPoints.Length >= 4, s.bezierPoints);
+
+                for (int j = 1; j <= n; j++)
                 {
                     double ct = ss + j * stm;
-                    td += Easings.Lerp(s.easing, ct, st, et, s.start, s.end, s.easingLeft, s.easingRight,
-                        s.bezierPoints != null && s.bezierPoints.Length >= 4, s.bezierPoints) * stm;
+                    double currSpeed = Easings.Lerp(s.easing, ct, st, et, s.start, s.end,
+                        s.easingLeft, s.easingRight, s.bezierPoints != null && s.bezierPoints.Length >= 4, s.bezierPoints);
+
+                    td += (prevSpeed + currSpeed) * stm / 2;
+                    prevSpeed = currSpeed;
                 }
 
                 p += (float)(s.floorPosition + td);
@@ -100,6 +107,7 @@ namespace PigeonB1587.prpu
             }
             return p;
         }
+
 
         public static Vector2 LocalToWorld(Vector2 localPos, Vector2 parentPos, float parentRot)
         {

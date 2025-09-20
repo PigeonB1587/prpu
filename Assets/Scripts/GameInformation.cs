@@ -310,6 +310,7 @@ namespace PigeonB1587.prpu
         public class NoteControl
         {
             public ControlItem[] disappearControls;
+            public ControlItem[] rotateControls;
             public ControlItem[] sizeControl;
             public ControlItem[] xPosControl;
             public ControlItem[] yPosControl;
