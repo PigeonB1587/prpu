@@ -43,6 +43,7 @@ namespace PigeonB1587.prpu
                     GameInformation.Instance.levelStartInfo.songsLevel);
             }
             await lineController.SpawnJudgmentLine();
+            await UniTask.Delay(2000);
             isLoading = false;
             musicPlayer.Play();
             isPlay = true;

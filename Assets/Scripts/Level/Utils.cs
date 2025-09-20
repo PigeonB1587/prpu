@@ -140,5 +140,32 @@ namespace PigeonB1587.prpu
                 a / 255f
             );
         }
+
+        public static bool IsLineIntersectingRect(Vector2 p1, Vector2 p2, float left, float right, float bottom, float top)
+        {
+            if (IsPointInRect(p1, left, right, bottom, top) || IsPointInRect(p2, left, right, bottom, top))
+                return true;
+
+            return LineIntersectsLine(p1, p2, new Vector2(left, bottom), new Vector2(left, top)) ||   // 左边界
+                   LineIntersectsLine(p1, p2, new Vector2(right, bottom), new Vector2(right, top)) ||  // 右边界
+                   LineIntersectsLine(p1, p2, new Vector2(left, bottom), new Vector2(right, bottom)) ||// 下边界
+                   LineIntersectsLine(p1, p2, new Vector2(left, top), new Vector2(right, top));        // 上边界
+        }
+
+        private static bool IsPointInRect(Vector2 point, float left, float right, float bottom, float top)
+        {
+            return point.x >= left && point.x <= right && point.y >= bottom && point.y <= top;
+        }
+
+        private static bool LineIntersectsLine(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
+        {
+            float d = (a2.x - a1.x) * (b2.y - b1.y) - (a2.y - a1.y) * (b2.x - b1.x);
+            if (d == 0) return false;
+
+            float t = ((b1.x - a1.x) * (b2.y - b1.y) - (b1.y - a1.y) * (b2.x - b1.x)) / d;
+            float u = ((b1.x - a1.x) * (a2.y - a1.y) - (b1.y - a1.y) * (a2.x - a1.x)) / d;
+
+            return t >= 0 && t <= 1 && u >= 0 && u <= 1;
+        }
     }
 }

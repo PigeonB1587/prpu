@@ -32,14 +32,25 @@ namespace PigeonB1587.prpu
             floorPosition = GetFloorPosY();
             transform.localPosition = new Vector2(transform.localPosition.x, noteData.above ? floorPosition : -floorPosition);
             bool visable = false;
-            if (transform.position.y >= -10 && transform.position.y <= 10)
-                visable = true;
-            if (floorPosition >= - 0.001)
-                visable = true;
-            if (useVisableTime && noteData.startTime.curTime - judgeLine.levelController.time <= visableTimeData.curTime)
-                visable = true;
-            if (judgeLine.disappear >= 0)
-                visable = true;
+            if (transform.position.y >= -10 && transform.position.y <= 10 && floorPosition >= -0.001)
+            {
+                if (floorPosition >= -0.001)
+                {
+                    if (useVisableTime)
+                    {
+                        if (noteData.startTime.curTime - judgeLine.levelController.time <= visableTimeData.curTime)
+                        {
+                            visable = true;
+                        }
+                    }
+                    else
+                    {
+                        visable = true;
+                    }
+                }
+            }
+            if (judgeLine.disappear < 0) // 还原一下Phiedit远古特性（？
+                visable = false;
             noteRenderer.enabled = visable;
             if (judgeLine.levelController.time >= noteData.startTime.curTime)
                 Judge();

@@ -561,15 +561,15 @@ MonoBehaviour:
   screenW: 0
   screenH: 0
   visableX:
-  - -127
-  - 127
+  - -75
+  - 75
   visableY:
-  - -10
-  - 10
+  - -75
+  - 75
   screenRadioScale: 0
-  chart: {fileID: 4900000, guid: 88c0df8cc22ad0c46a32a75ed8faddb6, type: 3}
-  illustration: {fileID: 21300000, guid: f4756d5456bba7e419656e31e7e4fcce, type: 3}
-  music: {fileID: 8300000, guid: 2bf67db8152b435439882a7024169983, type: 3}
+  chart: {fileID: 4900000, guid: ed9d5913742c9104eb352293bd421219, type: 3}
+  illustration: {fileID: 21300000, guid: d9b5889270bfc214b8f1cb46f3eaad5f, type: 3}
+  music: {fileID: 8300000, guid: 5f8f3803ac760c942a8628436457fffc, type: 3}
   isHitFXEnabled: 0
   isFCAPIndicator: 0
   autoPlay: 0
@@ -582,16 +582,16 @@ MonoBehaviour:
   backgroundAlpha: 0.5
   useLowResolution: 0
   levelStartInfo:
-    songsId: AbsoluTedisoRdeR.AcuteDisarray.0
-    songsName: AbsoluTe disoRdeR
-    composer: Acute Disarray
-    charter: JKy
-    illustrator: Kyuare & Wsx
-    songsLevel: AT
-    songsDifficulty: 17
-    musicAddressableKey: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/music.wav
-    chartAddressableKey: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/Chart_AT.json
-    illustrationKey: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/Illustration.png
+    songsId: 
+    songsName: 
+    composer: 
+    charter: 
+    illustrator: 
+    songsLevel: 
+    songsDifficulty: 
+    musicAddressableKey: 
+    chartAddressableKey: 
+    illustrationKey: 
     judgeLineImages: []
     noteAssets: []
     levelMods: []

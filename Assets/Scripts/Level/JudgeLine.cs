@@ -87,15 +87,12 @@ namespace PigeonB1587.prpu
 
         public void UpdateLine()
         {
-            if (!levelController.isLoading)
-            {
-                double curTime = levelController.time;
-                moveX = 0;
-                moveY = 0;
-                rotate = 0;
-                disappear = 0;
-                UpdateEventLayers(curTime);
-            }
+            double curTime = levelController.time;
+            moveX = 0;
+            moveY = 0;
+            rotate = 0;
+            disappear = 0;
+            UpdateEventLayers(curTime);
         }
 
         public void UpdateTransform()
@@ -147,14 +144,14 @@ namespace PigeonB1587.prpu
             for(int i = 0; i < localNotes.Count; i++)
             {
                 var f = localNotes[i].floorPosition - floorPosition + localNotes[i].positionY;
+                
                 var v = Utils.LocalToWorld(new Vector3(
                     localNotes[i].positionX * GameInformation.Instance.screenRadioScale,
                     f * localNotes[i].speed,
                     0), transform.position, transform.eulerAngles.z
                     );
 
-                if (v.y > GameInformation.Instance.visableY[0] && v.y < GameInformation.Instance.visableY[1]
-                    && v.x > GameInformation.Instance.visableX[0] && v.x < GameInformation.Instance.visableX[1])
+                void GetNote()
                 {
                     NoteObject n;
                     switch (localNotes[i].type)
@@ -177,6 +174,43 @@ namespace PigeonB1587.prpu
                     n.Start();
                     localNotes.RemoveAt(i);
                     i--;
+                }
+                if (localNotes[i].type != 3)
+                {
+                    if (v.y > GameInformation.Instance.visableY[0] && v.y < GameInformation.Instance.visableY[1]
+                    && v.x > GameInformation.Instance.visableX[0] && v.x < GameInformation.Instance.visableX[1])
+                    {
+                        GetNote();
+                    }
+                    else
+                    {
+                        if (localNotes[i].startTime.curTime - levelController.time <= 0.3f)
+                        {
+                            GetNote();
+                        }
+                    }
+                }
+                else
+                {
+                    var f1 = localNotes[i].endfloorPosition - floorPosition + localNotes[i].positionY;
+                    var v1 = Utils.LocalToWorld(new Vector3(
+                    localNotes[i].positionX * GameInformation.Instance.screenRadioScale,
+                    f1 * localNotes[i].speed,
+                    0), transform.position, transform.eulerAngles.z
+                    );
+                    if (Utils.IsLineIntersectingRect(v, v1, GameInformation.Instance.visableX[0],
+                    GameInformation.Instance.visableX[1], GameInformation.Instance.visableY[0],
+                    GameInformation.Instance.visableY[1]))
+                    {
+                        GetNote();
+                    }
+                    else
+                    {
+                        if (localNotes[i].startTime.curTime - levelController.time <= 0.3f)
+                        {
+                            GetNote();
+                        }
+                    }
                 }
             }
         }
