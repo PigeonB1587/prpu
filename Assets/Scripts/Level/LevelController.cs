@@ -13,6 +13,7 @@ namespace PigeonB1587.prpu
         public AudioSource musicPlayer;
 
         public Text musicNameText, levelText;
+        public Image backgroundImage;
 
         public RectTransform progressBarRect;
         public RectTransform guiRect;
@@ -34,6 +35,7 @@ namespace PigeonB1587.prpu
             musicPlayer.Pause();
             musicNameText.text = GameInformation.Instance.levelStartInfo.songsName;
             levelText.text = GameInformation.Instance.levelStartInfo.songsLevel;
+            backgroundImage.sprite = GameInformation.Instance.illustration;
             LevelStart().Forget();
         }
 

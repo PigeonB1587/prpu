@@ -34,22 +34,18 @@ namespace PigeonB1587.prpu
             transform.localPosition = new Vector2(transform.localPosition.x, isJudge ? 0 : noteData.above ? floorPosition : -floorPosition);
             transform.localScale = new Vector3(transform.localScale.x, GetHoldLenght(), transform.localScale.z);
 
-            if ((transform.position.y >= -10 && transform.position.y <= 10) ||
-                (noteRenderer2.transform.position.y >= -10 && noteRenderer2.transform.position.y <= 10))
+            if (floorPosition >= -0.001)
             {
-                if (floorPosition >= -0.001)
+                if (useVisableTime)
                 {
-                    if (useVisableTime)
-                    {
-                        if (noteData.startTime.curTime - judgeLine.levelController.time <= visableTimeData.curTime)
-                        {
-                            visable = true;
-                        }
-                    }
-                    else
+                    if (noteData.startTime.curTime - judgeLine.levelController.time <= visableTimeData.curTime)
                     {
                         visable = true;
                     }
+                }
+                else
+                {
+                    visable = true;
                 }
             }
             if (isJudge)
@@ -147,22 +143,18 @@ namespace PigeonB1587.prpu
             transform.localPosition = new Vector2(noteData.positionX * GameInformation.Instance.screenRadioScale, noteData.above ? floorPosition : -floorPosition);
 
             bool visable = false;
-            if ((transform.position.y >= -10 && transform.position.y <= 10) ||
-                (noteRenderer2.transform.position.y >= -10 && noteRenderer2.transform.position.y <= 10))
+            if (floorPosition >= -0.001)
             {
-                if (floorPosition >= -0.001)
+                if (useVisableTime)
                 {
-                    if (useVisableTime)
-                    {
-                        if (noteData.startTime.curTime - judgeLine.levelController.time <= visableTimeData.curTime)
-                        {
-                            visable = true;
-                        }
-                    }
-                    else
+                    if (noteData.startTime.curTime - judgeLine.levelController.time <= visableTimeData.curTime)
                     {
                         visable = true;
                     }
+                }
+                else
+                {
+                    visable = true;
                 }
             }
             if (judgeLine.disappear < 0)
