@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
-using UnityEngine;
-using System;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace PigeonB1587.prpu
 {
@@ -11,6 +11,12 @@ namespace PigeonB1587.prpu
         public JudgeLineController lineController;
 
         public AudioSource musicPlayer;
+
+        public Text musicNameText, levelText;
+
+        public RectTransform progressBarRect;
+        public RectTransform guiRect;
+
 
         public double time = 0d;
 
@@ -26,6 +32,8 @@ namespace PigeonB1587.prpu
         public void Start()
         {
             musicPlayer.Pause();
+            musicNameText.text = GameInformation.Instance.levelStartInfo.songsName;
+            levelText.text = GameInformation.Instance.levelStartInfo.songsLevel;
             LevelStart().Forget();
         }
 
@@ -43,8 +51,8 @@ namespace PigeonB1587.prpu
                     GameInformation.Instance.levelStartInfo.songsLevel);
             }
             await lineController.SpawnJudgmentLine();
-            await UniTask.Delay(2000);
             isLoading = false;
+            await UniTask.Delay(2000);
             musicPlayer.Play();
             isPlay = true;
             StartCoroutine(LevelUpdate());
@@ -59,6 +67,13 @@ namespace PigeonB1587.prpu
                 if (isPlay)
                 {
                     time = musicPlayer.time;
+                    var progress = (float)time / musicPlayer.clip.length;
+                    var xPos = Mathf.Lerp(
+                GameInformation.Instance.screenRadioScale * -960,
+                GameInformation.Instance.screenRadioScale * 960,
+                progress
+                    );
+                    progressBarRect.anchoredPosition = new Vector2(xPos, 0);
                 }
                 yield return null;
             }

@@ -90,6 +90,7 @@ namespace PigeonB1587.prpu
                 {
                     hold.gameObject.SetActive(true);
                     hold.isFirstJudge = true;
+                    hold.isHolding = false;
                     hold.overJudge = false;
                     hold.isJudge = false;
                 },

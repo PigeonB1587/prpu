@@ -105,7 +105,6 @@ namespace PigeonB1587.prpu
         public string charter;
         public string illustrator;
         public string songsLevel;
-        public string songsDifficulty;
         public string musicAddressableKey;
         public string chartAddressableKey;
         public string illustrationKey;

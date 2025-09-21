@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 696810746250522310}
   - component: {fileID: 5322154157758526373}
+  - component: {fileID: 5030521320974177386}
   m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
@@ -84,6 +85,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5030521320974177386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2705589592396189081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b1d9f00793ed584eaab69ef46313186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentTr: {fileID: 6524829528473723159}
 --- !u!1 &4099813030507992694
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,7 +179,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 9.89, y: 19}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -221,6 +235,9 @@ MonoBehaviour:
   hlImage2: {fileID: 418532773, guid: 92e0e17789d52cb418bd70532ba1d28b, type: 3}
   defaultImage2: {fileID: 549257427, guid: 92a3b6825044c0c4a9dd7cddcd920111, type: 3}
   noteRenderer2: {fileID: 7559872910264075843}
+  isFirstJudge: 1
+  isHolding: 0
+  overJudge: 0
 --- !u!1 &8710930658492950860
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,6 +248,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2541520131362670926}
   - component: {fileID: 7559872910264075843}
+  - component: {fileID: 2009743992624127374}
   m_Layer: 0
   m_Name: End
   m_TagString: Untagged
@@ -305,3 +323,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2009743992624127374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8710930658492950860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b1d9f00793ed584eaab69ef46313186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentTr: {fileID: 6524829528473723159}

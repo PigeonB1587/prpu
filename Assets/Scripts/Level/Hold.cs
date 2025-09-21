@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace PigeonB1587.prpu
@@ -15,23 +14,28 @@ namespace PigeonB1587.prpu
         public SpriteRenderer noteRenderer2;
 
         public bool isFirstJudge = true;
+        public bool isHolding = false;
         public bool overJudge = false;
 
         public override void Awake()
         {
             base.Awake();
             isFirstJudge = true;
+            isHolding = false;
             overJudge = false;
         }
 
         public override void Update()
         {
             floorPosition = GetFloorPosY();
-            transform.localPosition = new Vector2(transform.localPosition.x, isJudge ? 0 : noteData.above ? floorPosition : -floorPosition);
             bool visable = false;
-            if (judgeLine.levelController.time >= noteData.startTime.curTime)
+            if (isFirstJudge && judgeLine.levelController.time >= noteData.startTime.curTime)
                 Judge();
-            if (transform.position.y >= -10 && transform.position.y <= 10)
+            transform.localPosition = new Vector2(transform.localPosition.x, isJudge ? 0 : noteData.above ? floorPosition : -floorPosition);
+            transform.localScale = new Vector3(transform.localScale.x, GetHoldLenght(), transform.localScale.z);
+
+            if ((transform.position.y >= -10 && transform.position.y <= 10) ||
+                (noteRenderer2.transform.position.y >= -10 && noteRenderer2.transform.position.y <= 10))
             {
                 if (floorPosition >= -0.001)
                 {
@@ -67,18 +71,45 @@ namespace PigeonB1587.prpu
             noteRenderer.enabled = visable;
             noteRenderer1.enabled = visable;
             noteRenderer2.enabled = visable;
+
+            if (isJudge)
+            {
+                noteRenderer1.enabled = false;
+            }
         }
 
         public override void Judge()
         {
             isFirstJudge = false;
+            isHolding = true;
             isJudge = true;
+            StartCoroutine(Holding());
+        }
+
+        IEnumerator Holding()
+        {
+            while (isHolding)
+            {
+                if (judgeLine.levelController.time >= noteData.endTime.curTime)
+                {
+                    noteRenderer.enabled = false;
+                    noteRenderer1.enabled = false;
+                    noteRenderer2.enabled = false;
+                    if (judgeLine.levelController.time >= noteData.endTime.curTime + 0.08f)
+                    {
+                        break;
+                    }
+                }
+                yield return null;
+            }
+            judgeLine.holdPool.Release(this);
         }
 
         public override void ResetNote()
         {
             isJudge = false;
             isFirstJudge = true;
+            isHolding = false;
             overJudge = false;
             floorPosition = 0f;
             if (noteData.isHL)
@@ -111,10 +142,13 @@ namespace PigeonB1587.prpu
                 useVisableTime = false;
             }
             noteRenderer.color = Utils.IntToColor(noteData.color);
+
             floorPosition = GetFloorPosY();
             transform.localPosition = new Vector2(noteData.positionX * GameInformation.Instance.screenRadioScale, noteData.above ? floorPosition : -floorPosition);
+
             bool visable = false;
-            if (transform.position.y >= -10 && transform.position.y <= 10 && floorPosition >= -0.001)
+            if ((transform.position.y >= -10 && transform.position.y <= 10) ||
+                (noteRenderer2.transform.position.y >= -10 && noteRenderer2.transform.position.y <= 10))
             {
                 if (floorPosition >= -0.001)
                 {
@@ -137,5 +171,7 @@ namespace PigeonB1587.prpu
             noteRenderer1.enabled = visable;
             noteRenderer2.enabled = visable;
         }
+
+        public float GetHoldLenght() => (judgeLine.levelController.time >= noteData.startTime.curTime ? noteData.endfloorPosition - judgeLine.floorPosition : noteData.endfloorPosition - noteData.floorPosition) * 0.0526316f;
     }
 }
