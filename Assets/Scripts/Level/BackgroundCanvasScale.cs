@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,9 +12,18 @@ namespace PigeonB1587.prpu
         void Update() => Set();
         void Set()
         {
-            canvasScaler.matchWidthOrHeight =
+            if (GameInformation.Instance != null)
+            {
+                canvasScaler.matchWidthOrHeight =
+                GameInformation.Instance.screenRadioScale >= 1 ?
+                0f : 1f;
+            }
+            else
+            {
+                canvasScaler.matchWidthOrHeight =
                 (Screen.width * 1080f / Screen.height) / 1080f > 16f / 9f ?
                 0f : 1f;
+            }
         }
     }
 }

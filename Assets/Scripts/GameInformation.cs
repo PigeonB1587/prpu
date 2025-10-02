@@ -50,7 +50,7 @@ namespace PigeonB1587.prpu
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
             }
-
+            screenRadioScale = Mathf.Min((float)Screen.width / Screen.height, 16f / 9f) / (16f / 9f);
             screenW = Screen.width;
             screenH = Screen.height;
         }
