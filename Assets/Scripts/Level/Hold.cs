@@ -17,6 +17,8 @@ namespace PigeonB1587.prpu
         public bool isHolding = false;
         public bool overJudge = false;
 
+        public const float holdLengthScale = 0.0526316f;
+
         public override void Awake()
         {
             base.Awake();
@@ -27,15 +29,16 @@ namespace PigeonB1587.prpu
 
         public override void Update()
         {
-            floorPosition = GetFloorPosY();
-            var isOverStartTime = judgeLine.levelController.time >= noteData.startTime.curTime;
+            double curTime = judgeLine.levelController.time;
+            var isOverStartTime = curTime >= noteData.startTime.curTime;
+            floorPosition = isOverStartTime ? 0 : GetFloorPosY();
             if (isFirstJudge && isOverStartTime)
                 Judge();
             
             transform.localPosition = new Vector2(transform.localPosition.x, isOverStartTime ? 0 : noteData.above ? floorPosition : -floorPosition);
-            transform.localScale = new Vector3(transform.localScale.x, GetHoldLenght(), transform.localScale.z);
+            transform.localScale = new Vector3(transform.localScale.x, GetHoldLenght(curTime), transform.localScale.z);
 
-            var visable = GetNoteVisable();
+            var visable = GetNoteVisable(curTime);
             noteRenderer.enabled = visable;
             noteRenderer1.enabled = visable;
             noteRenderer2.enabled = visable;
@@ -73,13 +76,13 @@ namespace PigeonB1587.prpu
             judgeLine.holdPool.Release(this);
         }
 
-        public override void ResetNote()
+        public override void ResetNote(double curTime)
         {
             GetNoteData();
             floorPosition = GetFloorPosY();
             transform.localPosition = new Vector2(noteData.positionX * GameInformation.Instance.screenRadioScale, noteData.above ? floorPosition : -floorPosition);
 
-            var visable = GetNoteVisable();
+            var visable = GetNoteVisable(curTime);
             noteRenderer.enabled = visable;
             noteRenderer1.enabled = visable;
             noteRenderer2.enabled = visable;
@@ -124,21 +127,25 @@ namespace PigeonB1587.prpu
             noteRenderer.color = Utils.IntToColor(noteData.color);
         }
 
-        public override bool GetNoteVisable()
+        public override bool GetNoteVisable(double curTime)
         {
             bool visable = false;
-            if (floorPosition >= -0.001)
+            if (Utils.GetHoldVisable(noteRenderer1.transform.position, noteRenderer2.transform.position, float.MinValue,
+                -10, float.MaxValue, 10))
             {
-                if (useVisableTime)
+                if (floorPosition >= -0.001)
                 {
-                    if (noteData.startTime.curTime - judgeLine.levelController.time <= visableTimeData.curTime)
+                    if (useVisableTime)
+                    {
+                        if (noteData.startTime.curTime - curTime <= visableTimeData.curTime)
+                        {
+                            visable = true;
+                        }
+                    }
+                    else
                     {
                         visable = true;
                     }
-                }
-                else
-                {
-                    visable = true;
                 }
             }
             if (judgeLine.disappear < 0)
@@ -146,6 +153,6 @@ namespace PigeonB1587.prpu
             return visable;
         }
 
-        public float GetHoldLenght() => (judgeLine.levelController.time >= noteData.startTime.curTime ? noteData.endfloorPosition - judgeLine.floorPosition : noteData.endfloorPosition - noteData.floorPosition) * 0.0526316f;
+        public float GetHoldLenght(double curTime) => (curTime >= noteData.startTime.curTime ? noteData.endfloorPosition - judgeLine.floorPosition : noteData.endfloorPosition - noteData.floorPosition) * holdLengthScale;
     }
 }

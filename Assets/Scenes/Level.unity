@@ -954,11 +954,11 @@ MonoBehaviour:
   screenW: 0
   screenH: 0
   visableX:
-  - -75
-  - 75
+  - -25
+  - 25
   visableY:
-  - -75
-  - 75
+  - -15
+  - 15
   screenRadioScale: 0
   chart: {fileID: 4900000, guid: ed9d5913742c9104eb352293bd421219, type: 3}
   illustration: {fileID: 21300000, guid: d9b5889270bfc214b8f1cb46f3eaad5f, type: 3}
@@ -1105,7 +1105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3962264, g: 0.3962264, b: 0.3962264, a: 1}
+  m_Color: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

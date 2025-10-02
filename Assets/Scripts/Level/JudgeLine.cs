@@ -37,7 +37,7 @@ namespace PigeonB1587.prpu
             lineRenderer.color = GameInformation.Instance.isFCAPIndicator ? perfectLine : defaultLine;
             lineRenderer.size = new Vector2(jugdeLineData.transform.judgeLineTextureSize[0],
                 jugdeLineData.transform.judgeLineTextureSize[1]);
-            transform.position = new Vector2(500f, 500f);
+            transform.localScale = Vector3.zero;
             lineRenderer.sortingOrder = jugdeLineData.transform.zOrder;
             if (jugdeLineData.transform.judgeLineColorEvents.Length != 0)
             {
@@ -101,9 +101,13 @@ namespace PigeonB1587.prpu
             );
         }
 
-        public void UpdateLine()
+        public void UpdateLine(double curTime)
         {
-            double curTime = levelController.time;
+            if(transform.localScale == Vector3.zero)
+            {
+                transform.localScale = Vector3.one;
+            }
+
             moveX = 0;
             moveY = 0;
             rotate = 0;
@@ -217,8 +221,8 @@ namespace PigeonB1587.prpu
                     f1 * localNotes[i].speed,
                     0), transform.position, transform.eulerAngles.z
                     );
-                    if (Utils.IsLineIntersectingRect(v, v1, GameInformation.Instance.visableX[0],
-                    GameInformation.Instance.visableX[1], GameInformation.Instance.visableY[0],
+                    if (Utils.GetHoldVisable(v, v1, GameInformation.Instance.visableX[0],
+                    GameInformation.Instance.visableY[0], GameInformation.Instance.visableX[1],
                     GameInformation.Instance.visableY[1]))
                     {
                         GetNote();

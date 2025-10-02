@@ -25,25 +25,26 @@ namespace PigeonB1587.prpu
 
         public virtual void Start()
         {
-            ResetNote();
+            ResetNote(judgeLine.levelController.time);
         }
 
         public virtual void Update()
         {
+            double curTime = judgeLine.levelController.time;
             floorPosition = GetFloorPosY();
             transform.localPosition = new Vector2(transform.localPosition.x, noteData.above ? floorPosition : -floorPosition);
-            if (judgeLine.levelController.time >= noteData.startTime.curTime)
+            if (curTime >= noteData.startTime.curTime)
                 Judge();
-            noteRenderer.enabled = GetNoteVisable();
+            noteRenderer.enabled = GetNoteVisable(curTime);
         }
 
-        public virtual void ResetNote()
+        public virtual void ResetNote(double curTime)
         {
             GetNoteData();
             floorPosition = GetFloorPosY();
             transform.localPosition = new Vector2(noteData.positionX * GameInformation.Instance.screenRadioScale, noteData.above ? floorPosition : -floorPosition);
             
-            noteRenderer.enabled = GetNoteVisable();
+            noteRenderer.enabled = GetNoteVisable(curTime);
         }
 
         public virtual void Judge()
@@ -82,7 +83,7 @@ namespace PigeonB1587.prpu
             noteRenderer.color = Utils.IntToColor(noteData.color);
         }
 
-        public virtual bool GetNoteVisable()
+        public virtual bool GetNoteVisable(double curTime)
         {
             bool visable = false;
             if (transform.position.y >= -10 && transform.position.y <= 10)
@@ -91,7 +92,7 @@ namespace PigeonB1587.prpu
                 {
                     if (useVisableTime)
                     {
-                        if (noteData.startTime.curTime - judgeLine.levelController.time <= visableTimeData.curTime)
+                        if (noteData.startTime.curTime - curTime <= visableTimeData.curTime)
                         {
                             visable = true;
                         }

@@ -20,26 +20,26 @@ namespace PigeonB1587.prpu
             {
                 songID = songID,
                 level = level,
-                storyBoard = ConvertStoryBoard(root.storyBoard),
-                judgeLineList = ConvertJudgeLines(root.judgeLineList)
+                storyBoard = GetStoryBoard(root.storyBoard),
+                judgeLineList = GetJudgeLines(root.judgeLineList)
             };
 
             await UniTask.CompletedTask;
             return;
         }
 
-        private ChartObject.StoryBoard ConvertStoryBoard(Prpu.Chart.StoryBoard prpuStoryBoard)
+        private ChartObject.StoryBoard GetStoryBoard(Prpu.Chart.StoryBoard prpuStoryBoard)
         {
             if (prpuStoryBoard == null) return new ChartObject.StoryBoard();
 
             return new ChartObject.StoryBoard
             {
                 eventType = prpuStoryBoard.eventType,
-                events = ConvertJudgeLineEvents(prpuStoryBoard.events, null)
+                events = GetJudgeLineEvents(prpuStoryBoard.events, null)
             };
         }
 
-        private ChartObject.JudgeLine[] ConvertJudgeLines(Prpu.Chart.JudgeLine[] prpuJudgeLines)
+        private ChartObject.JudgeLine[] GetJudgeLines(Prpu.Chart.JudgeLine[] prpuJudgeLines)
         {
             if (prpuJudgeLines == null) return Array.Empty<ChartObject.JudgeLine>();
 
@@ -47,24 +47,24 @@ namespace PigeonB1587.prpu
             for (int i = 0; i < prpuJudgeLines.Length; i++)
             {
                 var prpuJudgeLine = prpuJudgeLines[i];
-                var convertedBpms = ConvertBpmItems(prpuJudgeLine.bpms);
+                var GetedBpms = GetBpmItems(prpuJudgeLine.bpms);
                 var judgeLine = new ChartObject.JudgeLine
                 {
-                    bpms = convertedBpms,
-                    speedEvents = ConvertSpeedEvents(prpuJudgeLine.speedEvents, prpuJudgeLine.bpms),
-                    noteControls = ConvertNoteControls(prpuJudgeLine.noteControls),
-                    judgeLineEventLayers = ConvertJudgeLineEventLayers(prpuJudgeLine.judgeLineEventLayers, prpuJudgeLine.bpms),
-                    transform = ConvertTransform(prpuJudgeLine.transform, prpuJudgeLine.bpms)
+                    bpms = GetedBpms,
+                    speedEvents = GetSpeedEvents(prpuJudgeLine.speedEvents, prpuJudgeLine.bpms),
+                    noteControls = GetNoteControls(prpuJudgeLine.noteControls),
+                    judgeLineEventLayers = GetJudgeLineEventLayers(prpuJudgeLine.judgeLineEventLayers, prpuJudgeLine.bpms),
+                    transform = GetTransform(prpuJudgeLine.transform, prpuJudgeLine.bpms)
                 };
 
-                judgeLine.notes = ConvertNotes(prpuJudgeLine.notes, prpuJudgeLine.bpms, judgeLine.speedEvents);
+                judgeLine.notes = GetNotes(prpuJudgeLine.notes, prpuJudgeLine.bpms, judgeLine.speedEvents);
 
                 judgeLines[i] = judgeLine;
             }
             return judgeLines;
         }
 
-        private ChartObject.BpmItems[] ConvertBpmItems(Prpu.Chart.BpmItems[] prpuBpmItems)
+        private ChartObject.BpmItems[] GetBpmItems(Prpu.Chart.BpmItems[] prpuBpmItems)
         {
             if (prpuBpmItems == null) return Array.Empty<ChartObject.BpmItems>();
 
@@ -81,7 +81,7 @@ namespace PigeonB1587.prpu
             return bpmItems;
         }
 
-        private ChartObject.Note[] ConvertNotes(Prpu.Chart.Note[] prpuNotes, Prpu.Chart.BpmItems[] prpuBpmItems, ChartObject.SpeedEvent[] speedEvents)
+        private ChartObject.Note[] GetNotes(Prpu.Chart.Note[] prpuNotes, Prpu.Chart.BpmItems[] prpuBpmItems, ChartObject.SpeedEvent[] speedEvents)
         {
             if (prpuNotes == null) return Array.Empty<ChartObject.Note>();
 
@@ -115,21 +115,21 @@ namespace PigeonB1587.prpu
             return notes;
         }
 
-        private ChartObject.NoteControl ConvertNoteControls(Prpu.Chart.NoteControl prpuControl)
+        private ChartObject.NoteControl GetNoteControls(Prpu.Chart.NoteControl prpuControl)
         {
             if (prpuControl == null) return new ChartObject.NoteControl();
             var noteControl = new ChartObject.NoteControl()
             {
-                disappearControls = ConvertControlItems(prpuControl.disappearControls),
-                rotateControls = ConvertControlItems(prpuControl.rotateControls),
-                sizeControl = ConvertControlItems(prpuControl.sizeControl),
-                xPosControl = ConvertControlItems(prpuControl.xPosControl),
-                yPosControl = ConvertControlItems(prpuControl.yPosControl)
+                disappearControls = GetControlItems(prpuControl.disappearControls),
+                rotateControls = GetControlItems(prpuControl.rotateControls),
+                sizeControl = GetControlItems(prpuControl.sizeControl),
+                xPosControl = GetControlItems(prpuControl.xPosControl),
+                yPosControl = GetControlItems(prpuControl.yPosControl)
             };
             return noteControl;
         }
 
-        private ChartObject.ControlItem[] ConvertControlItems(Prpu.Chart.ControlItem[] prpuControlItems)
+        private ChartObject.ControlItem[] GetControlItems(Prpu.Chart.ControlItem[] prpuControlItems)
         {
             if (prpuControlItems == null) return Array.Empty<ChartObject.ControlItem>();
 
@@ -147,7 +147,7 @@ namespace PigeonB1587.prpu
             return controlItems;
         }
 
-        private ChartObject.SpeedEvent[] ConvertSpeedEvents(Prpu.Chart.JudgeLineEvent[] prpuSpeedEvents, Prpu.Chart.BpmItems[] prpuBpmItems)
+        private ChartObject.SpeedEvent[] GetSpeedEvents(Prpu.Chart.JudgeLineEvent[] prpuSpeedEvents, Prpu.Chart.BpmItems[] prpuBpmItems)
         {
             if (prpuSpeedEvents == null) return Array.Empty<ChartObject.SpeedEvent>();
 
@@ -205,7 +205,7 @@ namespace PigeonB1587.prpu
             return speedEvents;
         }
 
-        private ChartObject.JudgeLineEventLayer[] ConvertJudgeLineEventLayers(Prpu.Chart.JudgeLineEventLayer[] prpuLayers, Prpu.Chart.BpmItems[] prpuBpmItems)
+        private ChartObject.JudgeLineEventLayer[] GetJudgeLineEventLayers(Prpu.Chart.JudgeLineEventLayer[] prpuLayers, Prpu.Chart.BpmItems[] prpuBpmItems)
         {
             if (prpuLayers == null) return Array.Empty<ChartObject.JudgeLineEventLayer>();
 
@@ -215,16 +215,16 @@ namespace PigeonB1587.prpu
                 var prpuLayer = prpuLayers[i];
                 layers[i] = new ChartObject.JudgeLineEventLayer
                 {
-                    judgeLineMoveXEvents = ConvertJudgeLineEvents(prpuLayer.judgeLineMoveXEvents, prpuBpmItems),
-                    judgeLineMoveYEvents = ConvertJudgeLineEvents(prpuLayer.judgeLineMoveYEvents, prpuBpmItems),
-                    judgeLineRotateEvents = ConvertJudgeLineEvents(prpuLayer.judgeLineRotateEvents, prpuBpmItems),
-                    judgeLineDisappearEvents = ConvertJudgeLineEvents(prpuLayer.judgeLineDisappearEvents, prpuBpmItems)
+                    judgeLineMoveXEvents = GetJudgeLineEvents(prpuLayer.judgeLineMoveXEvents, prpuBpmItems),
+                    judgeLineMoveYEvents = GetJudgeLineEvents(prpuLayer.judgeLineMoveYEvents, prpuBpmItems),
+                    judgeLineRotateEvents = GetJudgeLineEvents(prpuLayer.judgeLineRotateEvents, prpuBpmItems),
+                    judgeLineDisappearEvents = GetJudgeLineEvents(prpuLayer.judgeLineDisappearEvents, prpuBpmItems)
                 };
             }
             return layers;
         }
 
-        private ChartObject.JudgeLineEvent[] ConvertJudgeLineEvents(Prpu.Chart.JudgeLineEvent[] prpuEvents, Prpu.Chart.BpmItems[] prpuBpmItems)
+        private ChartObject.JudgeLineEvent[] GetJudgeLineEvents(Prpu.Chart.JudgeLineEvent[] prpuEvents, Prpu.Chart.BpmItems[] prpuBpmItems)
         {
             if (prpuEvents == null) return Array.Empty<ChartObject.JudgeLineEvent>();
 
@@ -247,26 +247,26 @@ namespace PigeonB1587.prpu
             return events;
         }
 
-        private ChartObject.Transform ConvertTransform(Prpu.Chart.Transform prpuTransform, Prpu.Chart.BpmItems[] prpuBpmItems)
+        private ChartObject.Transform GetTransform(Prpu.Chart.Transform prpuTransform, Prpu.Chart.BpmItems[] prpuBpmItems)
         {
             if (prpuTransform == null) return new ChartObject.Transform();
 
             return new ChartObject.Transform
             {
-                judgeLineColorEvents = ConvertJudgeLineEvents(prpuTransform.judgeLineColorEvents, prpuBpmItems),
-                judgeLineTextEvents = ConvertTextEvents(prpuTransform.judgeLineTextEvents, prpuBpmItems),
+                judgeLineColorEvents = GetJudgeLineEvents(prpuTransform.judgeLineColorEvents, prpuBpmItems),
+                judgeLineTextEvents = GetTextEvents(prpuTransform.judgeLineTextEvents, prpuBpmItems),
                 judgeLineTextureSize = prpuTransform.judgeLineTextureSize,
                 fatherLineIndex = prpuTransform.fatherLineIndex,
                 anchor = prpuTransform.anchor,
                 localPositionMode = prpuTransform.localPositionMode,
                 localEulerAnglesMode = prpuTransform.localEulerAnglesMode,
                 zOrder = prpuTransform.zOrder,
-                judgeLineTextureScaleXEvents = ConvertJudgeLineEvents(prpuTransform.judgeLineTextureScaleXEvents, prpuBpmItems),
-                judgeLineTextureScaleYEvents = ConvertJudgeLineEvents(prpuTransform.judgeLineTextureScaleYEvents, prpuBpmItems)
+                judgeLineTextureScaleXEvents = GetJudgeLineEvents(prpuTransform.judgeLineTextureScaleXEvents, prpuBpmItems),
+                judgeLineTextureScaleYEvents = GetJudgeLineEvents(prpuTransform.judgeLineTextureScaleYEvents, prpuBpmItems)
             };
         }
 
-        private ChartObject.TextEvent[] ConvertTextEvents(Prpu.Chart.TextEvent[] prpuTextEvents, Prpu.Chart.BpmItems[] prpuBpmItems)
+        private ChartObject.TextEvent[] GetTextEvents(Prpu.Chart.TextEvent[] prpuTextEvents, Prpu.Chart.BpmItems[] prpuBpmItems)
         {
             if (prpuTextEvents == null) return Array.Empty<ChartObject.TextEvent>();
 

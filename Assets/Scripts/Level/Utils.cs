@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace PigeonB1587.prpu
@@ -107,8 +105,6 @@ namespace PigeonB1587.prpu
             }
             return p;
         }
-
-
         public static Vector2 LocalToWorld(Vector2 localPos, Vector2 parentPos, float parentRot)
         {
             float rad = parentRot * Mathf.Deg2Rad;
@@ -120,52 +116,71 @@ namespace PigeonB1587.prpu
 
             return new Vector2(rotatedX + parentPos.x, rotatedY + parentPos.y);
         }
+        public static int RgbaToInt(byte r, byte g, byte b, byte a) => (r << 24) | (g << 16) | (b << 8) | a;
 
-        public static int RgbaToInt(byte r, byte g, byte b, byte a)
+        public static Color IntToColor(int colorInt) => new(((byte)(colorInt >> 24)) / 255f, ((byte)(colorInt >> 16)) / 255f, ((byte)(colorInt >> 8)) / 255f, ((byte)colorInt) / 255f);
+
+        public static bool GetHoldVisable(Vector2 a, Vector2 b, float xMin, float yMin, float xMax, float yMax)
         {
-            return (r << 24) | (g << 16) | (b << 8) | a;
-        }
+            if (a == b)
+                return a.x > xMin && a.x < xMax && a.y > yMin && a.y < yMax;
 
-        public static Color IntToColor(int colorInt)
-        {
-            byte r = (byte)(colorInt >> 24);
-            byte g = (byte)(colorInt >> 16);
-            byte b = (byte)(colorInt >> 8);
-            byte a = (byte)colorInt;
+            bool aInX = a.x > xMin && a.x < xMax;
+            bool bInX = b.x > xMin && b.x < xMax;
+            bool aInY = a.y > yMin && a.y < yMax;
+            bool bInY = b.y > yMin && b.y < yMax;
 
-            return new Color(
-                r / 255f,
-                g / 255f,
-                b / 255f,
-                a / 255f
-            );
-        }
+            if (!aInX && !bInX && ((a.x <= xMin && b.x <= xMin) || (a.x >= xMax && b.x >= xMax)))
+                return false;
 
-        public static bool IsLineIntersectingRect(Vector2 p1, Vector2 p2, float left, float right, float bottom, float top)
-        {
-            if (IsPointInRect(p1, left, right, bottom, top) || IsPointInRect(p2, left, right, bottom, top))
+            if (!aInY && !bInY && ((a.y <= yMin && b.y <= yMin) || (a.y >= yMax && b.y >= yMax)))
+                return false;
+
+            float dx = b.x - a.x;
+            float dy = b.y - a.y;
+
+            if ((aInX && aInY) || (bInX && bInY))
                 return true;
 
-            return LineIntersectsLine(p1, p2, new Vector2(left, bottom), new Vector2(left, top)) ||   // 左边界
-                   LineIntersectsLine(p1, p2, new Vector2(right, bottom), new Vector2(right, top)) ||  // 右边界
-                   LineIntersectsLine(p1, p2, new Vector2(left, bottom), new Vector2(right, bottom)) ||// 下边界
-                   LineIntersectsLine(p1, p2, new Vector2(left, top), new Vector2(right, top));        // 上边界
-        }
+            if (dx != 0)
+            {
+                float t = (xMin - a.x) / dx;
+                if (t >= 0f && t <= 1f)
+                {
+                    float yAtX = a.y + t * dy;
+                    if (yAtX > yMin && yAtX < yMax)
+                        return true;
+                }
 
-        private static bool IsPointInRect(Vector2 point, float left, float right, float bottom, float top)
-        {
-            return point.x >= left && point.x <= right && point.y >= bottom && point.y <= top;
-        }
+                t = (xMax - a.x) / dx;
+                if (t >= 0f && t <= 1f)
+                {
+                    float yAtX = a.y + t * dy;
+                    if (yAtX > yMin && yAtX < yMax)
+                        return true;
+                }
+            }
 
-        private static bool LineIntersectsLine(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
-        {
-            float d = (a2.x - a1.x) * (b2.y - b1.y) - (a2.y - a1.y) * (b2.x - b1.x);
-            if (d == 0) return false;
+            if (dy != 0)
+            {
+                float t = (yMin - a.y) / dy;
+                if (t >= 0f && t <= 1f)
+                {
+                    float xAtY = a.x + t * dx;
+                    if (xAtY > xMin && xAtY < xMax)
+                        return true;
+                }
 
-            float t = ((b1.x - a1.x) * (b2.y - b1.y) - (b1.y - a1.y) * (b2.x - b1.x)) / d;
-            float u = ((b1.x - a1.x) * (a2.y - a1.y) - (b1.y - a1.y) * (a2.x - a1.x)) / d;
+                t = (yMax - a.y) / dy;
+                if (t >= 0f && t <= 1f)
+                {
+                    float xAtY = a.x + t * dx;
+                    if (xAtY > xMin && xAtY < xMax)
+                        return true;
+                }
+            }
 
-            return t >= 0 && t <= 1 && u >= 0 && u <= 1;
+            return false;
         }
     }
 }

@@ -42,7 +42,7 @@ namespace PigeonB1587.prpu
             {
                 for (int i = 0; i < judgeLines.Count(); i++)
                 {
-                    judgeLines[i].UpdateLine();
+                    judgeLines[i].UpdateLine(levelController.time);
                 }
                 for (int i = 0; i < judgeLines.Count(); i++)
                 {
