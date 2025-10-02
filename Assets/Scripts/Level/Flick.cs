@@ -9,6 +9,8 @@ namespace PigeonB1587.prpu
         public override void Judge()
         {
             isJudge = true;
+            judgeLine.levelController.hitFxController.GetHitFx(HitEffectType.Perfect,
+                judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)));
             judgeLine.flickPool.Release(this);
         }
     }

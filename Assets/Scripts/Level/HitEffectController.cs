@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -11,6 +12,7 @@ namespace PigeonB1587.prpu
         public GameObject perfectEffectPrefab,
             goodEffectPrefab,
             badEffectPrefab;
+        public float hitFxScale = 1f;
 
         public void Start()
         {
@@ -20,75 +22,73 @@ namespace PigeonB1587.prpu
         private void SetPool()
         {
             perfectEffectsPool = new ObjectPool<GameObject>(
-                createFunc: () => Instantiate(perfectEffectPrefab, transform).GetComponent<GameObject>(),
+                createFunc: () => Instantiate(perfectEffectPrefab, transform),
                 actionOnGet: (tap) =>
                 {
-                    tap.gameObject.SetActive(true);
+                    tap.SetActive(true);
                 },
-                actionOnRelease: (tap) => tap.gameObject.SetActive(false),
-                actionOnDestroy: (tap) => Destroy(tap.gameObject),
+                actionOnRelease: (tap) => tap.SetActive(false),
+                actionOnDestroy: (tap) => Destroy(tap),
                 defaultCapacity: 20,
                 maxSize: 10000
             );
             goodEffectsPool = new ObjectPool<GameObject>(
-                createFunc: () => Instantiate(goodEffectPrefab, transform).GetComponent<GameObject>(),
-                actionOnGet: (tap) =>
-                {
-                    tap.gameObject.SetActive(true);
-                },
-                actionOnRelease: (tap) => tap.gameObject.SetActive(false),
-                actionOnDestroy: (tap) => Destroy(tap.gameObject),
+                createFunc: () => Instantiate(goodEffectPrefab, transform),
+                actionOnGet: (tap) => tap.SetActive(true),
+                actionOnRelease: (tap) => tap.SetActive(false),
+                actionOnDestroy: (tap) => Destroy(tap),
                 defaultCapacity: 20,
                 maxSize: 10000
             );
             badEffectsPool = new ObjectPool<GameObject>(
-                createFunc: () => Instantiate(badEffectPrefab, transform).GetComponent<GameObject>(),
-                actionOnGet: (tap) =>
-                {
-                    tap.gameObject.SetActive(true);
-                },
-                actionOnRelease: (tap) => tap.gameObject.SetActive(false),
-                actionOnDestroy: (tap) => Destroy(tap.gameObject),
+                createFunc: () => Instantiate(badEffectPrefab, transform),
+                actionOnGet: (tap) => tap.SetActive(true),
+                actionOnRelease: (tap) => tap.SetActive(false),
+                actionOnDestroy: (tap) => Destroy(tap),
                 defaultCapacity: 10,
                 maxSize: 1000
             );
         }
-        public void ShowHitEffect(HitEffectType type, Vector3 position)
+        public void GetHitFx(HitEffectType type, Vector3 position, Transform line = null)
         {
             GameObject effect = null;
+            ObjectPool<GameObject> targetPool = null;
+
             switch (type)
             {
                 case HitEffectType.Perfect:
                     effect = perfectEffectsPool.Get();
+                    targetPool = perfectEffectsPool;
                     break;
                 case HitEffectType.Good:
                     effect = goodEffectsPool.Get();
+                    targetPool = goodEffectsPool;
                     break;
                 case HitEffectType.Bad:
                     effect = badEffectsPool.Get();
+                    targetPool = badEffectsPool;
                     break;
                 case HitEffectType.Miss:
                     return;
             }
+            var size = hitFxScale * GameInformation.Instance.noteScale;
+            effect.transform.localScale = new Vector3(size, size, size);
+            if (line != null)
+            {
+                effect.transform.SetParent(line);
+            }
+            else
+            {
+                effect.transform.SetParent(transform);
+            }
             effect.transform.position = position;
-            StartCoroutine(ReleaseEffectAfterDelay(effect, 1f));
+            StartCoroutine(ReturnToPoolAfterDelay(effect, targetPool, 1f));
         }
 
-        private System.Collections.IEnumerator ReleaseEffectAfterDelay(GameObject effect, float delay)
+        private IEnumerator ReturnToPoolAfterDelay(GameObject obj, ObjectPool<GameObject> pool, float delay)
         {
             yield return new WaitForSeconds(delay);
-            if (effect.CompareTag("PerfectEffect"))
-            {
-                perfectEffectsPool.Release(effect);
-            }
-            else if (effect.CompareTag("GoodEffect"))
-            {
-                goodEffectsPool.Release(effect);
-            }
-            else if (effect.CompareTag("BadEffect"))
-            {
-                badEffectsPool.Release(effect);
-            }
+            pool.Release(obj);
         }
     }
 

@@ -287,6 +287,7 @@ GameObject:
   - component: {fileID: 144982127}
   - component: {fileID: 144982129}
   - component: {fileID: 144982130}
+  - component: {fileID: 144982131}
   m_Layer: 0
   m_Name: LevelController
   m_TagString: Untagged
@@ -337,7 +338,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reader: {fileID: 144982127}
   lineController: {fileID: 144982130}
-  hitFxController: {fileID: 0}
+  hitFxController: {fileID: 144982131}
   musicPlayer: {fileID: 185789262}
   musicNameText: {fileID: 2111655871}
   levelText: {fileID: 2026303816}
@@ -363,6 +364,22 @@ MonoBehaviour:
   levelController: {fileID: 144982129}
   jugdeLineFather: {fileID: 1257359622}
   judgeLines: []
+--- !u!114 &144982131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144982126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 847298279e41c7f48bd5d815c7fd6df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  perfectEffectPrefab: {fileID: 1139022850156621625, guid: ff4a0d03a4b71cb4e9c773ac07027295, type: 3}
+  goodEffectPrefab: {fileID: 7193939620117203368, guid: cab783001dc29024aa6e6aa55914953d, type: 3}
+  badEffectPrefab: {fileID: 7193939620117203368, guid: cab783001dc29024aa6e6aa55914953d, type: 3}
+  hitFxScale: 1.35
 --- !u!1 &185789261
 GameObject:
   m_ObjectHideFlags: 0

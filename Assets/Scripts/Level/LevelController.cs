@@ -29,6 +29,7 @@ namespace PigeonB1587.prpu
         {
             reader = GetComponent<Reader>();
             lineController = GetComponent<JudgeLineController>();
+            hitFxController = GetComponent<HitEffectController>();
         }
 
         public void Start()
