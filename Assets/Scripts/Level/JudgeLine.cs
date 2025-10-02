@@ -128,9 +128,9 @@ namespace PigeonB1587.prpu
 
             if (jugdeLineData.transform.localPositionMode)
             {
-                transform.localPosition = jugdeLineData.transform.fatherLineIndex == -1
+                transform.position = jugdeLineData.transform.fatherLineIndex == -1
                     ? basePos
-                    : fatherLine.transform.TransformPoint(basePos);
+                    : Utils.LocalToWorld(basePos, fatherLine.transform.position, fatherLine.transform.eulerAngles.z);
             }
             else
             {
@@ -143,9 +143,9 @@ namespace PigeonB1587.prpu
             {
                 if (jugdeLineData.transform.fatherLineIndex != -1)
                 {
-                    targetRot = Quaternion.Euler(fatherLine.transform.localEulerAngles) * targetRot;
+                    targetRot = Quaternion.Euler(fatherLine.transform.eulerAngles) * targetRot;
                 }
-                transform.localEulerAngles = targetRot.eulerAngles;
+                transform.eulerAngles = targetRot.eulerAngles;
             }
             else
             {
