@@ -103,15 +103,20 @@ namespace PigeonB1587.prpu
 
         public void UpdateLine(double curTime)
         {
-            if(transform.localScale == Vector3.zero)
+            if (transform.localScale == Vector3.zero)
             {
                 transform.localScale = Vector3.one;
             }
 
-            moveX = 0;
-            moveY = 0;
-            rotate = 0;
-            disappear = 0;
+            // reset values
+            {
+                moveX = 0;
+                moveY = 0;
+                rotate = 0;
+                disappear = 0;
+            }
+            //
+
             UpdateEventLayers(curTime);
         }
 
@@ -161,10 +166,10 @@ namespace PigeonB1587.prpu
 
         public void UpdateNote()
         {
-            for(int i = 0; i < localNotes.Count; i++)
+            for (int i = 0; i < localNotes.Count; i++)
             {
                 var f = localNotes[i].floorPosition - floorPosition + localNotes[i].positionY;
-                
+
                 var v = Utils.LocalToWorld(new Vector3(
                     localNotes[i].positionX * GameInformation.Instance.screenRadioScale,
                     f * localNotes[i].speed,
@@ -205,12 +210,9 @@ namespace PigeonB1587.prpu
                     {
                         GetNote();
                     }
-                    else
+                    else if (localNotes[i].startTime.curTime - levelController.time <= 0.3f)
                     {
-                        if (localNotes[i].startTime.curTime - levelController.time <= 0.3f)
-                        {
-                            GetNote();
-                        }
+                        GetNote();
                     }
                 }
                 else
@@ -227,12 +229,9 @@ namespace PigeonB1587.prpu
                     {
                         GetNote();
                     }
-                    else
+                    else if (localNotes[i].startTime.curTime - levelController.time <= 0.3f)
                     {
-                        if (localNotes[i].startTime.curTime - levelController.time <= 0.3f)
-                        {
-                            GetNote();
-                        }
+                        GetNote();
                     }
                 }
             }
