@@ -13,6 +13,7 @@ namespace PigeonB1587.prpu
 
         public float screenW;
         public float screenH;
+        public int speedEventLerpSize = 128;
 
         public float[] visableX;
         public float[] visableY;

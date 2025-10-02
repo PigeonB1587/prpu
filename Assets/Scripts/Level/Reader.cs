@@ -181,7 +181,7 @@ namespace PigeonB1587.prpu
 
                     if (d > 0)
                     {
-                        int n = 128;
+                        int n = GameInformation.Instance.speedEventLerpSize;
                         double stm = d / n;
                         double prevSpeed = Easings.Lerp(last.easing, last.startTime.curTime,
                             last.startTime.curTime, last.endTime.curTime,

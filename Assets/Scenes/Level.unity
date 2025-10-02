@@ -953,6 +953,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   screenW: 0
   screenH: 0
+  speedEventLerpSize: 1
   visableX:
   - -25
   - 25
