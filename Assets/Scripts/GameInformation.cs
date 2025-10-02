@@ -128,21 +128,22 @@ namespace PigeonB1587.prpu
         public string hitSoundAddressableKey;
     }
 
+    // 以下标注 OK注释 的均已实装
     public class ChartObject
     {
         [Serializable]
         public class Root
         {
-            public string songID;
-            public string level;
+            public string songID; //OK
+            public string level; //OK
             public StoryBoard storyBoard;
             public JudgeLine[] judgeLineList;
         }
         [Serializable]
         public struct Time
         {
-            public double curTime;
-            public double beatTime;
+            public double curTime; //OK
+            public double beatTime; //OK
             public Time GetTime(Prpu.Chart.BpmItems[] bpmItems, int[] beatTime)
             {
                 var time = new Time();
@@ -175,7 +176,7 @@ namespace PigeonB1587.prpu
                 }
                 time.curTime = sec;
                 return time;
-            }
+            } //OK
             public Time GetTimeLast(ChartObject.BpmItems[] bpmItems, int[] beatTime)
             {
                 var time = new Time();
@@ -208,7 +209,7 @@ namespace PigeonB1587.prpu
                 }
                 time.curTime = sec;
                 return time;
-            }
+            } //OK
         }
         [Serializable]
         public class StoryBoard
@@ -217,29 +218,29 @@ namespace PigeonB1587.prpu
             public JudgeLineEvent[] events;
         }
         [Serializable]
-        public class JudgeLineEvent
+        public class JudgeLineEvent //OK
         {
-            public Time startTime;
-            public Time endTime;
-            public float start;
-            public float end;
-            public int easing;
-            public float easingLeft;
-            public float easingRight;
-            public float[] bezierPoints;
+            public Time startTime; //OK
+            public Time endTime; //OK
+            public float start; //OK
+            public float end; //OK
+            public int easing; //OK
+            public float easingLeft; //OK
+            public float easingRight; //OK
+            public float[] bezierPoints; //OK
         }
         [Serializable]
-        public class SpeedEvent
+        public class SpeedEvent //OK
         {
-            public Time startTime;
-            public Time endTime;
-            public float start = 0;
-            public float end = 0;
-            public int easing;
-            public float floorPosition = 0;
-            public float easingLeft;
-            public float easingRight;
-            public float[] bezierPoints;
+            public Time startTime; //OK
+            public Time endTime; //OK
+            public float start = 0; //OK
+            public float end = 0; //OK
+            public int easing; //OK
+            public float floorPosition = 0; //OK
+            public float easingLeft; //OK
+            public float easingRight; //OK
+            public float[] bezierPoints; //OK
         }
         [Serializable]
         public class TextEvent
@@ -256,39 +257,39 @@ namespace PigeonB1587.prpu
         [Serializable]
         public class JudgeLineEventLayer
         {
-            public JudgeLineEvent[] judgeLineMoveXEvents;
-            public JudgeLineEvent[] judgeLineMoveYEvents;
-            public JudgeLineEvent[] judgeLineRotateEvents;
-            public JudgeLineEvent[] judgeLineDisappearEvents;
+            public JudgeLineEvent[] judgeLineMoveXEvents; //OK
+            public JudgeLineEvent[] judgeLineMoveYEvents; //OK
+            public JudgeLineEvent[] judgeLineRotateEvents; //OK
+            public JudgeLineEvent[] judgeLineDisappearEvents; //OK
         }
 
         [Serializable]
         public class Note
         {
-            public int type;
+            public int type; //OK
             public bool isFake;
-            public bool above;
-            public Time startTime;
-            public int[] visibleTime;
-            public float speed;
-            public float size;
-            public bool isHL;
-            public Time endTime;
-            public float positionX;
-            public float positionY;
-            public int color;
+            public bool above; //OK
+            public Time startTime; //OK
+            public int[] visibleTime; //OK
+            public float speed; //OK
+            public float size; //OK
+            public bool isHL; //OK
+            public Time endTime; //OK
+            public float positionX; //OK
+            public float positionY; //OK
+            public int color; //OK
             public bool autoPlayHitSound;
             public int hitFXColor;
             public float judgeSize;
-            public float floorPosition = 0;
-            public float endfloorPosition = 0;
+            public float floorPosition = 0; //OK
+            public float endfloorPosition = 0; //OK
         }
 
         [Serializable]
-        public class BpmItems
+        public class BpmItems //OK
         {
-            public Time time;
-            public float bpm;
+            public Time time; //OK
+            public float bpm; //OK
         }
 
         [Serializable]
@@ -297,11 +298,11 @@ namespace PigeonB1587.prpu
             public JudgeLineEvent[] judgeLineColorEvents;
             public TextEvent[] judgeLineTextEvents;
             public float[] judgeLineTextureSize;
-            public int fatherLineIndex;
+            public int fatherLineIndex; //OK
             public float[] anchor;
-            public bool localPositionMode;
-            public bool localEulerAnglesMode;
-            public int zOrder;
+            public bool localPositionMode; //OK
+            public bool localEulerAnglesMode; //OK
+            public int zOrder; //OK
             public JudgeLineEvent[] judgeLineTextureScaleXEvents;
             public JudgeLineEvent[] judgeLineTextureScaleYEvents;
         }
@@ -327,11 +328,11 @@ namespace PigeonB1587.prpu
         [Serializable]
         public class JudgeLine
         {
-            public BpmItems[] bpms;
+            public BpmItems[] bpms; //OK
             public Note[] notes;
             public NoteControl noteControls;
-            public SpeedEvent[] speedEvents;
-            public JudgeLineEventLayer[] judgeLineEventLayers;
+            public SpeedEvent[] speedEvents; //OK
+            public JudgeLineEventLayer[] judgeLineEventLayers; //OK
             public Transform transform;
         }
     }

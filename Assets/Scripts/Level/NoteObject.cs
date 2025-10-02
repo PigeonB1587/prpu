@@ -43,7 +43,9 @@ namespace PigeonB1587.prpu
             GetNoteData();
             floorPosition = GetFloorPosY();
             transform.localPosition = new Vector2(noteData.positionX * GameInformation.Instance.screenRadioScale, noteData.above ? floorPosition : -floorPosition);
-            
+            transform.localScale = new Vector3(0.22f * noteData.size * GameInformation.Instance.noteScale,
+                0.22f * GameInformation.Instance.noteScale,
+                0.22f * GameInformation.Instance.noteScale);
             noteRenderer.enabled = GetNoteVisable(curTime);
         }
 

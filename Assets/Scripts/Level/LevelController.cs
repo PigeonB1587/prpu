@@ -9,6 +9,7 @@ namespace PigeonB1587.prpu
     {
         public Reader reader;
         public JudgeLineController lineController;
+        public HitEffectController hitFxController;
 
         public AudioSource musicPlayer;
 
@@ -37,6 +38,7 @@ namespace PigeonB1587.prpu
             {
                 Debug.LogError("Cannot find the instace \"GameInformation\".");
             }
+            time -= GameInformation.Instance.offset + reader.offset;
             musicNameText.text = GameInformation.Instance.levelStartInfo.songsName;
             levelText.text = GameInformation.Instance.levelStartInfo.songsLevel;
             backgroundImage.sprite = GameInformation.Instance.illustration;
@@ -63,7 +65,6 @@ namespace PigeonB1587.prpu
             isPlay = true;
             StartCoroutine(LevelUpdate());
             await UniTask.CompletedTask;
-            Debug.Log("Level Over");
             return;
         }
 
@@ -73,7 +74,7 @@ namespace PigeonB1587.prpu
             {
                 if (isPlay)
                 {
-                    time = musicPlayer.time;
+                    time = musicPlayer.time - GameInformation.Instance.offset + reader.offset;
                     var progress = (float)time / musicPlayer.clip.length;
                     var xPos = Mathf.Lerp(
                 GameInformation.Instance.screenRadioScale * -960,
@@ -85,6 +86,7 @@ namespace PigeonB1587.prpu
                 yield return null;
             }
             yield return null;
+            Debug.Log("Level Over");
         }
     }
 }

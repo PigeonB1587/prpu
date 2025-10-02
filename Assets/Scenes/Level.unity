@@ -337,6 +337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reader: {fileID: 144982127}
   lineController: {fileID: 144982130}
+  hitFxController: {fileID: 0}
   musicPlayer: {fileID: 185789262}
   musicNameText: {fileID: 2111655871}
   levelText: {fileID: 2026303816}
@@ -951,8 +952,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25ce75f2b9e17ef4795307dec79ba1de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  screenW: 0
-  screenH: 0
+  screenW: 1280
+  screenH: 720
   speedEventLerpSize: 1
   visableX:
   - -25
@@ -961,9 +962,9 @@ MonoBehaviour:
   - -15
   - 15
   screenRadioScale: 0
-  chart: {fileID: 4900000, guid: ed9d5913742c9104eb352293bd421219, type: 3}
-  illustration: {fileID: 21300000, guid: d9b5889270bfc214b8f1cb46f3eaad5f, type: 3}
-  music: {fileID: 8300000, guid: 5f8f3803ac760c942a8628436457fffc, type: 3}
+  chart: {fileID: 4900000, guid: 465ca6dd85627be428a384eaa6c1ce16, type: 3}
+  illustration: {fileID: 21300000, guid: 99710d1964224dd4e85b482f5a1bdeb8, type: 3}
+  music: {fileID: 8300000, guid: dbfa375955b5c7a47accb058dd12a548, type: 3}
   isHitFXEnabled: 0
   isFCAPIndicator: 0
   autoPlay: 0
@@ -976,12 +977,12 @@ MonoBehaviour:
   backgroundAlpha: 0.5
   useLowResolution: 0
   levelStartInfo:
-    songsId: QZKagoRequiem.tpazolite.0
-    songsName: QZKago Requiem
+    songsId: DiamondDust.MasahiroGodspeedAoki.0
+    songsName: Diamond Dust
     composer: 
     charter: 
     illustrator: 
-    songsLevel: AT  Lv.17
+    songsLevel: AT  Lv.16
     musicAddressableKey: 
     chartAddressableKey: 
     illustrationKey: 

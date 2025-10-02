@@ -209,7 +209,7 @@ namespace PigeonB1587.prpu
                             above = false,
                             startTime = CTMF(new int[2] { chartObject.judgeLineList[i].notesBelow[j].time, 32 }),
                             visibleTime = Array.Empty<int>(),
-                            speed = chartObject.judgeLineList[i].notesAbove[j].type == 3 ? 1 : chartObject.judgeLineList[i].notesAbove[j].speed,
+                            speed = chartObject.judgeLineList[i].notesBelow[j].type == 3 ? 1 : chartObject.judgeLineList[i].notesBelow[j].speed,
                             size = 1,
                             endTime = CTMF(new int[2] { chartObject.judgeLineList[i].notesBelow[j].time
                         + chartObject.judgeLineList[i].notesBelow[j].holdTime, 32 }),
