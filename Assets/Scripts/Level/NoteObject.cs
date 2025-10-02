@@ -34,33 +34,26 @@ namespace PigeonB1587.prpu
             transform.localPosition = new Vector2(transform.localPosition.x, noteData.above ? floorPosition : -floorPosition);
             if (judgeLine.levelController.time >= noteData.startTime.curTime)
                 Judge();
-            bool visable = false;
-            if (transform.position.y >= -10 && transform.position.y <= 10)
-            {
-                if (floorPosition >= -0.001)
-                {
-                    if (useVisableTime)
-                    {
-                        if (noteData.startTime.curTime - judgeLine.levelController.time <= visableTimeData.curTime)
-                        {
-                            visable = true;
-                        }
-                    }
-                    else
-                    {
-                        visable = true;
-                    }
-                }
-            }
-            if (judgeLine.disappear < 0) // 还原一下Phiedit远古特性（？
-                visable = false;
-            noteRenderer.enabled = visable;
+            noteRenderer.enabled = GetNoteVisable();
         }
 
         public virtual void ResetNote()
         {
+            GetNoteData();
+            floorPosition = GetFloorPosY();
+            transform.localPosition = new Vector2(noteData.positionX * GameInformation.Instance.screenRadioScale, noteData.above ? floorPosition : -floorPosition);
+            
+            noteRenderer.enabled = GetNoteVisable();
+        }
+
+        public virtual void Judge()
+        {
+            
+        }
+
+        public virtual void GetNoteData()
+        {
             isJudge = false;
-            floorPosition = 0f;
             if (noteData.isHL)
             {
                 noteRenderer.sprite = hlImage;
@@ -77,7 +70,7 @@ namespace PigeonB1587.prpu
             {
                 transform.localEulerAngles = new Vector3(0, 0, 180);
             }
-            if(noteData.visibleTime != Array.Empty<int>())
+            if (noteData.visibleTime != Array.Empty<int>())
             {
                 visableTimeData.GetTimeLast(judgeLine.jugdeLineData.bpms, noteData.visibleTime);
                 useVisableTime = true;
@@ -87,8 +80,10 @@ namespace PigeonB1587.prpu
                 useVisableTime = false;
             }
             noteRenderer.color = Utils.IntToColor(noteData.color);
-            floorPosition = GetFloorPosY();
-            transform.localPosition = new Vector2(noteData.positionX * GameInformation.Instance.screenRadioScale, noteData.above ? floorPosition : -floorPosition);
+        }
+
+        public virtual bool GetNoteVisable()
+        {
             bool visable = false;
             if (transform.position.y >= -10 && transform.position.y <= 10)
             {
@@ -109,12 +104,7 @@ namespace PigeonB1587.prpu
             }
             if (judgeLine.disappear < 0)
                 visable = false;
-            noteRenderer.enabled = visable;
-        }
-
-        public virtual void Judge()
-        {
-            
+            return visable;
         }
 
         public virtual float GetFloorPosY() => (noteData.floorPosition - judgeLine.floorPosition + noteData.positionY) * noteData.speed;
