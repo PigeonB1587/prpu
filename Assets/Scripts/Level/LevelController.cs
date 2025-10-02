@@ -33,6 +33,10 @@ namespace PigeonB1587.prpu
         public void Start()
         {
             musicPlayer.Pause();
+            if(GameInformation.Instance == null)
+            {
+                Debug.LogError("Cannot find the instace \"GameInformation\".");
+            }
             musicNameText.text = GameInformation.Instance.levelStartInfo.songsName;
             levelText.text = GameInformation.Instance.levelStartInfo.songsLevel;
             backgroundImage.sprite = GameInformation.Instance.illustration;
@@ -59,6 +63,7 @@ namespace PigeonB1587.prpu
             isPlay = true;
             StartCoroutine(LevelUpdate());
             await UniTask.CompletedTask;
+            Debug.Log("Level Over");
             return;
         }
 
