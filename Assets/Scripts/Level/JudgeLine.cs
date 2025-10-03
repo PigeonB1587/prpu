@@ -39,7 +39,6 @@ namespace PigeonB1587.prpu
             lineRenderer.color = GameInformation.Instance.isFCAPIndicator ? perfectLine : defaultLine;
             lineRenderer.size = new Vector2(jugdeLineData.transform.judgeLineTextureSize[0],
                 jugdeLineData.transform.judgeLineTextureSize[1]);
-            transform.localScale = Vector3.zero;
             lineRenderer.sortingOrder = jugdeLineData.transform.zOrder;
             if (jugdeLineData.transform.judgeLineColorEvents.Length != 0)
             {
@@ -105,11 +104,6 @@ namespace PigeonB1587.prpu
 
         public void UpdateLine(double curTime)
         {
-            if (transform.localScale == Vector3.zero)
-            {
-                transform.localScale = Vector3.one;
-            }
-
             // reset values
             {
                 moveX = 0;

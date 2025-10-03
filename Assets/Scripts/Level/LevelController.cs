@@ -10,7 +10,7 @@ namespace PigeonB1587.prpu
         public Reader reader;
         public JudgeLineController lineController;
         public HitEffectController hitFxController;
-        public Animator gui;
+        public Animator gui, levelAni;
 
         public AudioSource musicPlayer;
 
@@ -25,13 +25,13 @@ namespace PigeonB1587.prpu
 
         public bool isLoading = true;
         public bool isPlay = false;
+        public bool isOver = false;
 
         private CanvasGroup comboTextCanvasGroup, subComboTextCanvasGroup;
 
         public void Awake()
         {
             ScoreController.ResetScore();
-            gui.speed = 0;
             reader = GetComponent<Reader>();
             lineController = GetComponent<JudgeLineController>();
             hitFxController = GetComponent<HitEffectController>();
@@ -42,7 +42,9 @@ namespace PigeonB1587.prpu
         public void Start()
         {
             musicPlayer.Pause();
-            if(GameInformation.Instance == null)
+            gui.speed = 0;
+            levelAni.speed = 0;
+            if (GameInformation.Instance == null)
             {
                 Debug.LogError("Cannot find the instace \"GameInformation\".");
             }
@@ -69,8 +71,10 @@ namespace PigeonB1587.prpu
             await lineController.SpawnJudgmentLine();
             gui.Play("LevelStart");
             gui.speed = 1;
+            levelAni.Play("Start");
+            levelAni.speed = 1;
             isLoading = false;
-            await UniTask.Delay(2000);
+            await UniTask.Delay(1050);
             gui.enabled = false;
             musicPlayer.Play();
             isPlay = true;
@@ -122,7 +126,9 @@ namespace PigeonB1587.prpu
                 yield return null;
             }
             yield return null;
+
             Debug.Log("Level Over");
+            isOver = true;
             if (ScoreController.combo < 3)
             {
                 comboText.gameObject.SetActive(false);

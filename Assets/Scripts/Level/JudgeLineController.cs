@@ -38,7 +38,7 @@ namespace PigeonB1587.prpu
 
         public void Update()
         {
-            if (!levelController.isLoading)
+            if (!levelController.isLoading && !levelController.isOver)
             {
                 for (int i = 0; i < judgeLines.Count(); i++)
                 {
