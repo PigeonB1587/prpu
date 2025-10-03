@@ -95,7 +95,6 @@ namespace PigeonB1587.prpu
                 public JudgeLineEvent[] judgeLineColorEvents { get; set; }
                 [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
                 public TextEvent[] judgeLineTextEvents { get; set; }
-                public float[] judgeLineTextureSize { get; set; }
                 public int fatherLineIndex { get; set; }
                 public bool localPositionMode { get; set; }
                 public bool localEulerAnglesMode { get; set; }

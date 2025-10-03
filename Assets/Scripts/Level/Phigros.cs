@@ -143,7 +143,6 @@ namespace PigeonB1587.prpu
                     {
                         judgeLineColorEvents = null,
                         judgeLineTextEvents = null,
-                        judgeLineTextureSize = new float[2] { 57.6f, 0.075f },
                         fatherLineIndex = -1,
                         localPositionMode = true,
                         localEulerAnglesMode = true,

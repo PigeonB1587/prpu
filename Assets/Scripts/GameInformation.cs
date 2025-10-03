@@ -120,6 +120,8 @@ namespace PigeonB1587.prpu
     {
         public int judgeLineIndex;
         public string imageAddressableKey;
+        public float imageX;
+        public float imageY;
     }
 
     [Serializable]
@@ -298,7 +300,6 @@ namespace PigeonB1587.prpu
         {
             public JudgeLineEvent[] judgeLineColorEvents;
             public TextEvent[] judgeLineTextEvents;
-            public float[] judgeLineTextureSize;
             public int fatherLineIndex; //OK
             public bool localPositionMode; //OK
             public bool localEulerAnglesMode; //OK

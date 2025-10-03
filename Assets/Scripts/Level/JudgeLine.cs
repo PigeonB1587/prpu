@@ -35,8 +35,6 @@ namespace PigeonB1587.prpu
         public void Start()
         {
             lineRenderer.color = GameInformation.Instance.isFCAPIndicator ? levelController.perfectLine : levelController.defaultLine;
-            lineRenderer.size = new Vector2(jugdeLineData.transform.judgeLineTextureSize[0],
-                jugdeLineData.transform.judgeLineTextureSize[1]);
             lineRenderer.sortingOrder = jugdeLineData.transform.zOrder;
             if (jugdeLineData.transform.judgeLineColorEvents.Length != 0)
             {
