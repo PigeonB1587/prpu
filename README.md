@@ -4,7 +4,7 @@ A fan-made Phigros chart player and renderer developed with Unity Engine.
 
 ## Editor Requirements
 
-An editor version greater than or equal to Unity [2021.3.20f1c1](https://unity.cn/release-notes/lts/2021/2021.3.20f1) is required.
+An editor version greater than or equal to Unity [2022.3.62f1](https://unity.cn/release-notes/lts/2021/2022.3.62f1) is required.
 
 ## Assets
 
