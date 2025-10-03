@@ -17,6 +17,8 @@ namespace PigeonB1587.prpu
         public bool isHolding = false;
         public bool overJudge = false;
 
+        private float holdEffectTimer;
+
         public const float holdLengthScale = 0.0526316f;
 
         public override void Awake()
@@ -32,7 +34,7 @@ namespace PigeonB1587.prpu
             double curTime = judgeLine.levelController.time;
             var isOverStartTime = curTime >= noteData.startTime.curTime;
             floorPosition = isOverStartTime ? 0 : GetFloorPosY();
-            if (isFirstJudge && isOverStartTime)
+            if (!noteData.isFake && isFirstJudge && isOverStartTime)
                 Judge();
             
             transform.localPosition = new Vector2(transform.localPosition.x, isOverStartTime ? noteData.positionY : noteData.above ? floorPosition : -floorPosition);
@@ -55,6 +57,8 @@ namespace PigeonB1587.prpu
             isFirstJudge = false;
             isHolding = true;
             isJudge = true;
+            judgeLine.levelController.hitFxController.GetHitFx(HitEffectType.Perfect,
+                judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)));
             StartCoroutine(Holding());
         }
 
@@ -62,6 +66,13 @@ namespace PigeonB1587.prpu
         {
             while (isHolding)
             {
+                holdEffectTimer += Time.deltaTime;
+                if(holdEffectTimer > (60 / judgeLine.bpm) / 2 && !noteData.isFake)
+                {
+                    judgeLine.levelController.hitFxController.GetHitFx(HitEffectType.Perfect,
+                        judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)));
+                    holdEffectTimer = 0.0f;
+                }
                 if (judgeLine.levelController.time >= noteData.endTime.curTime)
                 {
                     noteRenderer.enabled = false;
@@ -92,6 +103,7 @@ namespace PigeonB1587.prpu
 
         public override void GetNoteData()
         {
+            holdEffectTimer = 0.0f;
             isJudge = false;
             isFirstJudge = true;
             isHolding = false;

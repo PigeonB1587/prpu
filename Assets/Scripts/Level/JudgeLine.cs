@@ -28,6 +28,8 @@ namespace PigeonB1587.prpu
         public float rotate = 0;
         public float disappear = 0;
 
+        public float bpm = 120f;
+
         public float floorPosition = 0;
 
         public Transform fatherLine;
@@ -246,6 +248,7 @@ namespace PigeonB1587.prpu
                 UpdateEvent(currentTime, ref jugdeLineData.judgeLineEventLayers[i].judgeLineRotateEvents, ref rotate);
                 UpdateEvent(currentTime, ref jugdeLineData.judgeLineEventLayers[i].judgeLineDisappearEvents, ref disappear);
             }
+            UpdateBpms(currentTime, ref jugdeLineData.bpms, ref bpm);
             floorPosition = Utils.GetCurFloorPosition(currentTime, jugdeLineData.speedEvents);
         }
 
@@ -265,6 +268,20 @@ namespace PigeonB1587.prpu
                 @event.bezierPoints);
         }
 
+        private void UpdateBpms(double currentTime, ref ChartObject.BpmItems[] events, ref float value)
+        {
+            if (events.Length == 0)
+                return;
+            int i = GetBpmIndex(currentTime, ref events);
+            var @event = events[i];
+            if (currentTime >= @event.time.curTime)
+            {
+                value = @event.bpm;
+                return;
+            }
+            value = @event.bpm;
+        }
+
         private int GetEventIndex(double curTime, ref ChartObject.JudgeLineEvent[] events)
         {
             int left = 0;
@@ -276,6 +293,30 @@ namespace PigeonB1587.prpu
                 int mid = left + (right - left) / 2;
 
                 if (events[mid].startTime.curTime <= curTime)
+                {
+                    index = mid;
+                    left = mid + 1;
+                }
+                else
+                {
+                    right = mid - 1;
+                }
+            }
+
+            return index;
+        }
+
+        private int GetBpmIndex(double curTime, ref ChartObject.BpmItems[] events)
+        {
+            int left = 0;
+            int right = events.Length - 1;
+            int index = 0;
+
+            while (left <= right)
+            {
+                int mid = left + (right - left) / 2;
+
+                if (events[mid].time.curTime <= curTime)
                 {
                     index = mid;
                     left = mid + 1;

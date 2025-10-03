@@ -33,7 +33,7 @@ namespace PigeonB1587.prpu
             double curTime = judgeLine.levelController.time;
             floorPosition = GetFloorPosY();
             transform.localPosition = new Vector2(transform.localPosition.x, noteData.above ? floorPosition : -floorPosition);
-            if (curTime >= noteData.startTime.curTime)
+            if (!noteData.isFake && curTime >= noteData.startTime.curTime)
                 Judge();
             noteRenderer.enabled = GetNoteVisable(curTime);
         }
