@@ -68,7 +68,7 @@ namespace PigeonB1587.prpu
             while (isHolding)
             {
                 holdEffectTimer += Time.deltaTime;
-                if(holdEffectTimer > (60 / judgeLine.bpm) / 2 && !noteData.isFake) // ×æ´«´úÂë
+                if(holdEffectTimer > (60 / judgeLine.bpm) / 2 && !noteData.isFake)
                 {
                     judgeLine.levelController.hitFxController.GetHitFx(HitType.Perfect,
                         judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)), 

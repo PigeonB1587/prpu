@@ -42,16 +42,20 @@ namespace PigeonB1587.prpu
         public void Start()
         {
             musicPlayer.Pause();
+
             gui.speed = 0;
             levelAni.speed = 0;
+
             if (GameInformation.Instance == null)
             {
                 Debug.LogError("Cannot find the instace \"GameInformation\".");
             }
+
             time -= GameInformation.Instance.offset + reader.offset;
             musicNameText.text = GameInformation.Instance.levelStartInfo.songsName;
             levelText.text = GameInformation.Instance.levelStartInfo.songsLevel;
             backgroundImage.sprite = GameInformation.Instance.illustration;
+
             LevelStart().Forget();
         }
 
@@ -62,23 +66,29 @@ namespace PigeonB1587.prpu
             musicPlayer.pitch = GameInformation.Instance.levelSpeed;
             musicPlayer.loop = false;
             musicPlayer.time = 0;
+
             if (Reader.chart == null || Reader.chart.level != GameInformation.Instance.levelStartInfo.songsLevel || Reader.chart.songID != GameInformation.Instance.levelStartInfo.songsId)
             {
                 await reader.ReadChart(Phigros.Fv3ToPrpuFv2(Phigros.GetJsonToObject(GameInformation.Instance.chart.text)),
                     GameInformation.Instance.levelStartInfo.songsId,
                     GameInformation.Instance.levelStartInfo.songsLevel);
             }
+
             await lineController.SpawnJudgmentLine();
+
             gui.Play("LevelStart");
             gui.speed = 1;
             levelAni.Play("Start");
             levelAni.speed = 1;
             isLoading = false;
+
             await UniTask.Delay(1050);
+
             gui.enabled = false;
             musicPlayer.Play();
             isPlay = true;
             StartCoroutine(LevelUpdate());
+
             await UniTask.CompletedTask;
             return;
         }
