@@ -10,10 +10,11 @@ namespace PigeonB1587.prpu
         public Reader reader;
         public JudgeLineController lineController;
         public HitEffectController hitFxController;
+        public Animator gui;
 
         public AudioSource musicPlayer;
 
-        public Text musicNameText, levelText;
+        public Text musicNameText, levelText, comboText, subComboText, scoreText;
         public Image backgroundImage;
 
         public RectTransform progressBarRect;
@@ -25,11 +26,17 @@ namespace PigeonB1587.prpu
         public bool isLoading = true;
         public bool isPlay = false;
 
+        private CanvasGroup comboTextCanvasGroup, subComboTextCanvasGroup;
+
         public void Awake()
         {
+            ScoreController.ResetScore();
+            gui.speed = 0;
             reader = GetComponent<Reader>();
             lineController = GetComponent<JudgeLineController>();
             hitFxController = GetComponent<HitEffectController>();
+            comboTextCanvasGroup = comboText.GetComponent<CanvasGroup>();
+            subComboTextCanvasGroup = subComboText.GetComponent<CanvasGroup>();
         }
 
         public void Start()
@@ -60,13 +67,28 @@ namespace PigeonB1587.prpu
                     GameInformation.Instance.levelStartInfo.songsLevel);
             }
             await lineController.SpawnJudgmentLine();
+            gui.Play("LevelStart");
+            gui.speed = 1;
             isLoading = false;
             await UniTask.Delay(2000);
+            gui.enabled = false;
             musicPlayer.Play();
             isPlay = true;
             StartCoroutine(LevelUpdate());
             await UniTask.CompletedTask;
             return;
+        }
+
+        private void HideCombo()
+        {
+            comboTextCanvasGroup.alpha = 0;
+            subComboTextCanvasGroup.alpha = 0;
+        }
+
+        private void ShowCombo()
+        {
+            comboTextCanvasGroup.alpha = 1;
+            subComboTextCanvasGroup.alpha = 1;
         }
 
         public IEnumerator LevelUpdate()
@@ -83,11 +105,31 @@ namespace PigeonB1587.prpu
                 progress
                     );
                     progressBarRect.anchoredPosition = new Vector2(xPos, 0);
+                    scoreText.text = Utils.GetScoreText(ScoreController.score);
+                    comboText.text = ScoreController.combo.ToString();
+                    if(ScoreController.combo < 3)
+                    {
+                        HideCombo();
+                    }
+                    else
+                    {
+                        ShowCombo();
+                    }
+
+                    if(Input.GetKeyDown(KeyCode.S))
+                        musicPlayer.time = musicPlayer.clip.length - 5;
                 }
                 yield return null;
             }
             yield return null;
             Debug.Log("Level Over");
+            if (ScoreController.combo < 3)
+            {
+                comboText.gameObject.SetActive(false);
+                subComboText.gameObject.SetActive(false);
+            }
+            gui.enabled = true;
+            gui.Play("LevelEnd");
         }
     }
 }

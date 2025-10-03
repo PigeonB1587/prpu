@@ -24,6 +24,7 @@ namespace PigeonB1587.prpu
                 judgeLineList = GetJudgeLines(root.judgeLineList)
             };
 
+            Debug.Log($"Real notes count: {ScoreController.noteCount}");
             await UniTask.CompletedTask;
             return;
         }
@@ -108,7 +109,8 @@ namespace PigeonB1587.prpu
                     floorPosition = 0,
                     endfloorPosition = 0
                 };
-
+                if (!prpuNote.isFake)
+                    ScoreController.noteCount++;
                 notes[i].floorPosition = Utils.GetCurFloorPosition(notes[i].startTime.curTime, speedEvents);
                 notes[i].endfloorPosition = Utils.GetCurFloorPosition(notes[i].endTime.curTime, speedEvents);
             }

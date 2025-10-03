@@ -46,7 +46,7 @@ namespace PigeonB1587.prpu
                 maxSize: 1000
             );
         }
-        public void GetHitFx(HitEffectType type, Vector3 position, int noteType, Transform line = null)
+        public void GetHitFx(HitType type, Vector3 position, int noteType, Transform line = null)
         {
             if (!GameInformation.Instance.isHitFXEnabled)
             {
@@ -57,19 +57,19 @@ namespace PigeonB1587.prpu
 
             switch (type)
             {
-                case HitEffectType.Perfect:
+                case HitType.Perfect:
                     effect = perfectEffectsPool.Get();
                     targetPool = perfectEffectsPool;
                     break;
-                case HitEffectType.Good:
+                case HitType.Good:
                     effect = goodEffectsPool.Get();
                     targetPool = goodEffectsPool;
                     break;
-                case HitEffectType.Bad:
+                case HitType.Bad:
                     effect = badEffectsPool.Get();
                     targetPool = badEffectsPool;
                     break;
-                case HitEffectType.Miss:
+                case HitType.Miss:
                     return;
             }
             var size = hitFxScale * GameInformation.Instance.noteScale;
@@ -111,5 +111,5 @@ namespace PigeonB1587.prpu
         }
     }
 
-    public enum HitEffectType { Perfect, Good, Bad, Miss }
+    public enum HitType { Perfect, Good, Bad, Miss }
 }

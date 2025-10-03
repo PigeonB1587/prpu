@@ -57,7 +57,7 @@ namespace PigeonB1587.prpu
             isFirstJudge = false;
             isHolding = true;
             isJudge = true;
-            judgeLine.levelController.hitFxController.GetHitFx(HitEffectType.Perfect,
+            judgeLine.levelController.hitFxController.GetHitFx(HitType.Perfect,
                 judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)),
                 1);
             StartCoroutine(Holding());
@@ -70,11 +70,18 @@ namespace PigeonB1587.prpu
                 holdEffectTimer += Time.deltaTime;
                 if(holdEffectTimer > (60 / judgeLine.bpm) / 2 && !noteData.isFake) // ×æ´«´úÂë
                 {
-                    judgeLine.levelController.hitFxController.GetHitFx(HitEffectType.Perfect,
+                    judgeLine.levelController.hitFxController.GetHitFx(HitType.Perfect,
                         judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)), 
                         3);
                     holdEffectTimer = 0.0f;
                 }
+
+                if(!overJudge && judgeLine.levelController.time > noteData.endTime.curTime - 0.08f)
+                {
+					ScoreController.Hit(HitType.Perfect, 0);
+                    overJudge = true;
+				}
+
                 if (judgeLine.levelController.time >= noteData.endTime.curTime)
                 {
                     noteRenderer.enabled = false;

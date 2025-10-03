@@ -116,6 +116,13 @@ namespace PigeonB1587.prpu
 
             return new Vector2(rotatedX + parentPos.x, rotatedY + parentPos.y);
         }
+        public static string GetScoreText(double score)
+        {
+            score = double.IsFinite(score += 0.5) ? (int)score : int.MaxValue;
+            if (score >= 1000000.0) return "1000000";
+            return "0" + (score / 100000.0).ToString("F5").Replace(".", "");
+        }
+
         public static int RgbaToInt(byte r, byte g, byte b, byte a) => (r << 24) | (g << 16) | (b << 8) | a;
 
         public static Color IntToColor(int colorInt) => new(((byte)(colorInt >> 24)) / 255f, ((byte)(colorInt >> 16)) / 255f, ((byte)(colorInt >> 8)) / 255f, ((byte)colorInt) / 255f);

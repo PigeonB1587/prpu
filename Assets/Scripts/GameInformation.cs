@@ -278,7 +278,6 @@ namespace PigeonB1587.prpu
             public float positionX; //OK
             public float positionY; //OK
             public int color; //OK
-            public bool autoPlayHitSound;
             public int hitFXColor;
             public float judgeSize;
             public float floorPosition = 0; //OK
