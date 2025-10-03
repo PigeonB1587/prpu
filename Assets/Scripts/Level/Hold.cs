@@ -50,7 +50,13 @@ namespace PigeonB1587.prpu
             {
                 noteRenderer1.enabled = false;
             }
-        }
+
+			if (visable == false && judgeLine.levelController.time + GameInformation.Instance.noteToLargeTime < noteData.startTime.curTime)
+			{
+				judgeLine.localNotes.Add(noteData);
+				judgeLine.holdPool.Release(this);
+			}
+		}
 
         public override void Judge()
         {

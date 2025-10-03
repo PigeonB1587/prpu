@@ -1,6 +1,8 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 namespace PigeonB1587.prpu
@@ -20,6 +22,9 @@ namespace PigeonB1587.prpu
         public RectTransform progressBarRect;
         public RectTransform guiRect;
 
+        public Color perfectLine;
+        public Color goodLine;
+        public Color defaultLine;
 
         public double time = 0d;
 
@@ -146,6 +151,9 @@ namespace PigeonB1587.prpu
             }
             gui.enabled = true;
             gui.Play("LevelEnd");
+
+            Debug.Log($"Combo: {ScoreController.combo}, Score: {ScoreController.score}, Max Combo: {ScoreController.maxCombo}\n" +
+              $"Perfect: {ScoreController.perfectCount}, Good: {ScoreController.goodCount}, Bad: {ScoreController.badCount}, Miss: {ScoreController.missCount}");
         }
     }
 }

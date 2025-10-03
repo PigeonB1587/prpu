@@ -6,7 +6,16 @@ namespace PigeonB1587.prpu
 {
     public class Flick : NoteObject
     {
-        public override void Judge()
+		public override void Update()
+		{
+			base.Update();
+			if (noteRenderer.enabled == false && judgeLine.levelController.time + GameInformation.Instance.noteToLargeTime < noteData.startTime.curTime)
+			{
+				judgeLine.localNotes.Add(noteData);
+				judgeLine.flickPool.Release(this);
+			}
+		}
+		public override void Judge()
         {
             isJudge = true;
 			ScoreController.Hit(HitType.Perfect, 0);

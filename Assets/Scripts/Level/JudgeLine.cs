@@ -19,9 +19,6 @@ namespace PigeonB1587.prpu
         public ObjectPool<Hold> holdPool;
 
         public bool usingCustomColor;
-        public Color perfectLine;
-        public Color goodLine;
-        public Color defaultLine;
 
         public float moveX = 0;
         public float moveY = 0;
@@ -36,7 +33,7 @@ namespace PigeonB1587.prpu
         public Color endColor;
         public void Start()
         {
-            lineRenderer.color = GameInformation.Instance.isFCAPIndicator ? perfectLine : defaultLine;
+            lineRenderer.color = GameInformation.Instance.isFCAPIndicator ? levelController.perfectLine : levelController.defaultLine;
             lineRenderer.size = new Vector2(jugdeLineData.transform.judgeLineTextureSize[0],
                 jugdeLineData.transform.judgeLineTextureSize[1]);
             lineRenderer.sortingOrder = jugdeLineData.transform.zOrder;
@@ -150,7 +147,7 @@ namespace PigeonB1587.prpu
 
             if (!usingCustomColor)
             {
-                endColor = new Color(perfectLine.r, perfectLine.g, perfectLine.b, disappear);
+                endColor = new Color(levelController.perfectLine.r, levelController.perfectLine.g, levelController.perfectLine.b, disappear);
             }
             else
             {

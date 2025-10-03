@@ -6,6 +6,15 @@ namespace PigeonB1587.prpu
 {
     public class Tap : NoteObject
     {
+        public override void Update()
+        {
+            base.Update();
+			if (noteRenderer.enabled == false && judgeLine.levelController.time + GameInformation.Instance.noteToLargeTime < noteData.startTime.curTime)
+			{
+                judgeLine.localNotes.Add(noteData);
+				judgeLine.tapPool.Release(this);
+			}
+		}
         public override void Judge()
         {
             isJudge = true;
