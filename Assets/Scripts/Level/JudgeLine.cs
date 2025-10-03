@@ -7,11 +7,12 @@ namespace PigeonB1587.prpu
 {
     public class JudgeLine : MonoBehaviour
     {
+        public int index = 0;
         public ChartObject.JudgeLine jugdeLineData;
         public SpriteRenderer lineRenderer;
         public LevelController levelController;
 
-        public List<ChartObject.Note> localNotes;
+        public List<(ChartObject.Note note, int index)> localNotes = new();
         public GameObject tapPrefab, dragPrefab, flickPrefab, holdPrefab;
         public ObjectPool<Tap> tapPool;
         public ObjectPool<Drag> dragPool;
@@ -41,7 +42,9 @@ namespace PigeonB1587.prpu
             {
                 usingCustomColor = true;
             }
-            localNotes = jugdeLineData.notes.ToList();
+            localNotes = jugdeLineData.notes
+                .Select((note, idx) => (note, idx))
+                .ToList();
             SetNotePool();
         }
         private void SetNotePool()
@@ -159,75 +162,68 @@ namespace PigeonB1587.prpu
 
         public void UpdateNote()
         {
-            for (int i = 0; i < localNotes.Count; i++)
+            double currentTime = levelController.time;
+            float visableY0 = GameInformation.Instance.visableY[0];
+            float visableY1 = GameInformation.Instance.visableY[1];
+            float visableX0 = GameInformation.Instance.visableX[0];
+            float visableX1 = GameInformation.Instance.visableX[1];
+            float screenRadioScale = GameInformation.Instance.screenRadioScale;
+
+            for (int i = localNotes.Count - 1; i >= 0; i--)
             {
-                var f = localNotes[i].floorPosition - floorPosition + localNotes[i].positionY;
+                var (note, originalIndex) = localNotes[i];
+                bool shouldGetNote = false;
 
-                var v = Utils.LocalToWorld(new Vector3(
-                    localNotes[i].positionX * GameInformation.Instance.screenRadioScale,
-                    f * localNotes[i].speed,
-                    0), transform.position, transform.eulerAngles.z
-                    );
+                float baseY = note.floorPosition - floorPosition + note.positionY;
+                Vector3 localPos = new Vector3(
+                    note.positionX * screenRadioScale,
+                    baseY * note.speed,
+                    0);
+                Vector3 worldPos = Utils.LocalToWorld(localPos, transform.position, transform.eulerAngles.z);
 
-                void GetNote()
+                if (note.type != 3)
                 {
-                    NoteObject n;
-                    switch (localNotes[i].type)
-                    {
-                        case 1:
-                            n = tapPool.Get();
-                            break;
-                        case 2:
-                            n = dragPool.Get();
-                            break;
-                        case 3:
-                            n = holdPool.Get();
-                            break;
-                        case 4:
-                            n = flickPool.Get();
-                            break;
-                        default:
-                            n = tapPool.Get();
-                            break;
-                    }
-                    n.noteData = localNotes[i];
-                    n.judgeLine = this;
-                    n.Start();
-                    localNotes.RemoveAt(i);
-                    i--;
-                }
-                if (localNotes[i].type != 3)
-                {
-                    if (v.y > GameInformation.Instance.visableY[0] && v.y < GameInformation.Instance.visableY[1]
-                    && v.x > GameInformation.Instance.visableX[0] && v.x < GameInformation.Instance.visableX[1])
-                    {
-                        GetNote();
-                    }
-                    else if (localNotes[i].startTime.curTime - levelController.time <= 0.3f)
-                    {
-                        GetNote();
-                    }
+                    shouldGetNote = (worldPos.y > visableY0 && worldPos.y < visableY1 &&
+                                   worldPos.x > visableX0 && worldPos.x < visableX1) ||
+                                  (note.startTime.curTime - currentTime <= 0.3f);
                 }
                 else
                 {
-                    var f1 = localNotes[i].endfloorPosition - floorPosition + localNotes[i].positionY;
-                    var v1 = Utils.LocalToWorld(new Vector3(
-                    localNotes[i].positionX * GameInformation.Instance.screenRadioScale,
-                    f1 * localNotes[i].speed,
-                    0), transform.position, transform.eulerAngles.z
-                    );
-                    if (Utils.GetHoldVisable(v, v1, GameInformation.Instance.visableX[0],
-                    GameInformation.Instance.visableY[0], GameInformation.Instance.visableX[1],
-                    GameInformation.Instance.visableY[1]))
-                    {
-                        GetNote();
-                    }
-                    else if (localNotes[i].startTime.curTime - levelController.time <= 0.3f)
-                    {
-                        GetNote();
-                    }
+                    float endBaseY = note.endfloorPosition - floorPosition + note.positionY;
+                    Vector3 endLocalPos = new Vector3(
+                        note.positionX * screenRadioScale,
+                        endBaseY * note.speed,
+                        0);
+                    Vector3 endWorldPos = Utils.LocalToWorld(endLocalPos, transform.position, transform.eulerAngles.z);
+
+                    shouldGetNote = Utils.GetHoldVisable(worldPos, endWorldPos, visableX0, visableY0, visableX1, visableY1) ||
+                                  (note.startTime.curTime - currentTime <= 0.3f);
+                }
+
+                if (shouldGetNote)
+                {
+                    GetAndSetupNote(note, originalIndex, i);
                 }
             }
+        }
+
+        private void GetAndSetupNote(ChartObject.Note note, int originalIndex, int listIndex)
+        {
+            NoteObject noteObject = note.type switch
+            {
+                1 => tapPool.Get(),
+                2 => dragPool.Get(),
+                3 => holdPool.Get(),
+                4 => flickPool.Get(),
+                _ => tapPool.Get()
+            };
+
+            noteObject.noteData = note;
+            noteObject.judgeLine = this;
+            noteObject.index = originalIndex;
+
+            noteObject.Start();
+            localNotes.RemoveAt(listIndex);
         }
 
         private void UpdateEventLayers(double currentTime)

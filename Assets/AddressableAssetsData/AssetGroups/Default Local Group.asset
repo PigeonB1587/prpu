@@ -17,57 +17,44 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: bc646b9d8a341484985b7704feba0d9c
   m_SerializeEntries:
-  - m_GUID: f4756d5456bba7e419656e31e7e4fcce
-    m_Address: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/Illustration.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 6600a5d81e6845e47bd71ee75c4be6e1
-    m_Address: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/Chart_IN.json
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: a83be5eb1083f7840b1a8a9714924c1b
-    m_Address: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/Chart_HD.json
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: dab0b71c7beace3488fbc2c70639219e
-    m_Address: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/Chart_EZ.json
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 88c0df8cc22ad0c46a32a75ed8faddb6
-    m_Address: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/Chart_AT.json
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 2bf67db8152b435439882a7024169983
-    m_Address: Assets/Tracks/AbsoluTedisoRdeR.AcuteDisarray.0/music.ogg
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: ed9d5913742c9104eb352293bd421219
-    m_Address: Assets/Tracks/QZKagoRequiem.tpazolite.0/Chart_AT.json
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: c29e34cc04e125b4384ee62ecd2c074a
-    m_Address: Assets/Tracks/QZKagoRequiem.tpazolite.0/Chart_EZ.json
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: bb58fe13ae170654c8d404fd969809fa
-    m_Address: Assets/Tracks/QZKagoRequiem.tpazolite.0/Chart_HD.json
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 25877cfc5eed76448b0a20a291d9d8e9
     m_Address: Assets/Tracks/QZKagoRequiem.tpazolite.0/Chart_IN.json
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: d9b5889270bfc214b8f1cb46f3eaad5f
-    m_Address: Assets/Tracks/QZKagoRequiem.tpazolite.0/illustration.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5f8f3803ac760c942a8628436457fffc
     m_Address: Assets/Tracks/QZKagoRequiem.tpazolite.0/music.ogg
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb58fe13ae170654c8d404fd969809fa
+    m_Address: Assets/Tracks/QZKagoRequiem.tpazolite.0/Chart_HD.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c29e34cc04e125b4384ee62ecd2c074a
+    m_Address: Assets/Tracks/QZKagoRequiem.tpazolite.0/Chart_EZ.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c9d8f13249c006f47a2861321f9fde62
+    m_Address: Assets/Assets/Audios/otto-hzys-1759503277246.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d9b5889270bfc214b8f1cb46f3eaad5f
+    m_Address: Assets/Tracks/QZKagoRequiem.tpazolite.0/illustration.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ed9d5913742c9104eb352293bd421219
+    m_Address: Assets/Tracks/QZKagoRequiem.tpazolite.0/Chart_AT.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: e6a40a86fb970444782fe9655e98c6bf, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 28fe650f06908084193573ed09049966, type: 2}
     - {fileID: 11400000, guid: bdab510a5252cee47be939424dfe4458, type: 2}
+    - {fileID: 11400000, guid: 28fe650f06908084193573ed09049966, type: 2}

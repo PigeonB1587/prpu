@@ -259,7 +259,6 @@ namespace PigeonB1587.prpu
                 judgeLineTextEvents = GetTextEvents(prpuTransform.judgeLineTextEvents, prpuBpmItems),
                 judgeLineTextureSize = prpuTransform.judgeLineTextureSize,
                 fatherLineIndex = prpuTransform.fatherLineIndex,
-                anchor = prpuTransform.anchor,
                 localPositionMode = prpuTransform.localPositionMode,
                 localEulerAnglesMode = prpuTransform.localEulerAnglesMode,
                 zOrder = prpuTransform.zOrder,

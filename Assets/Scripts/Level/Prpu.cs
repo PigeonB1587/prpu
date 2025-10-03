@@ -97,7 +97,6 @@ namespace PigeonB1587.prpu
                 public TextEvent[] judgeLineTextEvents { get; set; }
                 public float[] judgeLineTextureSize { get; set; }
                 public int fatherLineIndex { get; set; }
-                public float[] anchor { get; set; }
                 public bool localPositionMode { get; set; }
                 public bool localEulerAnglesMode { get; set; }
                 public int zOrder { get; set; }

@@ -1,4 +1,6 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -7,6 +9,7 @@ namespace PigeonB1587.prpu
     public class HitEffectController : MonoBehaviour
     {
         public AudioClip click, drag, flick;
+        public List<(AudioClip audio, int noteIndex, int judgeLineIndex)> customHitSound = new();
         public ObjectPool<GameObject> perfectEffectsPool,
             goodEffectsPool,
             badEffectsPool;
@@ -15,18 +18,44 @@ namespace PigeonB1587.prpu
             badEffectPrefab;
         public float hitFxScale = 1f;
 
-        public void Start() => SetPool();
+        private Dictionary<int, List<(AudioClip audio, int noteIndex)>> _customSoundGroups;
+
+        public void Start()
+        {
+            SetPool();
+        }
+
+        public async UniTask LoadCustomClip()
+        {
+            foreach (var item in GameInformation.Instance.levelStartInfo.noteAssets)
+            {
+                Debug.Log($"Load custom hit sound: judgeLineIndex={item.judgeLineIndex}, noteIndex={item.noteIndex}");
+                AudioClip clip = await GameInformation.Instance.LoadAddressableAsset<AudioClip>(item.hitSoundAddressableKey);
+                customHitSound.Add((clip, item.noteIndex, item.judgeLineIndex));
+            }
+            customHitSound.Sort((a, b) => a.judgeLineIndex.CompareTo(b.judgeLineIndex));
+            _customSoundGroups = new Dictionary<int, List<(AudioClip, int)>>();
+            foreach (var sound in customHitSound)
+            {
+                if (!_customSoundGroups.ContainsKey(sound.judgeLineIndex))
+                {
+                    _customSoundGroups[sound.judgeLineIndex] = new List<(AudioClip, int)>();
+                }
+                _customSoundGroups[sound.judgeLineIndex].Add((sound.audio, sound.noteIndex));
+            }
+
+            await UniTask.CompletedTask;
+            return;
+        }
+
         private void SetPool()
         {
             perfectEffectsPool = new ObjectPool<GameObject>(
                 createFunc: () => Instantiate(perfectEffectPrefab, transform),
-                actionOnGet: (tap) =>
-                {
-                    tap.SetActive(true);
-                },
+                actionOnGet: (tap) => tap.SetActive(true),
                 actionOnRelease: (tap) => tap.SetActive(false),
                 actionOnDestroy: (tap) => Destroy(tap),
-                defaultCapacity: 20,
+                defaultCapacity: 40,
                 maxSize: 10000
             );
             goodEffectsPool = new ObjectPool<GameObject>(
@@ -34,7 +63,7 @@ namespace PigeonB1587.prpu
                 actionOnGet: (tap) => tap.SetActive(true),
                 actionOnRelease: (tap) => tap.SetActive(false),
                 actionOnDestroy: (tap) => Destroy(tap),
-                defaultCapacity: 20,
+                defaultCapacity: 30,
                 maxSize: 10000
             );
             badEffectsPool = new ObjectPool<GameObject>(
@@ -42,11 +71,12 @@ namespace PigeonB1587.prpu
                 actionOnGet: (tap) => tap.SetActive(true),
                 actionOnRelease: (tap) => tap.SetActive(false),
                 actionOnDestroy: (tap) => Destroy(tap),
-                defaultCapacity: 10,
+                defaultCapacity: 11,
                 maxSize: 1000
             );
         }
-        public void GetHitFx(HitType type, Vector3 position, int noteType, Transform line = null)
+
+        public void GetHitFx(HitType type, Vector3 position, int noteType, Transform line = null, int lineIndex = -1, int noteIndex = -1)
         {
             if (!GameInformation.Instance.isHitFXEnabled)
             {
@@ -72,36 +102,56 @@ namespace PigeonB1587.prpu
                 case HitType.Miss:
                     return;
             }
+
             var size = hitFxScale * GameInformation.Instance.noteScale;
             effect.transform.localScale = new Vector3(size, size, size);
-            if (line != null)
-            {
-                effect.transform.SetParent(line);
-            }
-            else
-            {
-                effect.transform.SetParent(transform);
-            }
+            effect.transform.SetParent(line != null ? line : transform);
             effect.transform.position = position;
-            PlayAudio(noteType, effect.GetComponent<AudioSource>());
+
+            PlayHitSound(effect.GetComponent<AudioSource>(), noteType, lineIndex, noteIndex);
+
             StartCoroutine(ReturnToPoolAfterDelay(effect, targetPool, 1f));
         }
 
-        private void PlayAudio(int type, AudioSource source)
+        private void PlayHitSound(AudioSource source, int noteType, int lineIndex, int noteIndex)
         {
-            // Unity Audio
-            switch (type)
+            if (_customSoundGroups != null && lineIndex >= 0 &&
+                _customSoundGroups.ContainsKey(lineIndex))
             {
-                case 1:
-                    source.PlayOneShot(click, GameInformation.Instance.hitFXVolume);
-                    break;
-                case 2:
-                    source.PlayOneShot(drag, GameInformation.Instance.hitFXVolume);
-                    break;
-                case 4:
-                    source.PlayOneShot(flick, GameInformation.Instance.hitFXVolume);
-                    break;
+                AudioClip customClip = FindCustomHitSound(lineIndex, noteIndex);
+                if (customClip != null)
+                {
+                    source.PlayOneShot(customClip, GameInformation.Instance.hitFXVolume);
+                    return;
+                }
             }
+
+            AudioClip defaultClip = noteType switch
+            {
+                1 => click,
+                2 => drag,
+                4 => flick,
+                _ => null
+            };
+            if (defaultClip != null)
+            {
+                source.PlayOneShot(defaultClip, GameInformation.Instance.hitFXVolume);
+            }
+        }
+
+        private AudioClip FindCustomHitSound(int lineIndex, int noteIndex)
+        {
+            if (_customSoundGroups.TryGetValue(lineIndex, out var lineSounds))
+            {
+                foreach (var sound in lineSounds)
+                {
+                    if (sound.noteIndex == noteIndex)
+                    {
+                        return sound.audio;
+                    }
+                }
+            }
+            return null;
         }
 
         private IEnumerator ReturnToPoolAfterDelay(GameObject obj, ObjectPool<GameObject> pool, float delay)

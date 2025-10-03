@@ -12,9 +12,16 @@ namespace PigeonB1587.prpu
         public Transform jugdeLineFather;
 
         public List<JudgeLine> judgeLines = new List<JudgeLine>();
+        public List<Sprite> judgeLineSprites = new List<Sprite>();
 
         public async UniTask SpawnJudgmentLine()
         {
+            foreach (var item in GameInformation.Instance.levelStartInfo.judgeLineImages)
+            {
+                Debug.Log($"Load judgeLine sprite: {item.judgeLineIndex}");
+                Sprite sprite = await GameInformation.Instance.LoadAddressableAsset<Sprite>(item.imageAddressableKey);
+                judgeLineSprites.Add(sprite);
+            }
             if (Reader.chart.judgeLineList.Length == 0)
                 return;
             for (int i = 0; i < Reader.chart.judgeLineList.Length; i++)
@@ -24,6 +31,7 @@ namespace PigeonB1587.prpu
                 JudgeLine line = lineObj.GetComponent<JudgeLine>();
                 judgeLines.Add(line);
                 line.jugdeLineData = Reader.chart.judgeLineList[i];
+                line.index = i;
                 line.levelController = levelController;
             }
             for (int i = 0; i < judgeLines.Count; i++)
@@ -31,7 +39,12 @@ namespace PigeonB1587.prpu
                 if (judgeLines[i].jugdeLineData.transform.fatherLineIndex != -1)
                     judgeLines[i].fatherLine = judgeLines[judgeLines[i].jugdeLineData.transform.fatherLineIndex].transform;
             }
+            for (int i = 0; i < GameInformation.Instance.levelStartInfo.judgeLineImages.Count; i++)
+            {
+                judgeLines[GameInformation.Instance.levelStartInfo.judgeLineImages[i].judgeLineIndex].GetComponent<SpriteRenderer>().sprite = judgeLineSprites[i];
+            }
             judgeLines = SortJudgmentLine(judgeLines);
+
             await UniTask.CompletedTask;
             return;
         }
@@ -40,18 +53,23 @@ namespace PigeonB1587.prpu
         {
             if (!levelController.isLoading && !levelController.isOver)
             {
-                for (int i = 0; i < judgeLines.Count(); i++)
-                {
-                    judgeLines[i].UpdateLine(levelController.time);
-                }
-                for (int i = 0; i < judgeLines.Count(); i++)
-                {
-                    judgeLines[i].UpdateTransform();
-                }
-                for (int i = 0; i < judgeLines.Count(); i++)
-                {
-                    judgeLines[i].UpdateNote();
-                }
+                UpdateJudgeLines();
+            }
+        }
+
+        public void UpdateJudgeLines()
+        {
+            for (int i = 0; i < judgeLines.Count(); i++)
+            {
+                judgeLines[i].UpdateLine(levelController.time);
+            }
+            for (int i = 0; i < judgeLines.Count(); i++)
+            {
+                judgeLines[i].UpdateTransform();
+            }
+            for (int i = 0; i < judgeLines.Count(); i++)
+            {
+                judgeLines[i].UpdateNote();
             }
         }
 

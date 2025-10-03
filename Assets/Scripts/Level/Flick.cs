@@ -11,7 +11,7 @@ namespace PigeonB1587.prpu
 			base.Update();
 			if (noteRenderer.enabled == false && judgeLine.levelController.time + GameInformation.Instance.noteToLargeTime < noteData.startTime.curTime)
 			{
-				judgeLine.localNotes.Add(noteData);
+				judgeLine.localNotes.Add((noteData, index));
 				judgeLine.flickPool.Release(this);
 			}
 		}
@@ -21,7 +21,7 @@ namespace PigeonB1587.prpu
 			ScoreController.Hit(HitType.Perfect, 0);
 			judgeLine.levelController.hitFxController.GetHitFx(HitType.Perfect,
                 judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)),
-                4);
+                4, lineIndex: judgeLine.index, noteIndex: index);
             judgeLine.flickPool.Release(this);
         }
     }

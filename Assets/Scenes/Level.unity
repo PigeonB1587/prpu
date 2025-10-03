@@ -363,6 +363,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reader: {fileID: 144982127}
   lineController: {fileID: 144982130}
+  previewLineRenderer: {fileID: 1482989340}
   hitFxController: {fileID: 144982131}
   gui: {fileID: 137220746}
   levelAni: {fileID: 271596924}
@@ -378,6 +379,7 @@ MonoBehaviour:
   perfectLine: {r: 0.99607843, g: 1, b: 0.6627451, a: 1}
   goodLine: {r: 0.63529414, g: 0.93333334, b: 1, a: 1}
   defaultLine: {r: 1, g: 1, b: 1, a: 1}
+  gameObjects: {fileID: 1257359621}
   time: 0
   isLoading: 1
   isPlay: 0
@@ -398,6 +400,7 @@ MonoBehaviour:
   levelController: {fileID: 144982129}
   jugdeLineFather: {fileID: 1257359622}
   judgeLines: []
+  judgeLineSprites: []
 --- !u!114 &144982131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1329,11 +1332,11 @@ MonoBehaviour:
   - -15
   - 15
   screenRadioScale: 0
-  chart: {fileID: 4900000, guid: 25877cfc5eed76448b0a20a291d9d8e9, type: 3}
+  chart: {fileID: 4900000, guid: ed9d5913742c9104eb352293bd421219, type: 3}
   illustration: {fileID: 21300000, guid: d9b5889270bfc214b8f1cb46f3eaad5f, type: 3}
   music: {fileID: 8300000, guid: 5f8f3803ac760c942a8628436457fffc, type: 3}
   isHitFXEnabled: 1
-  isFCAPIndicator: 0
+  isFCAPIndicator: 1
   autoPlay: 0
   offset: 0
   levelSpeed: 1
@@ -1344,12 +1347,12 @@ MonoBehaviour:
   backgroundAlpha: 0.5
   useLowResolution: 0
   levelStartInfo:
-    songsId: QZKagoRequiem.tpazolite.0
-    songsName: QZKago Requiem
+    songsId: 
+    songsName: "\u8304\u5B50"
     composer: 
     charter: 
     illustrator: 
-    songsLevel: IN  Lv.16
+    songsLevel: AT  Lv.17
     musicAddressableKey: 
     chartAddressableKey: 
     illustrationKey: 

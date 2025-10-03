@@ -84,7 +84,7 @@ namespace PigeonB1587.prpu
             return;
         }
 
-        async UniTask<T> LoadAddressableAsset<T>(string address) where T : UnityEngine.Object
+        public async UniTask<T> LoadAddressableAsset<T>(string address) where T : UnityEngine.Object
         {
             var handle = Addressables.LoadAssetAsync<T>(address);
             await handle;
@@ -125,7 +125,8 @@ namespace PigeonB1587.prpu
     [Serializable]
     public class NoteAsset
     {
-        public int noteType;
+        public int noteIndex;
+        public int judgeLineIndex;
         public string hitSoundAddressableKey;
     }
 
@@ -299,7 +300,6 @@ namespace PigeonB1587.prpu
             public TextEvent[] judgeLineTextEvents;
             public float[] judgeLineTextureSize;
             public int fatherLineIndex; //OK
-            public float[] anchor;
             public bool localPositionMode; //OK
             public bool localEulerAnglesMode; //OK
             public int zOrder; //OK

@@ -7,6 +7,7 @@ namespace PigeonB1587.prpu
 {
     public class NoteObject : MonoBehaviour
     {
+        public int index = 0;
         public ChartObject.Note noteData;
         public bool useVisableTime = false;
         public ChartObject.Time visableTimeData;

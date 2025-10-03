@@ -11,6 +11,7 @@ namespace PigeonB1587.prpu
     {
         public Reader reader;
         public JudgeLineController lineController;
+        public SpriteRenderer previewLineRenderer;
         public HitEffectController hitFxController;
         public Animator gui, levelAni;
 
@@ -25,6 +26,8 @@ namespace PigeonB1587.prpu
         public Color perfectLine;
         public Color goodLine;
         public Color defaultLine;
+
+        public GameObject gameObjects;
 
         public double time = 0d;
 
@@ -56,6 +59,8 @@ namespace PigeonB1587.prpu
                 Debug.LogError("Cannot find the instace \"GameInformation\".");
             }
 
+            previewLineRenderer.color = GameInformation.Instance.isFCAPIndicator ? perfectLine : defaultLine;
+
             time -= GameInformation.Instance.offset + reader.offset;
             musicNameText.text = GameInformation.Instance.levelStartInfo.songsName;
             levelText.text = GameInformation.Instance.levelStartInfo.songsLevel;
@@ -79,6 +84,7 @@ namespace PigeonB1587.prpu
                     GameInformation.Instance.levelStartInfo.songsLevel);
             }
 
+            await hitFxController.LoadCustomClip();
             await lineController.SpawnJudgmentLine();
 
             gui.Play("LevelStart");
@@ -87,7 +93,7 @@ namespace PigeonB1587.prpu
             levelAni.speed = 1;
             isLoading = false;
 
-            await UniTask.Delay((int)(65f / 60f * 1000));
+            await UniTask.Delay(1084);
 
             gui.enabled = false;
             musicPlayer.Play();
@@ -150,6 +156,8 @@ namespace PigeonB1587.prpu
                 subComboText.gameObject.SetActive(false);
             }
             gui.enabled = true;
+            levelAni.enabled = false;
+            gameObjects.SetActive(false);
             gui.Play("LevelEnd");
 
             Debug.Log($"Combo: {ScoreController.combo}, Score: {ScoreController.score}, Max Combo: {ScoreController.maxCombo}\n" +
