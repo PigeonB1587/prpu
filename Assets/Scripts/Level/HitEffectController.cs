@@ -21,10 +21,8 @@ namespace PigeonB1587.prpu
         private Dictionary<int, List<(AudioClip audio, int noteIndex)>> _customSoundGroups;
         private Dictionary<GameObject, AudioSource> _audioSourceCache = new Dictionary<GameObject, AudioSource>();
 
-        public void Start()
-        {
-            SetPool();
-        }
+        // bushiwoxiede
+        public void Start() => SetPool();
 
         public async UniTask LoadCustomClip()
         {
@@ -139,7 +137,6 @@ namespace PigeonB1587.prpu
             effect.transform.SetParent(line != null ? line : transform);
             effect.transform.position = position;
 
-            // 从缓存获取 AudioSource，避免每次 GetComponent
             if (_audioSourceCache.TryGetValue(effect, out AudioSource audioSource))
             {
                 PlayHitSound(audioSource, noteType, lineIndex, noteIndex);
