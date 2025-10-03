@@ -6,6 +6,7 @@ namespace PigeonB1587.prpu
 {
     public class HitEffectController : MonoBehaviour
     {
+        public AudioClip click, drag, flick;
         public ObjectPool<GameObject> perfectEffectsPool,
             goodEffectsPool,
             badEffectsPool;
@@ -14,11 +15,7 @@ namespace PigeonB1587.prpu
             badEffectPrefab;
         public float hitFxScale = 1f;
 
-        public void Start()
-        {
-            SetPool();
-        }
-
+        public void Start() => SetPool();
         private void SetPool()
         {
             perfectEffectsPool = new ObjectPool<GameObject>(
@@ -49,8 +46,12 @@ namespace PigeonB1587.prpu
                 maxSize: 1000
             );
         }
-        public void GetHitFx(HitEffectType type, Vector3 position, Transform line = null)
+        public void GetHitFx(HitEffectType type, Vector3 position, int noteType, Transform line = null)
         {
+            if (!GameInformation.Instance.isHitFXEnabled)
+            {
+                return;
+            }
             GameObject effect = null;
             ObjectPool<GameObject> targetPool = null;
 
@@ -82,7 +83,25 @@ namespace PigeonB1587.prpu
                 effect.transform.SetParent(transform);
             }
             effect.transform.position = position;
+            PlayAudio(noteType, effect.GetComponent<AudioSource>());
             StartCoroutine(ReturnToPoolAfterDelay(effect, targetPool, 1f));
+        }
+
+        private void PlayAudio(int type, AudioSource source)
+        {
+            // Unity Audio
+            switch (type)
+            {
+                case 1:
+                    source.PlayOneShot(click, GameInformation.Instance.hitFXVolume);
+                    break;
+                case 2:
+                    source.PlayOneShot(drag, GameInformation.Instance.hitFXVolume);
+                    break;
+                case 4:
+                    source.PlayOneShot(flick, GameInformation.Instance.hitFXVolume);
+                    break;
+            }
         }
 
         private IEnumerator ReturnToPoolAfterDelay(GameObject obj, ObjectPool<GameObject> pool, float delay)

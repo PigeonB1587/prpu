@@ -10,7 +10,8 @@ namespace PigeonB1587.prpu
         {
             isJudge = true;
             judgeLine.levelController.hitFxController.GetHitFx(HitEffectType.Perfect,
-                judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)));
+                judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)),
+                1);
             judgeLine.tapPool.Release(this);
         }
     }

@@ -58,7 +58,8 @@ namespace PigeonB1587.prpu
             isHolding = true;
             isJudge = true;
             judgeLine.levelController.hitFxController.GetHitFx(HitEffectType.Perfect,
-                judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)));
+                judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)),
+                1);
             StartCoroutine(Holding());
         }
 
@@ -67,10 +68,11 @@ namespace PigeonB1587.prpu
             while (isHolding)
             {
                 holdEffectTimer += Time.deltaTime;
-                if(holdEffectTimer > (60 / judgeLine.bpm) / 2 && !noteData.isFake)
+                if(holdEffectTimer > (60 / judgeLine.bpm) / 2 && !noteData.isFake) // ×æ´«´úÂë
                 {
                     judgeLine.levelController.hitFxController.GetHitFx(HitEffectType.Perfect,
-                        judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)));
+                        judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)), 
+                        3);
                     holdEffectTimer = 0.0f;
                 }
                 if (judgeLine.levelController.time >= noteData.endTime.curTime)
@@ -87,6 +89,8 @@ namespace PigeonB1587.prpu
             }
             judgeLine.holdPool.Release(this);
         }
+
+        public void OnDestroy() => StopCoroutine(Holding());
 
         public override void ResetNote(double curTime)
         {
