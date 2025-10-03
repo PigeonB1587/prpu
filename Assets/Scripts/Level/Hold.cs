@@ -38,8 +38,8 @@ namespace PigeonB1587.prpu
                 Judge();
             
             transform.localPosition = new Vector2(transform.localPosition.x, isOverStartTime ? noteData.positionY : noteData.above ? floorPosition : -floorPosition);
-            transform.localScale = new Vector3(0.22f * noteData.size * GameInformation.Instance.noteScale, GetHoldLenght(curTime),
-                0.22f * GameInformation.Instance.noteScale);
+            transform.localScale = new Vector3(0.22f * noteData.size * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale, GetHoldLenght(curTime),
+                0.22f * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale);
 
             var visable = GetNoteVisable(curTime);
             noteRenderer.enabled = visable;
@@ -110,8 +110,8 @@ namespace PigeonB1587.prpu
             GetNoteData();
             floorPosition = GetFloorPosY();
             transform.localPosition = new Vector2(noteData.positionX * GameInformation.Instance.screenRadioScale, noteData.above ? floorPosition : -floorPosition);
-            transform.localScale = new Vector3(0.22f * noteData.size * GameInformation.Instance.noteScale, GetHoldLenght(curTime),
-                0.22f * GameInformation.Instance.noteScale);
+            transform.localScale = new Vector3(0.22f * noteData.size * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale, GetHoldLenght(curTime),
+                0.22f * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale);
             var visable = GetNoteVisable(curTime);
             noteRenderer.enabled = visable;
             noteRenderer1.enabled = visable;

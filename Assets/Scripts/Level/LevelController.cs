@@ -159,7 +159,7 @@ namespace PigeonB1587.prpu
             levelAni.enabled = false;
             gameObjects.SetActive(false);
             gui.Play("LevelEnd");
-
+            ScoreController.CheckMissCount();
             Debug.Log($"Combo: {ScoreController.combo}, Score: {ScoreController.score}, Max Combo: {ScoreController.maxCombo}\n" +
               $"Perfect: {ScoreController.perfectCount}, Good: {ScoreController.goodCount}, Bad: {ScoreController.badCount}, Miss: {ScoreController.missCount}");
         }

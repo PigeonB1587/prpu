@@ -18,7 +18,7 @@ namespace PigeonB1587.prpu
         {
             foreach (var item in GameInformation.Instance.levelStartInfo.judgeLineImages)
             {
-                Debug.Log($"Load judgeLine sprite: {item.judgeLineIndex}");
+                Debug.Log($"Load judgeLine sprite: {item.judgeLineIndex}, AddressableKey: {item.imageAddressableKey}");
                 Sprite sprite = await GameInformation.Instance.LoadAddressableAsset<Sprite>(item.imageAddressableKey);
                 judgeLineSprites.Add(sprite);
             }

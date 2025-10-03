@@ -1370,8 +1370,42 @@ MonoBehaviour:
     musicAddressableKey: 
     chartAddressableKey: 
     illustrationKey: 
-    judgeLineImages: []
-    noteAssets: []
+    judgeLineImages:
+    - judgeLineIndex: 0
+      imageAddressableKey: Assets/Tracks/QZKagoRequiem.tpazolite.0/illustration.png
+      imageX: 18.96296
+      imageY: 0.5
+    noteAssets:
+    - noteIndex: 0
+      judgeLineIndex: 0
+      hitSoundAddressableKey: Assets/Tracks/QZKagoRequiem.tpazolite.0/otto-hzys-1759503277246.wav
+    - noteIndex: 1
+      judgeLineIndex: 0
+      hitSoundAddressableKey: Assets/Tracks/QZKagoRequiem.tpazolite.0/otto-hzys-1759503277246.wav
+    - noteIndex: 2
+      judgeLineIndex: 0
+      hitSoundAddressableKey: Assets/Tracks/QZKagoRequiem.tpazolite.0/otto-hzys-1759503277246.wav
+    - noteIndex: 3
+      judgeLineIndex: 0
+      hitSoundAddressableKey: Assets/Tracks/QZKagoRequiem.tpazolite.0/otto-hzys-1759503277246.wav
+    - noteIndex: 4
+      judgeLineIndex: 0
+      hitSoundAddressableKey: Assets/Tracks/QZKagoRequiem.tpazolite.0/otto-hzys-1759503277246.wav
+    - noteIndex: 5
+      judgeLineIndex: 0
+      hitSoundAddressableKey: Assets/Tracks/QZKagoRequiem.tpazolite.0/otto-hzys-1759503277246.wav
+    - noteIndex: 6
+      judgeLineIndex: 0
+      hitSoundAddressableKey: Assets/Tracks/QZKagoRequiem.tpazolite.0/otto-hzys-1759503277246.wav
+    - noteIndex: 7
+      judgeLineIndex: 0
+      hitSoundAddressableKey: Assets/Tracks/QZKagoRequiem.tpazolite.0/otto-hzys-1759503277246.wav
+    - noteIndex: 8
+      judgeLineIndex: 0
+      hitSoundAddressableKey: Assets/Tracks/QZKagoRequiem.tpazolite.0/otto-hzys-1759503277246.wav
+    - noteIndex: 9
+      judgeLineIndex: 0
+      hitSoundAddressableKey: Assets/Tracks/QZKagoRequiem.tpazolite.0/otto-hzys-1759503277246.wav
     levelMods: []
 --- !u!1 &1472386919
 GameObject:

@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace PigeonB1587.prpu
 {
-    [ExecuteInEditMode]
     public class KeepHoldSize : MonoBehaviour
     {
         public Transform parentTr;
@@ -26,7 +25,7 @@ namespace PigeonB1587.prpu
             var pScale = parentTr.lossyScale;
             if (Mathf.Abs(pScale.y) < 0.001f) return;
 
-            transform.localScale = new Vector3(1f, 11f / (50f * pScale.y), 1f);
+            transform.localScale = new Vector3(1f, 11f / (50f * pScale.y) * GameInformation.Instance.screenRadioScale, 1f);
         }
     }
 }

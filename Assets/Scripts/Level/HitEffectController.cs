@@ -28,7 +28,7 @@ namespace PigeonB1587.prpu
         {
             foreach (var item in GameInformation.Instance.levelStartInfo.noteAssets)
             {
-                Debug.Log($"Load custom hit sound: judgeLineIndex={item.judgeLineIndex}, noteIndex={item.noteIndex}");
+                Debug.Log($"Load custom hit sound: AddressableKey:{item.hitSoundAddressableKey}\njudgeLineIndex={item.judgeLineIndex}, noteIndex={item.noteIndex}");
                 AudioClip clip = await GameInformation.Instance.LoadAddressableAsset<AudioClip>(item.hitSoundAddressableKey);
                 customHitSound.Add((clip, item.noteIndex, item.judgeLineIndex));
             }
@@ -132,7 +132,7 @@ namespace PigeonB1587.prpu
                     return;
             }
 
-            var size = hitFxScale * GameInformation.Instance.noteScale;
+            var size = hitFxScale * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale;
             effect.transform.localScale = new Vector3(size, size, size);
             effect.transform.SetParent(line != null ? line : transform);
             effect.transform.position = position;
