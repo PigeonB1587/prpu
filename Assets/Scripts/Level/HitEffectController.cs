@@ -19,6 +19,7 @@ namespace PigeonB1587.prpu
         public float hitFxScale = 1f;
 
         private Dictionary<int, List<(AudioClip audio, int noteIndex)>> _customSoundGroups;
+        private Dictionary<GameObject, AudioSource> _audioSourceCache = new Dictionary<GameObject, AudioSource>();
 
         public void Start()
         {
@@ -51,26 +52,56 @@ namespace PigeonB1587.prpu
         private void SetPool()
         {
             perfectEffectsPool = new ObjectPool<GameObject>(
-                createFunc: () => Instantiate(perfectEffectPrefab, transform),
+                createFunc: () =>
+                {
+                    var go = Instantiate(perfectEffectPrefab, transform);
+                    var audioSource = go.GetComponent<AudioSource>();
+                    _audioSourceCache[go] = audioSource;
+                    return go;
+                },
                 actionOnGet: (tap) => tap.SetActive(true),
                 actionOnRelease: (tap) => tap.SetActive(false),
-                actionOnDestroy: (tap) => Destroy(tap),
+                actionOnDestroy: (tap) =>
+                {
+                    _audioSourceCache.Remove(tap);
+                    Destroy(tap);
+                },
                 defaultCapacity: 40,
                 maxSize: 10000
             );
             goodEffectsPool = new ObjectPool<GameObject>(
-                createFunc: () => Instantiate(goodEffectPrefab, transform),
+                createFunc: () =>
+                {
+                    var go = Instantiate(goodEffectPrefab, transform);
+                    var audioSource = go.GetComponent<AudioSource>();
+                    _audioSourceCache[go] = audioSource;
+                    return go;
+                },
                 actionOnGet: (tap) => tap.SetActive(true),
                 actionOnRelease: (tap) => tap.SetActive(false),
-                actionOnDestroy: (tap) => Destroy(tap),
+                actionOnDestroy: (tap) =>
+                {
+                    _audioSourceCache.Remove(tap);
+                    Destroy(tap);
+                },
                 defaultCapacity: 30,
                 maxSize: 10000
             );
             badEffectsPool = new ObjectPool<GameObject>(
-                createFunc: () => Instantiate(badEffectPrefab, transform),
+                createFunc: () =>
+                {
+                    var go = Instantiate(badEffectPrefab, transform);
+                    var audioSource = go.GetComponent<AudioSource>();
+                    _audioSourceCache[go] = audioSource;
+                    return go;
+                },
                 actionOnGet: (tap) => tap.SetActive(true),
                 actionOnRelease: (tap) => tap.SetActive(false),
-                actionOnDestroy: (tap) => Destroy(tap),
+                actionOnDestroy: (tap) =>
+                {
+                    _audioSourceCache.Remove(tap);
+                    Destroy(tap);
+                },
                 defaultCapacity: 11,
                 maxSize: 1000
             );
@@ -108,7 +139,11 @@ namespace PigeonB1587.prpu
             effect.transform.SetParent(line != null ? line : transform);
             effect.transform.position = position;
 
-            PlayHitSound(effect.GetComponent<AudioSource>(), noteType, lineIndex, noteIndex);
+            // 从缓存获取 AudioSource，避免每次 GetComponent
+            if (_audioSourceCache.TryGetValue(effect, out AudioSource audioSource))
+            {
+                PlayHitSound(audioSource, noteType, lineIndex, noteIndex);
+            }
 
             StartCoroutine(ReturnToPoolAfterDelay(effect, targetPool, 1f));
         }
