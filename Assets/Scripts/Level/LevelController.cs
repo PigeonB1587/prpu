@@ -82,7 +82,7 @@ namespace PigeonB1587.prpu
             levelAni.speed = 1;
             isLoading = false;
 
-            await UniTask.Delay(1050);
+            await UniTask.Delay((int)(65f / 60f * 1000));
 
             gui.enabled = false;
             musicPlayer.Play();
