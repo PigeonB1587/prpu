@@ -150,6 +150,8 @@ namespace PigeonB1587.prpu
             public double beatTime; //OK
             public Time GetTime(Prpu.Chart.BpmItems[] bpmItems, int[] beatTime)
             {
+                if (bpmItems == null || bpmItems.Length == 0)
+                    return new Time();
                 var time = new Time();
                 time.beatTime = beatTime[0] + (double)beatTime[1] / (double)beatTime[2];
                 double sec = 0.0;
@@ -183,6 +185,8 @@ namespace PigeonB1587.prpu
             } //OK
             public Time GetTimeLast(ChartObject.BpmItems[] bpmItems, int[] beatTime)
             {
+                if (bpmItems == null || bpmItems.Length == 0)
+                    return new Time();
                 var time = new Time();
                 time.beatTime = beatTime[0] + (double)beatTime[1] / (double)beatTime[2];
                 double sec = 0.0;

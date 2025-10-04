@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace PigeonB1587.prpu
         public JudgeLineController lineController;
         public SpriteRenderer previewLineRenderer;
         public HitEffectController hitFxController;
+        public StoryBoardController storyBoardController;
         public Animator gui, levelAni;
 
         public AudioSource musicPlayer;
@@ -43,6 +45,7 @@ namespace PigeonB1587.prpu
             reader = GetComponent<Reader>();
             lineController = GetComponent<JudgeLineController>();
             hitFxController = GetComponent<HitEffectController>();
+            storyBoardController = GetComponent<StoryBoardController>();
             comboTextCanvasGroup = comboText.GetComponent<CanvasGroup>();
             subComboTextCanvasGroup = subComboText.GetComponent<CanvasGroup>();
         }
@@ -69,6 +72,44 @@ namespace PigeonB1587.prpu
             LevelStart().Forget();
         }
 
+        public UniTask LoadStoryBoard()
+        {
+            if (Reader.chart?.storyBoard == null)
+            {
+                storyBoardController.events = Array.Empty<StoryBoardEvent>();
+                Debug.Log("The storyboard is empty, so this section will be skipped.");
+                return UniTask.CompletedTask;
+            }
+
+            if (Reader.chart.storyBoard.events == null || Reader.chart.storyBoard.eventType == null)
+            {
+                storyBoardController.events = Array.Empty<StoryBoardEvent>();
+                Debug.Log("The storyboard is empty, so this section will be skipped.");
+                return UniTask.CompletedTask;
+            }
+
+            if (Reader.chart.storyBoard.events.Length != Reader.chart.storyBoard.eventType.Length)
+            {
+                storyBoardController.events = Array.Empty<StoryBoardEvent>();
+                Debug.LogWarning("Storyboard loading failed: Mismatched length between events and type marker array. Storyboard ignored. " +
+                 "Event count: " + (Reader.chart.storyBoard.events?.Length ?? 0) + ", " +
+                 "Type marker count: " + (Reader.chart.storyBoard.eventType?.Length ?? 0));
+                return UniTask.CompletedTask;
+            }
+
+            storyBoardController.events = new StoryBoardEvent[Reader.chart.storyBoard.events.Length];
+            for (int i = 0; i < Reader.chart.storyBoard.events.Length; i++)
+            {
+                storyBoardController.events[i] = new StoryBoardEvent
+                {
+                    type = Reader.chart.storyBoard.eventType[i],
+                    @event = Reader.chart.storyBoard.events[i]
+                };
+            }
+
+            return UniTask.CompletedTask;
+        }
+
         public async UniTask LevelStart()
         {
             musicPlayer.clip = GameInformation.Instance.music;
@@ -83,6 +124,8 @@ namespace PigeonB1587.prpu
                     GameInformation.Instance.levelStartInfo.songsId,
                     GameInformation.Instance.levelStartInfo.songsLevel);
             }
+
+            await LoadStoryBoard();
 
             await hitFxController.LoadCustomClip();
             await lineController.SpawnJudgmentLine();

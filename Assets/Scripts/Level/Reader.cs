@@ -20,7 +20,7 @@ namespace PigeonB1587.prpu
             {
                 songID = songID,
                 level = level,
-                storyBoard = GetStoryBoard(root.storyBoard),
+                storyBoard = GetStoryBoard(root.storyBoard, root.judgeLineList[0].bpms),
                 judgeLineList = GetJudgeLines(root.judgeLineList)
             };
 
@@ -29,14 +29,14 @@ namespace PigeonB1587.prpu
             return;
         }
 
-        private ChartObject.StoryBoard GetStoryBoard(Prpu.Chart.StoryBoard prpuStoryBoard)
+        private ChartObject.StoryBoard GetStoryBoard(Prpu.Chart.StoryBoard prpuStoryBoard, Prpu.Chart.BpmItems[] prpuBpmItems)
         {
             if (prpuStoryBoard == null) return new ChartObject.StoryBoard();
 
             return new ChartObject.StoryBoard
             {
                 eventType = prpuStoryBoard.eventType,
-                events = GetJudgeLineEvents(prpuStoryBoard.events, null)
+                events = GetJudgeLineEvents(prpuStoryBoard.events, prpuBpmItems)
             };
         }
 
