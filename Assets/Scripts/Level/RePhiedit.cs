@@ -121,8 +121,8 @@ namespace PigeonB1587.prpu
                                 {
                                     startTime = sourceEvent.startTime,
                                     endTime = sourceEvent.endTime,
-                                    start = sourceEvent.start,
-                                    end = sourceEvent.end,
+                                    start = -sourceEvent.start,
+                                    end = -sourceEvent.end,
                                     easing = RpeEasingTypeToPrpu(sourceEvent.easingType),
                                     easingLeft = sourceEvent.easingLeft,
                                     easingRight = sourceEvent.easingRight,

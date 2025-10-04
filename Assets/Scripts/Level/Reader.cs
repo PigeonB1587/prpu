@@ -170,7 +170,7 @@ namespace PigeonB1587.prpu
                     easingRight = prpuEvent.easingRight,
                     bezierPoints = prpuEvent.bezierPoints
                 };
-                //此处定义：如果第一个速度事件的开始时间为0，则它的floorPosition为0，否则按底速（就相当于在这个事件前插入一个class不存在但是参与计算的1速度事件）计算
+                //此处定义：如果第一个速度事件的开始时间为0，则它的floorPosition为0，否则按底速（就相当于在这个事件前插入一个class不存在但是参与计算的速度事件）计算
                 //垫底事件
                 if (i == 0 && speedEvents[i].startTime.curTime > 0)
                 {

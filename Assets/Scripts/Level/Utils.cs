@@ -67,13 +67,13 @@ namespace PigeonB1587.prpu
             var e = events[GetEventIndex(t, events)];
             if (t <= e.endTime.curTime)
             {
-                floorPosition += e.floorPosition +
-                        (e.start + Mathf.Lerp(e.start, e.end, (float)(t - e.startTime.curTime) / (float)(e.endTime.curTime - e.startTime.curTime)))
+                floorPosition = e.floorPosition +
+                        (e.start + e.start + (e.end - e.start) * (t - e.startTime.curTime) / (e.endTime.curTime - e.startTime.curTime))
                                                             * (e.endTime.curTime - e.startTime.curTime) / 2d;
             }
             if (t > e.endTime.curTime)
             {
-                floorPosition += e.floorPosition + (e.start + e.end) * (e.endTime.curTime - e.startTime.curTime) / 2d + (t - e.endTime.curTime) * e.end;
+                floorPosition = e.floorPosition + (e.start + e.end) * (e.endTime.curTime - e.startTime.curTime) / 2d + (t - e.endTime.curTime) * e.end;
             }
             return (float)floorPosition;
         }
