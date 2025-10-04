@@ -170,38 +170,18 @@ namespace PigeonB1587.prpu
                     easingRight = prpuEvent.easingRight,
                     bezierPoints = prpuEvent.bezierPoints
                 };
+                //此处定义：如果第一个速度事件的开始时间为0，则它的floorPosition为0，否则按底速（就相当于在这个事件前插入一个class不存在但是参与计算的1速度事件）计算
                 //垫底事件
-                if(i == 0 && speedEvents[i].startTime.curTime > 0)
+                if (i == 0 && speedEvents[i].startTime.curTime > 0)
                 {
                     speedEvents[i].floorPosition = (float)(speedEvents[i].startTime.curTime) * bottomSpeed;
                 }
                 if (i > 0)
                 {
                     var last = speedEvents[i - 1];
-                    double td = 0;
-                    double d = last.endTime.curTime - last.startTime.curTime;
-
-                    if (d > 0)
-                    {
-                        int n = GameInformation.Instance.speedEventLerpSize;
-                        double stm = d / n;
-                        double prevSpeed = Easings.Lerp(last.easing, last.startTime.curTime,
-                            last.startTime.curTime, last.endTime.curTime,
-                            last.start, last.end, last.easingLeft, last.easingRight,
-                            last.bezierPoints?.Length >= 4, last.bezierPoints);
-
-                        for (int s = 1; s <= n; s++)
-                        {
-                            double ct = last.startTime.curTime + s * stm;
-                            double currSpeed = Easings.Lerp(last.easing, ct,
-                                last.startTime.curTime, last.endTime.curTime,
-                                last.start, last.end, last.easingLeft, last.easingRight,
-                                last.bezierPoints?.Length >= 4, last.bezierPoints);
-
-                            td += (prevSpeed + currSpeed) * stm / 2;
-                            prevSpeed = currSpeed;
-                        }
-                    }
+                    speedEvents[i].floorPosition = (float)(last.floorPosition 
+                        + (last.end + last.start) * (last.endTime.curTime - last.startTime.curTime) / 2f
+                        + last.end * (speedEvents[i].startTime.curTime - last.endTime.curTime));
                 }
             }
             return speedEvents;

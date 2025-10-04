@@ -76,7 +76,7 @@ namespace PigeonB1587.prpu
             }
             if (noteData.visibleTime != Array.Empty<int>())
             {
-                visableTimeData.GetTimeLast(judgeLine.jugdeLineData.bpms, noteData.visibleTime);
+                visableTimeData.GetNewTime(judgeLine.jugdeLineData.bpms, noteData.visibleTime);
                 useVisableTime = true;
             }
             else

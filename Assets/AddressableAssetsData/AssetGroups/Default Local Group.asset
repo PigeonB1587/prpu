@@ -17,33 +17,13 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: bc646b9d8a341484985b7704feba0d9c
   m_SerializeEntries:
-  - m_GUID: 13909199702ce5b45b3002f7c520fbcc
-    m_Address: "Assets/Tracks/\u7948-\u6211\u3089\u795E\u7956\u3068\u5171\u306B\u6B69\u3080\u8005\u306A\u308A-.\u5149\u5409\u731B\u4FEEVS\u7A74\u5C71\u5927\u8F14VSKaiVS\u6C34\u91CE\u5065\u6CBBVS\u5927\u56FD\u594F\u97F3/Chart_EZ.json"
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 25877cfc5eed76448b0a20a291d9d8e9
     m_Address: Assets/Tracks/QZKagoRequiem.tpazolite.0/Chart_IN.json
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2e3bb51c277cb1246a93b1dcc7152d8c
-    m_Address: "Assets/Tracks/\u7948-\u6211\u3089\u795E\u7956\u3068\u5171\u306B\u6B69\u3080\u8005\u306A\u308A-.\u5149\u5409\u731B\u4FEEVS\u7A74\u5C71\u5927\u8F14VSKaiVS\u6C34\u91CE\u5065\u6CBBVS\u5927\u56FD\u594F\u97F3/Chart_HD.json"
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5f8f3803ac760c942a8628436457fffc
     m_Address: Assets/Tracks/QZKagoRequiem.tpazolite.0/music.ogg
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6cb3437529e66904780238ca7970b9fb
-    m_Address: "Assets/Tracks/\u7948-\u6211\u3089\u795E\u7956\u3068\u5171\u306B\u6B69\u3080\u8005\u306A\u308A-.\u5149\u5409\u731B\u4FEEVS\u7A74\u5C71\u5927\u8F14VSKaiVS\u6C34\u91CE\u5065\u6CBBVS\u5927\u56FD\u594F\u97F3/Chart_IN.json"
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 850bb1fba0a8ade4c947bc301bf6fab9
-    m_Address: "Assets/Tracks/\u7948-\u6211\u3089\u795E\u7956\u3068\u5171\u306B\u6B69\u3080\u8005\u306A\u308A-.\u5149\u5409\u731B\u4FEEVS\u7A74\u5C71\u5927\u8F14VSKaiVS\u6C34\u91CE\u5065\u6CBBVS\u5927\u56FD\u594F\u97F3/illustration.png"
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -62,18 +42,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: eb0dce9940cb1c848a594c68251588eb
-    m_Address: "Assets/Tracks/\u7948-\u6211\u3089\u795E\u7956\u3068\u5171\u306B\u6B69\u3080\u8005\u306A\u308A-.\u5149\u5409\u731B\u4FEEVS\u7A74\u5C71\u5927\u8F14VSKaiVS\u6C34\u91CE\u5065\u6CBBVS\u5927\u56FD\u594F\u97F3/Chart_AT.json"
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ed9d5913742c9104eb352293bd421219
     m_Address: Assets/Tracks/QZKagoRequiem.tpazolite.0/Chart_AT.json
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fd6791f4435bdb1439afb947d0b09797
-    m_Address: "Assets/Tracks/\u7948-\u6211\u3089\u795E\u7956\u3068\u5171\u306B\u6B69\u3080\u8005\u306A\u308A-.\u5149\u5409\u731B\u4FEEVS\u7A74\u5C71\u5927\u8F14VSKaiVS\u6C34\u91CE\u5065\u6CBBVS\u5927\u56FD\u594F\u97F3/music.ogg"
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

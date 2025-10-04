@@ -183,7 +183,7 @@ namespace PigeonB1587.prpu
                 time.curTime = sec;
                 return time;
             } //OK
-            public Time GetTimeLast(ChartObject.BpmItems[] bpmItems, int[] beatTime)
+            public Time GetNewTime(ChartObject.BpmItems[] bpmItems, int[] beatTime)
             {
                 if (bpmItems == null || bpmItems.Length == 0)
                     return new Time();
@@ -245,7 +245,7 @@ namespace PigeonB1587.prpu
             public float start = 0; //OK
             public float end = 0; //OK
             public int easing; //OK
-            public float floorPosition = 0; //OK
+            public double floorPosition = 0; //OK
             public float easingLeft; //OK
             public float easingRight; //OK
             public float[] bezierPoints; //OK

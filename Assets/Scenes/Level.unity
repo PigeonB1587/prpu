@@ -1349,9 +1349,9 @@ MonoBehaviour:
   - -15
   - 15
   screenRadioScale: 0
-  chart: {fileID: 4900000, guid: eb0dce9940cb1c848a594c68251588eb, type: 3}
-  illustration: {fileID: 21300000, guid: 850bb1fba0a8ade4c947bc301bf6fab9, type: 3}
-  music: {fileID: 8300000, guid: fd6791f4435bdb1439afb947d0b09797, type: 3}
+  chart: {fileID: 4900000, guid: f1645b5b6f4331a4c9dc6691e68f4080, type: 3}
+  illustration: {fileID: 21300000, guid: 80c1c5507e5f805458f1e786e079fd7d, type: 3}
+  music: {fileID: 8300000, guid: 4c4b4c2b95d6b5e4a83723372cc9213f, type: 3}
   isHitFXEnabled: 1
   isFCAPIndicator: 1
   autoPlay: 0

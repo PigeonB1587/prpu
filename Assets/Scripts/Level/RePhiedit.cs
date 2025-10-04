@@ -12,7 +12,7 @@ namespace PigeonB1587.prpu
         public static string GetObjectToJson(Chart.Root chartObject) =>
             JsonConvert.SerializeObject(chartObject);
 
-        public Prpu.Chart.Root RPEToPrpuFv2(Chart.Root chartObject)
+        public static Prpu.Chart.Root RPEToPrpuFv2(Chart.Root chartObject)
         {
             var obj = new Prpu.Chart.Root()
             {
@@ -81,8 +81,8 @@ namespace PigeonB1587.prpu
                                 {
                                     startTime = sourceEvent.startTime,
                                     endTime = sourceEvent.endTime,
-                                    start = (sourceEvent.start + 675) / 1350f,
-                                    end = (sourceEvent.end + 675) / 1350f,
+                                    start = sourceEvent.start / 1350f,
+                                    end = sourceEvent.end / 1350f,
                                     easing = RpeEasingTypeToPrpu(sourceEvent.easingType),
                                     easingLeft = sourceEvent.easingLeft,
                                     easingRight = sourceEvent.easingRight,
@@ -101,8 +101,8 @@ namespace PigeonB1587.prpu
                                 {
                                     startTime = sourceEvent.startTime,
                                     endTime = sourceEvent.endTime,
-                                    start = (sourceEvent.start + 450f) / 900f,
-                                    end = (sourceEvent.end + 450f) / 900f,
+                                    start = sourceEvent.start / 900f,
+                                    end = sourceEvent.end / 900f,
                                     easing = RpeEasingTypeToPrpu(sourceEvent.easingType),
                                     easingLeft = sourceEvent.easingLeft,
                                     easingRight = sourceEvent.easingRight,
@@ -263,8 +263,8 @@ namespace PigeonB1587.prpu
                     judgeLineColorEvents = colorEvents.Count > 0 ? colorEvents.ToArray() : null,
                     judgeLineTextEvents = textEvents.Count > 0 ? textEvents.ToArray() : null,
                     fatherLineIndex = sourceLine.father,
-                    localPositionMode = true,
-                    localEulerAnglesMode = true,
+                    localPositionMode = sourceLine.father != -1,
+                    localEulerAnglesMode = sourceLine.rotateWithFather,
                     zOrder = sourceLine.zOrder,
                     judgeLineTextureScaleXEvents = scaleXEvents.Count > 0 ? scaleXEvents.ToArray() : null,
                     judgeLineTextureScaleYEvents = scaleYEvents.Count > 0 ? scaleYEvents.ToArray() : null
@@ -351,6 +351,7 @@ namespace PigeonB1587.prpu
                 public EventLayers[] eventLayers { get; set; }
                 public Extended extended { get; set; }
                 public Note[] notes { get; set; }
+                public bool rotateWithFather { get; set; } = false;
                 public int father { get; set; }
                 public int zOrder { get; set; }
             }

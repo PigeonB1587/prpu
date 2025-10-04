@@ -244,12 +244,15 @@ namespace PigeonB1587.prpu
             var @event = events[i];
             if (currentTime >= @event.endTime.curTime)
             {
-                value = @event.end;
+                value += @event.end;
                 return;
             }
-            value += Easings.Lerp(@event.easing, currentTime, @event.startTime.curTime, @event.endTime.curTime,
+            else
+            {
+                value += Easings.Lerp(@event.easing, currentTime, @event.startTime.curTime, @event.endTime.curTime,
                 @event.start, @event.end, @event.easingLeft, @event.easingRight, @event.bezierPoints != null && @event.bezierPoints.Length == 4 ? true : false,
                 @event.bezierPoints);
+            }
         }
 
         private void UpdateBpms(double currentTime, ref ChartObject.BpmItems[] events, ref float value)

@@ -146,7 +146,8 @@ namespace PigeonB1587.prpu
 
             if (Reader.chart == null || Reader.chart.level != GameInformation.Instance.levelStartInfo.songsLevel || Reader.chart.songID != GameInformation.Instance.levelStartInfo.songsId)
             {
-                await reader.ReadChart(Phigros.Fv3ToPrpuFv2(Phigros.GetJsonToObject(GameInformation.Instance.chart.text)),
+                // Phigros.Fv3ToPrpuFv2(Phigros.GetJsonToObject(GameInformation.Instance.chart.text))
+                await reader.ReadChart(RePhiedit.RPEToPrpuFv2(RePhiedit.GetJsonToObject(GameInformation.Instance.chart.text)),
                     GameInformation.Instance.levelStartInfo.songsId,
                     GameInformation.Instance.levelStartInfo.songsLevel);
             }

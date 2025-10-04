@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEditor.Progress;
 
 namespace PigeonB1587.prpu
 {
@@ -60,50 +61,44 @@ namespace PigeonB1587.prpu
 
             return false;
         }
-        public static float GetCurFloorPosition(double t, ChartObject.SpeedEvent[] e)
+        public static float GetCurFloorPosition(double t, ChartObject.SpeedEvent[] events)
         {
-            float p = 0.0f;
-            for (int i = 0; i < e.Length; i++)
+            double floorPosition = 0d;
+            var e = events[GetEventIndex(t, events)];
+            if (t <= e.endTime.curTime)
             {
-                var s = e[i];
-                double st = s.startTime.curTime, et = s.endTime.curTime, d = et - st;
-
-                if (d <= 0)
-                {
-                    p += s.floorPosition;
-                    continue;
-                }
-
-                bool a = t >= et, b = t >= st && t < et;
-                if (!a && !b) continue;
-
-                double ss = st, se = a ? et : t, sd = se - ss;
-                if (sd <= 0)
-                {
-                    if (a) p += s.floorPosition;
-                    continue;
-                }
-
-                int n = GameInformation.Instance.speedEventLerpSize;
-                double stm = sd / n, td = 0;
-
-                double prevSpeed = Easings.Lerp(s.easing, ss, st, et, s.start, s.end,
-                    s.easingLeft, s.easingRight, s.bezierPoints != null && s.bezierPoints.Length >= 4, s.bezierPoints);
-
-                for (int j = 1; j <= n; j++)
-                {
-                    double ct = ss + j * stm;
-                    double currSpeed = Easings.Lerp(s.easing, ct, st, et, s.start, s.end,
-                        s.easingLeft, s.easingRight, s.bezierPoints != null && s.bezierPoints.Length >= 4, s.bezierPoints);
-
-                    td += (prevSpeed + currSpeed) * stm / 2;
-                    prevSpeed = currSpeed;
-                }
-
-                p += (float)(s.floorPosition + td);
-                if (b) break;
+                floorPosition += e.floorPosition +
+                        (e.start + Mathf.Lerp(e.start, e.end, (float)(t - e.startTime.curTime) / (float)(e.endTime.curTime - e.startTime.curTime)))
+                                                            * (e.endTime.curTime - e.startTime.curTime) / 2d;
             }
-            return p;
+            if (t > e.endTime.curTime)
+            {
+                floorPosition += e.floorPosition + (e.start + e.end) * (e.endTime.curTime - e.startTime.curTime) / 2d + (t - e.endTime.curTime) * e.end;
+            }
+            return (float)floorPosition;
+        }
+        private static int GetEventIndex(double curTime, ChartObject.SpeedEvent[] events)
+        {
+            int left = 0;
+            int right = events.Length - 1;
+            int index = 0;
+
+            while (left <= right)
+            {
+                int mid = left + (right - left) / 2;
+
+                if (events[mid].startTime.curTime <= curTime)
+                {
+                    index = mid;
+                    left = mid + 1;
+                }
+                else
+                {
+                    right = mid - 1;
+                }
+            }
+
+            return index;
         }
         public static Vector2 LocalToWorld(Vector2 localPos, Vector2 parentPos, float parentRot)
         {

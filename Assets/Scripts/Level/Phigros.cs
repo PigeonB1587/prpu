@@ -144,8 +144,8 @@ namespace PigeonB1587.prpu
                         judgeLineColorEvents = null,
                         judgeLineTextEvents = null,
                         fatherLineIndex = -1,
-                        localPositionMode = true,
-                        localEulerAnglesMode = true,
+                        localPositionMode = false,
+                        localEulerAnglesMode = false,
                         zOrder = 0,
                         judgeLineTextureScaleXEvents = null,
                         judgeLineTextureScaleYEvents = null
