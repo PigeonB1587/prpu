@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
@@ -108,8 +109,28 @@ namespace PigeonB1587.prpu
                     type = Reader.chart.storyBoard.eventType[i],
                     @event = Reader.chart.storyBoard.events[i]
                 };
-                // 还需要手动排序缓存进行等待，目前使用了Linq不需要这一部分
             }
+
+            var eventsByType = new Dictionary<int, List<StoryBoardEvent>>();
+
+            foreach (var storyBoardEvent in storyBoardController.events)
+            {
+                if (storyBoardEvent?.@event == null) continue;
+
+                if (!eventsByType.ContainsKey(storyBoardEvent.type))
+                {
+                    eventsByType[storyBoardEvent.type] = new List<StoryBoardEvent>();
+                }
+
+                eventsByType[storyBoardEvent.type].Add(storyBoardEvent);
+            }
+
+            foreach (var typeEvents in eventsByType.Values)
+            {
+                typeEvents.Sort((a, b) => a.@event.startTime.curTime.CompareTo(b.@event.startTime.curTime));
+            }
+
+            storyBoardController.SetCachedEvents(eventsByType);
 
             await UniTask.CompletedTask;
             return;
