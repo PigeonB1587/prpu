@@ -36,7 +36,7 @@ namespace PigeonB1587.prpu
             floorPosition = isOverStartTime ? 0 : GetFloorPosY();
             if (!noteData.isFake && isFirstJudge && isOverStartTime)
                 Judge();
-            
+
             transform.localPosition = new Vector2(transform.localPosition.x, isOverStartTime ? noteData.positionY : noteData.above ? floorPosition : -floorPosition);
             transform.localScale = new Vector3(0.22f * noteData.size * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale, GetHoldLenght(curTime),
                 0.22f * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale);
@@ -51,12 +51,12 @@ namespace PigeonB1587.prpu
                 noteRenderer1.enabled = false;
             }
 
-			if (visable == false && judgeLine.levelController.time + GameInformation.Instance.noteToLargeTime < noteData.startTime.curTime)
-			{
-				judgeLine.localNotes.Add((noteData, index));
-				judgeLine.holdPool.Release(this);
-			}
-		}
+            if (visable == false && judgeLine.levelController.time + GameInformation.Instance.noteToLargeTime < noteData.startTime.curTime)
+            {
+                judgeLine.localNotes.Add((noteData, index));
+                judgeLine.holdPool.Release(this);
+            }
+        }
 
         public override void Judge()
         {
@@ -74,25 +74,23 @@ namespace PigeonB1587.prpu
             while (isHolding)
             {
                 holdEffectTimer += Time.deltaTime;
-                if(holdEffectTimer > (60 / judgeLine.bpm) / 2 && !noteData.isFake)
+                if (holdEffectTimer > (60 / judgeLine.bpm) / 2 && !noteData.isFake)
                 {
                     judgeLine.levelController.hitFxController.GetHitFx(HitType.Perfect,
-                        judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)), 
+                        judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)),
                         3);
                     holdEffectTimer = 0.0f;
                 }
 
-                if(!overJudge && judgeLine.levelController.time > noteData.endTime.curTime - 0.08f)
+                if (!overJudge && judgeLine.levelController.time > noteData.endTime.curTime - 0.08f)
                 {
-					ScoreController.Hit(HitType.Perfect, 0);
+                    ScoreController.Hit(HitType.Perfect, 0);
                     overJudge = true;
-				}
+                }
 
                 if (judgeLine.levelController.time >= noteData.endTime.curTime)
                 {
-                    noteRenderer.enabled = false;
-                    noteRenderer1.enabled = false;
-                    noteRenderer2.enabled = false;
+                    Hide();
                     if (judgeLine.levelController.time >= noteData.endTime.curTime + 0.08f)
                     {
                         break;
@@ -101,6 +99,13 @@ namespace PigeonB1587.prpu
                 yield return null;
             }
             judgeLine.holdPool.Release(this);
+        }
+
+        public void Hide()
+        {
+            noteRenderer.enabled = false;
+            noteRenderer1.enabled = false;
+            noteRenderer2.enabled = false;
         }
 
         public void OnDestroy() => StopCoroutine(Holding());
@@ -184,8 +189,8 @@ namespace PigeonB1587.prpu
             return visable;
         }
 
-        public float GetHoldLenght(double curTime) => (curTime >= noteData.startTime.curTime 
-            ? noteData.endfloorPosition - judgeLine.floorPosition : 
+        public float GetHoldLenght(double curTime) => (curTime >= noteData.startTime.curTime
+            ? noteData.endfloorPosition - judgeLine.floorPosition :
             noteData.endfloorPosition - noteData.floorPosition) * holdLengthScale;
     }
 }
