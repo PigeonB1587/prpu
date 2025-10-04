@@ -1,6 +1,6 @@
 # prpu - <ins>P</ins>hi<ins>r</ins>gos <ins>P</ins>layer, written in <ins>U</ins>nity Engine  
 
-![prpu Logo](https://github.com/PigeonB1587/prpu/blob/main/PrpUnity_ba-style@logo.bluearchive.cc.png?raw=true)  
+![prpu Logo](https://youke1.picui.cn/s1/2025/10/04/68e0c03654c03.png)  
 
 A Phigros player developed with Unity Engine and C#  
 
