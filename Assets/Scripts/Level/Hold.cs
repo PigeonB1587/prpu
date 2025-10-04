@@ -64,7 +64,7 @@ namespace PigeonB1587.prpu
             isHolding = true;
             isJudge = true;
             judgeLine.levelController.hitFxController.GetHitFx(HitType.Perfect,
-                judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)),
+                transform.position,
                 1, lineIndex: judgeLine.index, noteIndex: index);
             StartCoroutine(Holding());
         }
