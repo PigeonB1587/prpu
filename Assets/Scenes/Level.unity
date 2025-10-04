@@ -1375,7 +1375,15 @@ MonoBehaviour:
     judgeLineImages:
     - judgeLineIndex: 0
       imageAddressableKey: Assets/Tracks/QZKagoRequiem.tpazolite.0/illustration.png
-      imageX: 18.96296
+      imageX: 0.5
+      imageY: 0.5
+    - judgeLineIndex: 1
+      imageAddressableKey: Assets/Tracks/QZKagoRequiem.tpazolite.0/illustration.png
+      imageX: 0.5
+      imageY: 0.5
+    - judgeLineIndex: 2
+      imageAddressableKey: Assets/Tracks/QZKagoRequiem.tpazolite.0/illustration.png
+      imageX: 0.5
       imageY: 0.5
     noteAssets:
     - noteIndex: 0

@@ -110,8 +110,9 @@ namespace PigeonB1587.prpu
                 disappear = 0;
             }
             //
-
             UpdateEventLayers(curTime);
+            UpdateBpms(curTime, ref jugdeLineData.bpms, ref bpm);
+            floorPosition = Utils.GetCurFloorPosition(curTime, jugdeLineData.speedEvents);
         }
 
         public void UpdateTransform()
@@ -233,8 +234,6 @@ namespace PigeonB1587.prpu
                 UpdateEvent(currentTime, ref jugdeLineData.judgeLineEventLayers[i].judgeLineRotateEvents, ref rotate);
                 UpdateEvent(currentTime, ref jugdeLineData.judgeLineEventLayers[i].judgeLineDisappearEvents, ref disappear);
             }
-            UpdateBpms(currentTime, ref jugdeLineData.bpms, ref bpm);
-            floorPosition = Utils.GetCurFloorPosition(currentTime, jugdeLineData.speedEvents);
         }
 
         private void UpdateEvent(double currentTime, ref ChartObject.JudgeLineEvent[] events, ref float value)
