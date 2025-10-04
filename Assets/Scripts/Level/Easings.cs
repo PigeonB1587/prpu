@@ -33,7 +33,7 @@ namespace PigeonB1587.prpu
 
         public static readonly Func<double, double>[] _easingFunctions = new Func<double, double>[]
         {
-    Ease.Linear,
+    Ease.Linear, // 谱面编号存储为1，依此类推
 
     Ease.InSine,
     Ease.OutSine,

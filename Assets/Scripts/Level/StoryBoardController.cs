@@ -57,7 +57,6 @@ namespace PigeonB1587.prpu
         {
             if (!_isCacheInitialized) return;
 
-            // 处理类型0的事件 - 摄像机orthographicSize
             if (_cachedEventsByType.TryGetValue(0, out var type0Events) && type0Events.Length > 0)
             {
                 float cameraSize = 0;
@@ -65,7 +64,6 @@ namespace PigeonB1587.prpu
                 mainCamera.orthographicSize = cameraSize;
             }
 
-            // 处理类型1的事件 - 摄像机旋转
             if (_cachedEventsByType.TryGetValue(1, out var type1Events) && type1Events.Length > 0)
             {
                 float rotationZ = 0;
