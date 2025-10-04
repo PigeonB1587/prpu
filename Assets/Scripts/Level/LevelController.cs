@@ -34,7 +34,7 @@ namespace PigeonB1587.prpu
         public double time = 0d;
 
         public bool isLoading = true;
-        public bool isPlay = false;
+        public bool isPlaying = false;
         public bool isOver = false;
 
         private CanvasGroup comboTextCanvasGroup, subComboTextCanvasGroup;
@@ -72,20 +72,22 @@ namespace PigeonB1587.prpu
             LevelStart().Forget();
         }
 
-        public UniTask LoadStoryBoard()
+        public async UniTask LoadStoryBoard()
         {
             if (Reader.chart?.storyBoard == null)
             {
                 storyBoardController.events = Array.Empty<StoryBoardEvent>();
                 Debug.Log("The storyboard is empty, so this section will be skipped.");
-                return UniTask.CompletedTask;
+                await UniTask.CompletedTask;
+                return;
             }
 
             if (Reader.chart.storyBoard.events == null || Reader.chart.storyBoard.eventType == null)
             {
                 storyBoardController.events = Array.Empty<StoryBoardEvent>();
                 Debug.Log("The storyboard is empty, so this section will be skipped.");
-                return UniTask.CompletedTask;
+                await UniTask.CompletedTask;
+                return;
             }
 
             if (Reader.chart.storyBoard.events.Length != Reader.chart.storyBoard.eventType.Length)
@@ -94,7 +96,8 @@ namespace PigeonB1587.prpu
                 Debug.LogWarning("Storyboard loading failed: Mismatched length between events and type marker array. Storyboard ignored. " +
                  "Event count: " + (Reader.chart.storyBoard.events?.Length ?? 0) + ", " +
                  "Type marker count: " + (Reader.chart.storyBoard.eventType?.Length ?? 0));
-                return UniTask.CompletedTask;
+                await UniTask.CompletedTask;
+                return;
             }
 
             storyBoardController.events = new StoryBoardEvent[Reader.chart.storyBoard.events.Length];
@@ -105,9 +108,11 @@ namespace PigeonB1587.prpu
                     type = Reader.chart.storyBoard.eventType[i],
                     @event = Reader.chart.storyBoard.events[i]
                 };
+                // 还需要手动排序缓存进行等待，目前使用了Linq不需要这一部分
             }
 
-            return UniTask.CompletedTask;
+            await UniTask.CompletedTask;
+            return;
         }
 
         public async UniTask LevelStart()
@@ -140,7 +145,7 @@ namespace PigeonB1587.prpu
 
             gui.enabled = false;
             musicPlayer.Play();
-            isPlay = true;
+            isPlaying = true;
             StartCoroutine(LevelUpdate());
 
             await UniTask.CompletedTask;
@@ -163,7 +168,7 @@ namespace PigeonB1587.prpu
         {
             while (musicPlayer.time < musicPlayer.clip.length - 0.22049f)
             {
-                if (isPlay)
+                if (isPlaying)
                 {
                     time = musicPlayer.time - GameInformation.Instance.offset + reader.offset;
                     var progress = (float)time / musicPlayer.clip.length;
@@ -192,6 +197,7 @@ namespace PigeonB1587.prpu
             yield return null;
 
             Debug.Log("Level Over");
+            isPlaying = false;
             isOver = true;
             if (ScoreController.combo < 3)
             {
