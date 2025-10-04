@@ -34,8 +34,7 @@ namespace PigeonB1587.prpu
             double curTime = judgeLine.levelController.time;
             var isOverStartTime = curTime >= noteData.startTime.curTime;
             floorPosition = isOverStartTime ? 0 : GetFloorPosY();
-            if (!noteData.isFake && isFirstJudge && isOverStartTime)
-                Judge();
+            Judge(curTime);
 
             transform.localPosition = new Vector2(transform.localPosition.x, isOverStartTime ? noteData.positionY : noteData.above ? floorPosition : -floorPosition);
             transform.localScale = new Vector3(0.22f * noteData.size * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale, GetHoldLenght(curTime),
@@ -58,15 +57,25 @@ namespace PigeonB1587.prpu
             }
         }
 
-        public override void Judge()
+        public override void Judge(double curTime)
         {
-            isFirstJudge = false;
-            isHolding = true;
-            isJudge = true;
-            judgeLine.levelController.hitFxController.GetHitFx(HitType.Perfect,
-                transform.position,
-                1, lineIndex: judgeLine.index, noteIndex: index);
-            StartCoroutine(Holding());
+            if (isFirstJudge && !noteData.isFake && curTime >= noteData.startTime.curTime)
+            {
+                isFirstJudge = false;
+                isHolding = true;
+                isJudge = true;
+                judgeLine.levelController.hitFxController.GetHitFx(HitType.Perfect,
+                    transform.position,
+                    1, lineIndex: judgeLine.index, noteIndex: index);
+                StartCoroutine(Holding());
+            }
+            else if (isFirstJudge && noteData.isFake && curTime >= noteData.startTime.curTime)
+            {
+                isFirstJudge = false;
+                isHolding = true;
+                isJudge = true;
+                StartCoroutine(FakeHolding());
+            }
         }
 
         IEnumerator Holding()
@@ -100,6 +109,23 @@ namespace PigeonB1587.prpu
             }
             judgeLine.holdPool.Release(this);
         }
+        IEnumerator FakeHolding()
+        {
+            while (isHolding)
+            {
+                if (!overJudge && judgeLine.levelController.time > noteData.endTime.curTime - 0.08f)
+                {
+                    overJudge = true;
+                }
+                if (judgeLine.levelController.time >= noteData.endTime.curTime)
+                {
+                    break;
+                }
+                yield return null;
+            }
+            judgeLine.holdPool.Release(this);
+        }
+
 
         public void Hide()
         {
@@ -189,7 +215,7 @@ namespace PigeonB1587.prpu
             return visable;
         }
 
-        public float GetHoldLenght(double curTime) => (curTime >= noteData.startTime.curTime
+        public float GetHoldLenght(double curTime) => (float)(curTime >= noteData.startTime.curTime
             ? noteData.endfloorPosition - judgeLine.floorPosition :
             noteData.endfloorPosition - noteData.floorPosition) * holdLengthScale;
     }

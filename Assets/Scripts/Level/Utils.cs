@@ -1,54 +1,57 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 namespace PigeonB1587.prpu
 {
     public static class Utils
     {
-        public static bool GetHL(Prpu.Chart.Root chart, Prpu.Chart.Note thisNote)
+        public static bool GetHL(ChartObject.Root chart, ChartObject.Note thisNote)
         {
-            double targetTime = thisNote.startTime[0] + thisNote.startTime[1] / (double)thisNote.startTime[2];
+            double targetTime = thisNote.startTime.curTime;
 
-            for (int i = 0; i < chart.judgeLineList.Length; i++)
+            foreach (var judgeLine in chart.judgeLineList)
             {
-                var judgeLine = chart.judgeLineList[i];
+                if (judgeLine.notes.Length == 0) continue;
+
                 int left = 0;
                 int right = judgeLine.notes.Length - 1;
 
                 while (left <= right)
                 {
                     int mid = left + (right - left) / 2;
-                    var note = judgeLine.notes[mid];
-                    double noteTime = note.startTime[0] + note.startTime[1] / (double)note.startTime[2];
+                    double midTime = judgeLine.notes[mid].startTime.curTime;
 
-                    if (noteTime == targetTime)
+                    if (Math.Abs(midTime - targetTime) <= 1e-9)
                     {
-                        if (!thisNote.Equals(note))
+                        if (!judgeLine.notes[mid].Equals(thisNote))
                         {
                             return true;
                         }
 
-                        int temp = mid;
-                        while (--temp >= 0)
+                        int leftCheck = mid - 1;
+                        while (leftCheck >= 0 && Math.Abs(judgeLine.notes[leftCheck].startTime.curTime - targetTime) <= 1e-9)
                         {
-                            var leftNote = judgeLine.notes[temp];
-                            double leftTime = leftNote.startTime[0] + leftNote.startTime[1] / (double)leftNote.startTime[2];
-                            if (leftTime != targetTime) break;
-                            if (!thisNote.Equals(leftNote)) return true;
+                            if (!judgeLine.notes[leftCheck].Equals(thisNote))
+                            {
+                                return true;
+                            }
+                            leftCheck--;
                         }
 
-                        temp = mid;
-                        while (++temp < judgeLine.notes.Length)
+                        int rightCheck = mid + 1;
+                        while (rightCheck < judgeLine.notes.Length && Math.Abs(judgeLine.notes[rightCheck].startTime.curTime - targetTime) <= 1e-9)
                         {
-                            var rightNote = judgeLine.notes[temp];
-                            double rightTime = rightNote.startTime[0] + rightNote.startTime[1] / (double)rightNote.startTime[2];
-                            if (rightTime != targetTime) break;
-                            if (!thisNote.Equals(rightNote)) return true;
+                            if (!judgeLine.notes[rightCheck].Equals(thisNote))
+                            {
+                                return true;
+                            }
+                            rightCheck++;
                         }
 
                         break;
                     }
-                    else if (noteTime < targetTime)
+                    else if (midTime < targetTime)
                     {
                         left = mid + 1;
                     }
@@ -61,6 +64,7 @@ namespace PigeonB1587.prpu
 
             return false;
         }
+
         public static float GetCurFloorPosition(double t, ChartObject.SpeedEvent[] events)
         {
             double floorPosition = 0d;
@@ -69,7 +73,7 @@ namespace PigeonB1587.prpu
             {
                 floorPosition = e.floorPosition +
                         (e.start + e.start + (e.end - e.start) * (t - e.startTime.curTime) / (e.endTime.curTime - e.startTime.curTime))
-                                                            * (e.endTime.curTime - e.startTime.curTime) / 2d;
+                                                            * (t - e.startTime.curTime) / 2d;
             }
             if (t > e.endTime.curTime)
             {

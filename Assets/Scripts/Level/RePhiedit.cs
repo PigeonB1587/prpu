@@ -17,7 +17,7 @@ namespace PigeonB1587.prpu
             var obj = new Prpu.Chart.Root()
             {
                 formatVersion = 2,
-                offset = chartObject.META.offset / 1000f,
+                offset = (chartObject.META.offset / 1000f) * (-1f),
                 storyBoard = null,
             };
 

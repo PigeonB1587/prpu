@@ -173,7 +173,7 @@ namespace PigeonB1587.prpu
                 var (note, originalIndex) = localNotes[i];
                 bool shouldGetNote = false;
 
-                float baseY = note.floorPosition - floorPosition + note.positionY;
+                float baseY = (float)(note.floorPosition - floorPosition) + note.positionY;
                 Vector3 localPos = new Vector3(
                     note.positionX * screenRadioScale,
                     baseY * note.speed,
@@ -188,7 +188,7 @@ namespace PigeonB1587.prpu
                 }
                 else
                 {
-                    float endBaseY = note.endfloorPosition - floorPosition + note.positionY;
+                    float endBaseY = (float)(note.endfloorPosition - floorPosition) + note.positionY;
                     Vector3 endLocalPos = new Vector3(
                         note.positionX * screenRadioScale,
                         endBaseY * note.speed,

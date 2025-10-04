@@ -288,8 +288,8 @@ namespace PigeonB1587.prpu
             public int color; //OK
             public int hitFXColor;
             public float judgeSize;
-            public float floorPosition = 0; //OK
-            public float endfloorPosition = 0; //OK
+            public double floorPosition = 0; //OK
+            public double endfloorPosition = 0; //OK
         }
 
         [Serializable]

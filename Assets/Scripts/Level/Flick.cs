@@ -15,14 +15,22 @@ namespace PigeonB1587.prpu
 				judgeLine.flickPool.Release(this);
 			}
 		}
-		public override void Judge()
+		public override void Judge(double curTime)
         {
-            isJudge = true;
-			ScoreController.Hit(HitType.Perfect, 0);
-			judgeLine.levelController.hitFxController.GetHitFx(HitType.Perfect,
-                judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)),
-                4, lineIndex: judgeLine.index, noteIndex: index);
-            judgeLine.flickPool.Release(this);
+            if (!noteData.isFake && curTime >= noteData.startTime.curTime)
+            {
+                isJudge = true;
+                ScoreController.Hit(HitType.Perfect, 0);
+                judgeLine.levelController.hitFxController.GetHitFx(HitType.Perfect,
+                    judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)),
+                    4, lineIndex: judgeLine.index, noteIndex: index);
+                judgeLine.flickPool.Release(this);
+            }
+            else if (noteData.isFake && curTime >= noteData.startTime.curTime)
+            {
+                isJudge = true;
+                judgeLine.flickPool.Release(this);
+            }
         }
     }
 }

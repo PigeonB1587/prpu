@@ -23,10 +23,21 @@ namespace PigeonB1587.prpu
                 storyBoard = GetStoryBoard(root.storyBoard, root.judgeLineList[0].bpms),
                 judgeLineList = GetJudgeLines(root.judgeLineList)
             };
-
+            GetNoteHL();
             Debug.Log($"Real notes count: {ScoreController.noteCount}");
             await UniTask.CompletedTask;
             return;
+        }
+
+        private void GetNoteHL()
+        {
+            foreach (var item in chart.judgeLineList)
+            {
+                foreach (var item1 in item.notes)
+                {
+                    item1.isHL = Utils.GetHL(chart, item1);
+                }
+            }
         }
 
         private ChartObject.StoryBoard GetStoryBoard(Prpu.Chart.StoryBoard prpuStoryBoard, Prpu.Chart.BpmItems[] prpuBpmItems)
@@ -99,7 +110,7 @@ namespace PigeonB1587.prpu
                     visibleTime = prpuNote.visibleTime,
                     speed = prpuNote.speed,
                     size = prpuNote.size,
-                    isHL = Utils.GetHL(chartRoot, prpuNote),
+                    isHL = false,
                     endTime = prpuNote.endTime != null ? new ChartObject.Time().GetTime(prpuBpmItems, prpuNote.endTime) : default,
                     positionX = prpuNote.positionX,
                     positionY = prpuNote.positionY,

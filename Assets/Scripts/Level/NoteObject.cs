@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace PigeonB1587.prpu
@@ -34,8 +32,7 @@ namespace PigeonB1587.prpu
             double curTime = judgeLine.levelController.time;
             floorPosition = GetFloorPosY();
             transform.localPosition = new Vector2(transform.localPosition.x, noteData.above ? floorPosition : -floorPosition);
-            if (!noteData.isFake && curTime >= noteData.startTime.curTime)
-                Judge();
+            Judge(curTime);
             noteRenderer.enabled = GetNoteVisable(curTime);
         }
 
@@ -50,9 +47,9 @@ namespace PigeonB1587.prpu
             noteRenderer.enabled = GetNoteVisable(curTime);
         }
 
-        public virtual void Judge()
+        public virtual void Judge(double curTime)
         {
-            
+
         }
 
         public virtual void GetNoteData()
@@ -111,6 +108,6 @@ namespace PigeonB1587.prpu
             return visable;
         }
 
-        public virtual float GetFloorPosY() => (noteData.floorPosition - judgeLine.floorPosition + noteData.positionY) * noteData.speed;
+        public virtual float GetFloorPosY() => (float)(noteData.floorPosition - judgeLine.floorPosition + noteData.positionY) * noteData.speed;
     }
 }

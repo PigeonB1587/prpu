@@ -167,7 +167,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 1889.6287, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &137220742
 MonoBehaviour:
@@ -1349,9 +1349,9 @@ MonoBehaviour:
   - -15
   - 15
   screenRadioScale: 0
-  chart: {fileID: 4900000, guid: f1645b5b6f4331a4c9dc6691e68f4080, type: 3}
-  illustration: {fileID: 21300000, guid: 80c1c5507e5f805458f1e786e079fd7d, type: 3}
-  music: {fileID: 8300000, guid: 4c4b4c2b95d6b5e4a83723372cc9213f, type: 3}
+  chart: {fileID: 4900000, guid: 25877cfc5eed76448b0a20a291d9d8e9, type: 3}
+  illustration: {fileID: 21300000, guid: d9b5889270bfc214b8f1cb46f3eaad5f, type: 3}
+  music: {fileID: 8300000, guid: 5f8f3803ac760c942a8628436457fffc, type: 3}
   isHitFXEnabled: 1
   isFCAPIndicator: 1
   autoPlay: 0
@@ -1364,13 +1364,12 @@ MonoBehaviour:
   backgroundAlpha: 0.5
   useLowResolution: 0
   levelStartInfo:
-    songsId: "\u7948-\u6211\u3089\u795E\u7956\u3068\u5171\u306B\u6B69\u3080\u8005\u306A\u308A-.\u5149\u5409\u731B\u4FEEVS\u7A74\u5C71\u5927\u8F14VSKaiVS\u6C34\u91CE\u5065\u6CBBVS\u5927\u56FD\u594F\u97F3"
-    songsName: "\u7948 - \u6211\u3089\u795E\u7956\u3068\u5171\u306B\u6B69\u3080\u8005\u306A\u308A
-      -"
+    songsId: 
+    songsName: QieZikago Requiem
     composer: 
     charter: 
     illustrator: 
-    songsLevel: AT  Lv.17
+    songsLevel: IN  Lv.15
     musicAddressableKey: 
     chartAddressableKey: 
     illustrationKey: 
@@ -1711,7 +1710,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
