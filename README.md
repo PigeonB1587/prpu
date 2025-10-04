@@ -1,17 +1,35 @@
-# prpu -  <ins>P</ins>hi<ins>r</ins>gos <ins>P</ins>layer, written in <ins>U</ins>nity Engine
+# prpu - <ins>P</ins>hi<ins>r</ins>gos <ins>P</ins>layer, written in <ins>U</ins>nity Engine  
 
-A fan-made Phigros chart player and renderer developed with Unity Engine.
+![prpu Logo](https://github.com/PigeonB1587/prpu/blob/main/PrpUnity_ba-style@logo.bluearchive.cc.png?raw=true)  
 
-## Editor Requirements
+A Phigros player developed with Unity Engine and C#  
 
-An editor version greater than or equal to Unity [2022.3.62f1](https://unity.cn/release-notes/lts/2021/2022.3.62f1) is required.
 
-## Assets
+## Development Environment Requirements  
+- **Minimum Unity Version**: [2022.3.62f1](https://unity.cn/release-notes/lts/2021/2022.3.62f1)  
 
-Adobe - Source Han Sans [Source han sans](https://github.com/adobe-fonts/source-han-sans)
 
-Omnibus Type - Saira [Saira family](https://github.com/Omnibus-Type/Saira)
+## Supported Chart Formats  
 
-## License
+| Format          | Supported Versions       | Adaptation Status |
+| :-------------- | :----------------------- | :--------------- |
+| Phigros          | 100 - 250 fv1 fv3        | ✅ Fully Supported |
+| RePhiedit        | 100 - 170                | ❌ Not Supported  |
+| PhiZone Player   | -                        | ❌ Not Supported  |
+| PhiCreator       | 100                      | ❌ Not Supported  |  
 
-This project is licensed under [GNU General Public License v3.0](LICENSE).
+
+## Core Features  
+- **Storyboard System**: Supports custom game control behaviors (with Level Mods functionality).  
+- **Addressable Technology**: Enables hot loading and efficient management of game resources.  
+
+
+## Used Resources  
+- **Fonts**:  
+  - Adobe - Source Han Sans ([Download Link](https://github.com/adobe-fonts/source-han-sans))  
+  - Omnibus Type - Saira ([Download Link](https://github.com/Omnibus-Type/Saira))  
+- **Skin Resource**: Phigros Skin (Pigeon Games)  
+
+
+## License Information  
+This project is licensed under the [GNU General Public License v3.0](LICENSE).
