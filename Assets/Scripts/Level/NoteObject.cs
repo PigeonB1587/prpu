@@ -16,6 +16,9 @@ namespace PigeonB1587.prpu
         public float floorPosition = 0f;
         public bool isJudge = false;
 
+
+        public Color hitFxColor;
+
         public virtual void Awake()
         {
             noteRenderer = GetComponent<SpriteRenderer>();
@@ -81,6 +84,7 @@ namespace PigeonB1587.prpu
                 useVisableTime = false;
             }
             noteRenderer.color = Utils.IntToColor(noteData.color);
+            hitFxColor = Utils.IntToColor(noteData.hitFXColor);
         }
 
         public virtual bool GetNoteVisable(double curTime)

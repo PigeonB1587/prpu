@@ -18,6 +18,10 @@ namespace PigeonB1587.prpu
             badEffectPrefab;
         public float hitFxScale = 1f;
 
+
+        public Color perfectHitFxDefaultColor, perfectHitFxParticleDefaultColor;
+        public Color goodHitFxDefaultColor, goodHitFxParticleDefaultColor;
+
         private Dictionary<int, List<(AudioClip audio, int noteIndex)>> _customSoundGroups;
         private Dictionary<GameObject, AudioSource> _audioSourceCache = new Dictionary<GameObject, AudioSource>();
 
@@ -105,34 +109,71 @@ namespace PigeonB1587.prpu
             );
         }
 
-        public void GetHitFx(HitType type, Vector3 position, int noteType, Transform line = null, int lineIndex = -1, int noteIndex = -1)
+        public void GetHitFx(HitType type, Vector3 position, int noteType, Transform line = null, int lineIndex = -1, int noteIndex = -1, Color? hitFxColor = null)
         {
-            if (!GameInformation.Instance.isHitFXEnabled)
+            var gameInfo = GameInformation.Instance;
+            if (!gameInfo.isHitFXEnabled)
             {
                 return;
             }
+
+            if (type == HitType.Miss)
+            {
+                return;
+            }
+
             GameObject effect = null;
             ObjectPool<GameObject> targetPool = null;
+            SpriteRenderer spriteRenderer = null;
+            ParticleSystem ps = null;
+            ParticleSystem.MainModule main = default;
+
+            var size = hitFxScale * gameInfo.noteScale * gameInfo.screenRadioScale;
 
             switch (type)
             {
                 case HitType.Perfect:
-                    effect = perfectEffectsPool.Get();
                     targetPool = perfectEffectsPool;
+                    effect = targetPool.Get();
+                    effect.TryGetComponent(out spriteRenderer);
+                    ps = effect.GetComponentInChildren<ParticleSystem>();
+                    main = ps.main;
+
+                    spriteRenderer.color = perfectHitFxDefaultColor;
+                    main.startColor = perfectHitFxParticleDefaultColor;
+
+                    if (hitFxColor.HasValue)
+                    {
+                        var colorValue = hitFxColor.Value;
+                        spriteRenderer.color = new Color(colorValue.r, colorValue.g, colorValue.b, perfectHitFxDefaultColor.a);
+                        main.startColor = new Color(colorValue.r, colorValue.g, colorValue.b, perfectHitFxParticleDefaultColor.a);
+                    }
                     break;
+
                 case HitType.Good:
-                    effect = goodEffectsPool.Get();
                     targetPool = goodEffectsPool;
+                    effect = targetPool.Get();
+                    effect.TryGetComponent(out spriteRenderer);
+                    ps = effect.GetComponentInChildren<ParticleSystem>();
+                    main = ps.main;
+
+                    spriteRenderer.color = perfectHitFxDefaultColor;
+                    main.startColor = perfectHitFxParticleDefaultColor;
+
+                    if (hitFxColor.HasValue)
+                    {
+                        var colorValue = hitFxColor.Value;
+                        spriteRenderer.color = new Color(colorValue.r, colorValue.g, colorValue.b, goodHitFxDefaultColor.a);
+                        main.startColor = new Color(colorValue.r, colorValue.g, colorValue.b, goodHitFxParticleDefaultColor.a);
+                    }
                     break;
+
                 case HitType.Bad:
-                    effect = badEffectsPool.Get();
                     targetPool = badEffectsPool;
+                    effect = targetPool.Get();
                     break;
-                case HitType.Miss:
-                    return;
             }
 
-            var size = hitFxScale * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale;
             effect.transform.localScale = new Vector3(size, size, size);
             effect.transform.SetParent(line != null ? line : transform);
             effect.transform.position = position;

@@ -23,7 +23,7 @@ namespace PigeonB1587.prpu
                 ScoreController.Hit(HitType.Perfect, 0);
                 judgeLine.levelController.hitFxController.GetHitFx(HitType.Perfect,
                     judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)),
-                    2, lineIndex: judgeLine.index, noteIndex: index);
+                    2, lineIndex: judgeLine.index, noteIndex: index, hitFxColor: noteData.hitFXColor != -1 ? hitFxColor : null);
                 judgeLine.dragPool.Release(this);
             }
             else if (noteData.isFake && curTime >= noteData.startTime.curTime)

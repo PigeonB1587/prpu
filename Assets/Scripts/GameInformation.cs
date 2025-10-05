@@ -299,7 +299,7 @@ namespace PigeonB1587.prpu
             public float positionX; //OK
             public float positionY; //OK
             public int color; //OK
-            public int hitFXColor;
+            public int hitFXColor; //OK
             public float judgeSize;
             public double floorPosition = 0; //OK
             public double endfloorPosition = 0; //OK

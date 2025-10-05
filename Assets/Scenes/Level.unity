@@ -423,6 +423,10 @@ MonoBehaviour:
   goodEffectPrefab: {fileID: 7193939620117203368, guid: cab783001dc29024aa6e6aa55914953d, type: 3}
   badEffectPrefab: {fileID: 7193939620117203368, guid: cab783001dc29024aa6e6aa55914953d, type: 3}
   hitFxScale: 1.35
+  perfectHitFxDefaultColor: {r: 1, g: 0.9254902, b: 0.627451, a: 0.88235295}
+  perfectHitFxParticleDefaultColor: {r: 1, g: 0.9254902, b: 0.627451, a: 1}
+  goodHitFxDefaultColor: {r: 0.7058824, g: 0.88235295, b: 1, a: 0.92156863}
+  goodHitFxParticleDefaultColor: {r: 0.7058824, g: 0.88235295, b: 1, a: 1}
 --- !u!114 &144982132
 MonoBehaviour:
   m_ObjectHideFlags: 0

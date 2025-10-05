@@ -50,7 +50,7 @@ namespace PigeonB1587.prpu
                 noteRenderer1.enabled = false;
             }
 
-            if (visable == false && judgeLine.levelController.time + GameInformation.Instance.noteToLargeTime < noteData.startTime.curTime)
+            if (visable == false && !isJudge && !isHolding && judgeLine.levelController.time + GameInformation.Instance.noteToLargeTime < noteData.startTime.curTime)
             {
                 judgeLine.localNotes.Add((noteData, index));
                 judgeLine.holdPool.Release(this);
@@ -66,7 +66,7 @@ namespace PigeonB1587.prpu
                 isJudge = true;
                 judgeLine.levelController.hitFxController.GetHitFx(HitType.Perfect,
                     transform.position,
-                    1, lineIndex: judgeLine.index, noteIndex: index);
+                    1, lineIndex: judgeLine.index, noteIndex: index, hitFxColor: noteData.hitFXColor != -1 ? hitFxColor : null);
                 StartCoroutine(Holding());
             }
             else if (isFirstJudge && noteData.isFake && curTime >= noteData.startTime.curTime)
@@ -87,7 +87,7 @@ namespace PigeonB1587.prpu
                 {
                     judgeLine.levelController.hitFxController.GetHitFx(HitType.Perfect,
                         judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)),
-                        3);
+                        3, hitFxColor: noteData.hitFXColor != -1 ? hitFxColor : null);
                     holdEffectTimer = 0.0f;
                 }
 
@@ -187,6 +187,7 @@ namespace PigeonB1587.prpu
                 useVisableTime = false;
             }
             noteRenderer.color = Utils.IntToColor(noteData.color);
+            hitFxColor = Utils.IntToColor(noteData.hitFXColor);
         }
 
         public override bool GetNoteVisable(double curTime)
