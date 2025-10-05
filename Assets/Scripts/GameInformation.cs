@@ -291,7 +291,7 @@ namespace PigeonB1587.prpu
             public bool isFake;
             public bool above; //OK
             public Time startTime; //OK
-            public int[] visibleTime; //OK
+            public Time visibleTime; //OK
             public float speed; //OK
             public float size; //OK
             public bool isHL; //OK

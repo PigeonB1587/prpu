@@ -107,7 +107,7 @@ namespace PigeonB1587.prpu
                     isFake = prpuNote.isFake,
                     above = prpuNote.above,
                     startTime = new ChartObject.Time().GetTime(prpuBpmItems, prpuNote.startTime),
-                    visibleTime = prpuNote.visibleTime,
+                    visibleTime = new ChartObject.Time().GetTime(prpuBpmItems, prpuNote.visibleTime),
                     speed = prpuNote.speed,
                     size = prpuNote.size,
                     isHL = false,

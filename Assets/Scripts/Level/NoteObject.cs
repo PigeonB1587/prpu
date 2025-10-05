@@ -7,8 +7,6 @@ namespace PigeonB1587.prpu
     {
         public int index = 0;
         public ChartObject.Note noteData;
-        public bool useVisableTime = false;
-        public ChartObject.Time visableTimeData;
         public JudgeLine judgeLine;
         public SpriteRenderer noteRenderer;
         public Sprite hlImage;
@@ -22,7 +20,6 @@ namespace PigeonB1587.prpu
         public virtual void Awake()
         {
             noteRenderer = GetComponent<SpriteRenderer>();
-            visableTimeData = new ChartObject.Time();
         }
 
         public virtual void Start()
@@ -74,15 +71,6 @@ namespace PigeonB1587.prpu
             {
                 transform.localEulerAngles = new Vector3(0, 0, 180);
             }
-            if (noteData.visibleTime != Array.Empty<int>())
-            {
-                visableTimeData.GetNewTime(judgeLine.jugdeLineData.bpms, noteData.visibleTime);
-                useVisableTime = true;
-            }
-            else
-            {
-                useVisableTime = false;
-            }
             noteRenderer.color = Utils.IntToColor(noteData.color);
             hitFxColor = Utils.IntToColor(noteData.hitFXColor);
         }
@@ -94,14 +82,7 @@ namespace PigeonB1587.prpu
             {
                 if (floorPosition >= -0.001)
                 {
-                    if (useVisableTime)
-                    {
-                        if (noteData.startTime.curTime - curTime <= visableTimeData.curTime)
-                        {
-                            visable = true;
-                        }
-                    }
-                    else
+                    if (curTime >= noteData.visibleTime.curTime)
                     {
                         visable = true;
                     }

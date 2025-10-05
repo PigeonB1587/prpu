@@ -49,7 +49,7 @@ namespace PigeonB1587.prpu
                             isFake = sourceNote.isFake != 0,
                             above = sourceNote.above == 1,
                             startTime = sourceNote.startTime,
-                            visibleTime = Array.Empty<int>(),
+                            visibleTime = GetBeatArray(SecToBeat(chartObject.BPMList, BeatToSec(chartObject.BPMList, GetBeat(sourceNote.startTime), 1) - sourceNote.visibleTime, 1)),
                             speed = sourceNote.speed,
                             size = sourceNote.size,
                             endTime = sourceNote.endTime,
@@ -286,6 +286,135 @@ namespace PigeonB1587.prpu
 
             return obj;
         }
+
+        public static float SecToBeat(Chart.BPMItem[] bpmList, float t, float bpmFactor)
+        {
+            float beat = 0.0f;
+            for (int i = 0; i < bpmList.Length; i++)
+            {
+                var e = bpmList[i];
+                float bpmv = e.bpm / bpmFactor;
+                float currentBpmStartTime = GetBeat(e.startTime);
+
+                if (i != bpmList.Length - 1)
+                {
+                    float nextBpmStartTime = GetBeat(bpmList[i + 1].startTime);
+                    float etBeat = nextBpmStartTime - currentBpmStartTime;
+                    float etSec = etBeat * (60 / bpmv);
+
+                    if (t >= etSec)
+                    {
+                        beat += etBeat;
+                        t -= etSec;
+                    }
+                    else
+                    {
+                        beat += t / (60 / bpmv);
+                        break;
+                    }
+                }
+                else
+                {
+                    beat += t / (60 / bpmv);
+                }
+            }
+            return beat;
+        }
+        public static float BeatToSec(Chart.BPMItem[] bpmList, float t, float bpmFactor)
+        {
+            float sec = 0.0f;
+            for (int i = 0; i < bpmList.Length; i++)
+            {
+                var e = bpmList[i];
+                float bpmv = e.bpm / bpmFactor;
+                float currentBpmStartTime = GetBeat(e.startTime);
+
+                if (i != bpmList.Length - 1)
+                {
+                    float nextBpmStartTime = GetBeat(bpmList[i + 1].startTime);
+                    float etBeat = nextBpmStartTime - currentBpmStartTime;
+
+                    if (t >= etBeat)
+                    {
+                        sec += etBeat * (60 / bpmv);
+                        t -= etBeat;
+                    }
+                    else
+                    {
+                        sec += t * (60 / bpmv);
+                        break;
+                    }
+                }
+                else
+                {
+                    sec += t * (60 / bpmv);
+                }
+            }
+            return sec;
+        }
+        private static int[] GetBeatArray(float beat, double precision = 1e-6)
+        {
+            if (beat < 0)
+            {
+                var positive = GetBeatArray(-beat, precision);
+                positive[0] = -positive[0];
+                return positive;
+            }
+
+            int integerPart = (int)Math.Floor(beat);
+            double fractionalPart = beat - integerPart;
+
+            if (Math.Abs(fractionalPart) < precision)
+            {
+                return new[] { integerPart, 0, 1 };
+            }
+
+            double x = fractionalPart;
+            int a = (int)Math.Floor(x);
+            int h1 = 1, k1 = 0;
+            int h2 = a, k2 = 1;
+            double error;
+
+            while (true)
+            {
+                x = 1 / (x - a);
+                a = (int)Math.Floor(x);
+
+                int h = a * h2 + h1;
+                int k = a * k2 + k1;
+
+                error = Math.Abs((double)h / k - fractionalPart);
+                if (error < precision)
+                {
+                    int gcd = GCD(h, k);
+                    return new[] { integerPart, h / gcd, k / gcd };
+                }
+
+                h1 = h2;
+                k1 = k2;
+                h2 = h;
+                k2 = k;
+
+                if (k > 1000000)
+                {
+                    int gcd = GCD(h2, k2);
+                    return new[] { integerPart, h2 / gcd, k2 / gcd };
+                }
+            }
+        }
+        private static int GCD(int a, int b)
+        {
+            a = Math.Abs(a);
+            b = Math.Abs(b);
+            while (b != 0)
+            {
+                int temp = b;
+                b = a % b;
+                a = temp;
+            }
+            return a;
+        }
+        private static float GetBeat(int[] beatArray) => beatArray[0] + beatArray[1] / (float)beatArray[2];
 
         public const double speedScale = 1.3333333333333333d;
 
