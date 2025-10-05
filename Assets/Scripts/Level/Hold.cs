@@ -178,6 +178,8 @@ namespace PigeonB1587.prpu
                 transform.localEulerAngles = new Vector3(0, 0, 180);
             }
             noteRenderer.color = Utils.IntToColor(noteData.color);
+            noteRenderer1.color = Utils.IntToColor(noteData.color);
+            noteRenderer2.color = Utils.IntToColor(noteData.color);
             hitFxColor = Utils.IntToColor(noteData.hitFXColor);
         }
 

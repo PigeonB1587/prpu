@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PigeonB1587.prpu
 {
@@ -20,6 +21,9 @@ namespace PigeonB1587.prpu
                 offset = (chartObject.META.offset / 1000f) * (-1f),
                 storyBoard = null,
             };
+
+            var storyBoardIndexs = new List<int>();
+            var storyBoardEvents = new List<Prpu.Chart.JudgeLineEvent>();
 
             obj.judgeLineList = new Prpu.Chart.JudgeLine[chartObject.judgeLineList.Length];
 
@@ -56,13 +60,16 @@ namespace PigeonB1587.prpu
                             positionX = sourceNote.positionX * 0.013169f,
                             positionY = sourceNote.yOffset * 0.011111f,
                             color = sourceNote.color != null && sourceNote.color.Length >= 3 ?
-                                   Utils.RgbaToInt((byte)sourceNote.color[0], (byte)sourceNote.color[1], (byte)sourceNote.color[2], (byte)sourceNote.alpha) : -1,
+                                   Utils.RgbaToInt((byte)sourceNote.color[0], (byte)sourceNote.color[1], (byte)sourceNote.color[2], (byte)sourceNote.alpha) : Utils.RgbaToInt(255, 255, 255, (byte)sourceNote.alpha),
                             hitFXColor = sourceNote.tintHitEffects != null ? Utils.RgbaToInt((byte)sourceNote.tintHitEffects[0], (byte)sourceNote.tintHitEffects[1],
                             (byte)sourceNote.tintHitEffects[2], 255) : -1,
                             judgeSize = sourceNote.judgeArea
                         });
                     }
                 }
+
+                notes = notes
+     .OrderBy(s => GetBeat(s.startTime)).ToList();
 
                 var eventLayers = new List<Prpu.Chart.JudgeLineEventLayer>();
                 if (sourceLine.eventLayers != null)
@@ -90,6 +97,9 @@ namespace PigeonB1587.prpu
                                     bezierPoints = sourceEvent.bezier == 1 ? sourceEvent.bezierPoints : Array.Empty<float>()
                                 };
                             }
+
+                            targetLayer.judgeLineMoveXEvents = targetLayer.judgeLineMoveXEvents
+     .OrderBy(s => GetBeat(s.startTime)).ToArray();
                         }
 
                         if (sourceLayer.moveYEvents != null)
@@ -110,6 +120,9 @@ namespace PigeonB1587.prpu
                                     bezierPoints = sourceEvent.bezier == 1 ? sourceEvent.bezierPoints : Array.Empty<float>()
                                 };
                             }
+
+                            targetLayer.judgeLineMoveYEvents = targetLayer.judgeLineMoveYEvents
+     .OrderBy(s => GetBeat(s.startTime)).ToArray();
                         }
 
                         if (sourceLayer.rotateEvents != null)
@@ -130,6 +143,9 @@ namespace PigeonB1587.prpu
                                     bezierPoints = sourceEvent.bezier == 1 ? sourceEvent.bezierPoints : Array.Empty<float>()
                                 };
                             }
+
+                            targetLayer.judgeLineRotateEvents = targetLayer.judgeLineRotateEvents
+     .OrderBy(s => GetBeat(s.startTime)).ToArray();
                         }
 
                         if (sourceLayer.alphaEvents != null)
@@ -150,9 +166,64 @@ namespace PigeonB1587.prpu
                                     bezierPoints = sourceEvent.bezier == 1 ? sourceEvent.bezierPoints : Array.Empty<float>()
                                 };
                             }
+
+                            targetLayer.judgeLineDisappearEvents = targetLayer.judgeLineDisappearEvents
+     .OrderBy(s => GetBeat(s.startTime)).ToArray();
                         }
 
                         eventLayers.Add(targetLayer);
+                    }
+                }
+
+                if (sourceLine.attachUI != null || sourceLine.attachUI != "")
+                {
+                    if(sourceLine.attachUI == "pause")
+                    {
+                        for(int s = 0; s < eventLayers[0].judgeLineDisappearEvents.Length; s++)
+                        {
+                            storyBoardIndexs.Add(7);
+                            storyBoardEvents.Add(eventLayers[0].judgeLineDisappearEvents[s]);
+                        }
+                    }
+                    else if (sourceLine.attachUI == "name")
+                    {
+                        for (int s = 0; s < eventLayers[0].judgeLineDisappearEvents.Length; s++)
+                        {
+                            storyBoardIndexs.Add(2);
+                            storyBoardEvents.Add(eventLayers[0].judgeLineDisappearEvents[s]);
+                        }
+                    }
+                    else if (sourceLine.attachUI == "level")
+                    {
+                        for (int s = 0; s < eventLayers[0].judgeLineDisappearEvents.Length; s++)
+                        {
+                            storyBoardIndexs.Add(3);
+                            storyBoardEvents.Add(eventLayers[0].judgeLineDisappearEvents[s]);
+                        }
+                    }
+                    else if (sourceLine.attachUI == "score")
+                    {
+                        for (int s = 0; s < eventLayers[0].judgeLineDisappearEvents.Length; s++)
+                        {
+                            storyBoardIndexs.Add(4);
+                            storyBoardEvents.Add(eventLayers[0].judgeLineDisappearEvents[s]);
+                        }
+                    }
+                    else if (sourceLine.attachUI == "combo")
+                    {
+                        for (int s = 0; s < eventLayers[0].judgeLineDisappearEvents.Length; s++)
+                        {
+                            storyBoardIndexs.Add(5);
+                            storyBoardEvents.Add(eventLayers[0].judgeLineDisappearEvents[s]);
+                        }
+                    }
+                    else if (sourceLine.attachUI == "combonumber")
+                    {
+                        for (int s = 0; s < eventLayers[0].judgeLineDisappearEvents.Length; s++)
+                        {
+                            storyBoardIndexs.Add(6);
+                            storyBoardEvents.Add(eventLayers[0].judgeLineDisappearEvents[s]);
+                        }
                     }
                 }
 
@@ -181,6 +252,9 @@ namespace PigeonB1587.prpu
                     }
                 }
 
+                speedEvents = speedEvents
+    .OrderBy(s => GetBeat(s.startTime)).ToList();
+
                 var colorEvents = new List<Prpu.Chart.JudgeLineEvent>();
                 var scaleXEvents = new List<Prpu.Chart.JudgeLineEvent>();
                 var scaleYEvents = new List<Prpu.Chart.JudgeLineEvent>();
@@ -204,6 +278,9 @@ namespace PigeonB1587.prpu
                                 bezierPoints = sourceEvent.bezier == 1 ? sourceEvent.bezierPoints : Array.Empty<float>()
                             });
                         }
+
+                        colorEvents = colorEvents
+    .OrderBy(s => GetBeat(s.startTime)).ToList();
                     }
 
                     if (sourceLine.extended.scaleXEvents != null)
@@ -222,6 +299,9 @@ namespace PigeonB1587.prpu
                                 bezierPoints = sourceEvent.bezier == 1 ? sourceEvent.bezierPoints : Array.Empty<float>()
                             });
                         }
+
+                        scaleXEvents = scaleXEvents
+    .OrderBy(s => GetBeat(s.startTime)).ToList();
                     }
 
                     if (sourceLine.extended.scaleYEvents != null)
@@ -240,6 +320,9 @@ namespace PigeonB1587.prpu
                                 bezierPoints = sourceEvent.bezier == 1 ? sourceEvent.bezierPoints : Array.Empty<float>()
                             });
                         }
+
+                        scaleYEvents = scaleYEvents
+    .OrderBy(s => GetBeat(s.startTime)).ToList();
                     }
 
                     if (sourceLine.extended.textEvents != null)
@@ -258,6 +341,9 @@ namespace PigeonB1587.prpu
                                 bezierPoints = sourceEvent.bezier == 1 ? sourceEvent.bezierPoints : Array.Empty<float>()
                             });
                         }
+
+                        textEvents = textEvents
+    .OrderBy(s => GetBeat(s.startTime)).ToList();
                     }
                 }
 
@@ -284,7 +370,36 @@ namespace PigeonB1587.prpu
                 };
             }
 
+            var sppe = new StoryBoardSorter();
+            sppe.SortJudgeLineEvents(storyBoardIndexs, storyBoardEvents);
+            obj.storyBoard = new Prpu.Chart.StoryBoard()
+            {
+                eventType = storyBoardIndexs.ToArray(),
+                events = storyBoardEvents.ToArray()
+            };
+
             return obj;
+        }
+
+        public class StoryBoardSorter
+        {
+            public void SortJudgeLineEvents(List<int> storyBoardIndexs, List<Prpu.Chart.JudgeLineEvent> storyBoardEvents)
+            {
+                var combined = storyBoardIndexs.Zip(storyBoardEvents, (index, evt) =>
+                    new { Index = index, Event = evt })
+                    .ToList();
+
+                var sorted = combined.OrderBy(item => GetBeat(item.Event.startTime)).ToList();
+
+                storyBoardIndexs.Clear();
+                storyBoardEvents.Clear();
+
+                foreach (var item in sorted)
+                {
+                    storyBoardIndexs.Add(item.Index);
+                    storyBoardEvents.Add(item.Event);
+                }
+            }
         }
 
         public static float SecToBeat(Chart.BPMItem[] bpmList, float t, float bpmFactor)
@@ -486,6 +601,7 @@ namespace PigeonB1587.prpu
                 public bool rotateWithFather { get; set; } = false;
                 public int father { get; set; }
                 public int zOrder { get; set; }
+                public string attachUI { get; set; } = null;
             }
             [Serializable]
             public class Note
