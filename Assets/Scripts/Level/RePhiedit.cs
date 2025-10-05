@@ -363,6 +363,8 @@ namespace PigeonB1587.prpu
             {
                 public int above { get; set; }
                 public int alpha { get; set; }
+
+                [JsonProperty(PropertyName = "tint")]
                 public int[] color { get; set; }
                 public int[] endTime { get; set; }
                 public int isFake { get; set; }
