@@ -14,7 +14,7 @@ A Phigros player developed with Unity Engine and C#
 | Format          | Supported Versions       | Adaptation Status |
 | :-------------- | :----------------------- | :--------------- |
 | Phigros          | 100 - 250 fv1 fv3        | ✅ Fully Supported |
-| RePhiedit        | 100 - 170                | ❌ Not Supported  |
+| RePhiedit        | 100 - 170                | ✅ Full Supported  |
 | PhiZone Player   | -                        | ❌ Not Supported  |
 | PhiCreator       | 100                      | ❌ Not Supported  |  
 
