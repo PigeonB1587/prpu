@@ -57,7 +57,8 @@ namespace PigeonB1587.prpu
                             positionY = sourceNote.yOffset * 0.011111f,
                             color = sourceNote.color != null && sourceNote.color.Length >= 3 ?
                                    Utils.RgbaToInt((byte)sourceNote.color[0], (byte)sourceNote.color[1], (byte)sourceNote.color[2], (byte)sourceNote.alpha) : -1,
-                            hitFXColor = -16777088,
+                            hitFXColor = sourceNote.tintHitEffects != null ? Utils.RgbaToInt((byte)sourceNote.tintHitEffects[0], (byte)sourceNote.tintHitEffects[1],
+                            (byte)sourceNote.tintHitEffects[2], 255) : -1,
                             judgeSize = sourceNote.judgeArea
                         });
                     }
@@ -373,6 +374,7 @@ namespace PigeonB1587.prpu
                 public float visibleTime { get; set; }
                 public float yOffset { get; set; }
                 public float judgeArea { get; set; }
+                public int[] tintHitEffects { get; set; }
             }
             [Serializable]
             public class EventLayers
