@@ -246,7 +246,7 @@ namespace PigeonB1587.prpu
 
             return new ChartObject.Transform
             {
-                judgeLineColorEvents = GetJudgeLineEvents(prpuTransform.judgeLineColorEvents, prpuBpmItems),
+                judgeLineColorEvents = GetColorEvents(prpuTransform.judgeLineColorEvents, prpuBpmItems),
                 judgeLineTextEvents = GetTextEvents(prpuTransform.judgeLineTextEvents, prpuBpmItems),
                 fatherLineIndex = prpuTransform.fatherLineIndex,
                 localPositionMode = prpuTransform.localPositionMode,
@@ -255,6 +255,29 @@ namespace PigeonB1587.prpu
                 judgeLineTextureScaleXEvents = GetJudgeLineEvents(prpuTransform.judgeLineTextureScaleXEvents, prpuBpmItems),
                 judgeLineTextureScaleYEvents = GetJudgeLineEvents(prpuTransform.judgeLineTextureScaleYEvents, prpuBpmItems)
             };
+        }
+
+        private ChartObject.ColorEvent[] GetColorEvents(Prpu.Chart.JudgeLineEvent[] prpuColorEvents, Prpu.Chart.BpmItems[] prpuBpmItems)
+        {
+            if (prpuColorEvents == null) return Array.Empty<ChartObject.ColorEvent>();
+
+            var ColorEvents = new ChartObject.ColorEvent[prpuColorEvents.Length];
+            for (int i = 0; i < prpuColorEvents.Length; i++)
+            {
+                var prpuEvent = prpuColorEvents[i];
+                ColorEvents[i] = new ChartObject.ColorEvent
+                {
+                    startTime = new ChartObject.Time().GetTime(prpuBpmItems, prpuEvent.startTime),
+                    endTime = new ChartObject.Time().GetTime(prpuBpmItems, prpuEvent.endTime),
+                    start = Utils.IntToColor((int)prpuEvent.start),
+                    end = Utils.IntToColor((int)prpuEvent.end),
+                    easing = prpuEvent.easing,
+                    easingLeft = prpuEvent.easingLeft,
+                    easingRight = prpuEvent.easingRight,
+                    bezierPoints = prpuEvent.bezierPoints
+                };
+            }
+            return ColorEvents;
         }
 
         private ChartObject.TextEvent[] GetTextEvents(Prpu.Chart.TextEvent[] prpuTextEvents, Prpu.Chart.BpmItems[] prpuBpmItems)
@@ -272,7 +295,8 @@ namespace PigeonB1587.prpu
                     start = prpuEvent.start,
                     end = prpuEvent.end,
                     easing = prpuEvent.easing,
-                    easingCutting = prpuEvent.easingCutting,
+                    easingLeft = prpuEvent.easingLeft,
+                    easingRight = prpuEvent.easingRight,
                     bezierPoints = prpuEvent.bezierPoints
                 };
             }

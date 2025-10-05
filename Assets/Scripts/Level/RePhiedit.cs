@@ -47,7 +47,7 @@ namespace PigeonB1587.prpu
                         {
                             type = RpeNoteTypeToPrpu(sourceNote.type),
                             isFake = sourceNote.isFake != 0,
-                            above = sourceNote.above != 0,
+                            above = sourceNote.above == 1,
                             startTime = sourceNote.startTime,
                             visibleTime = Array.Empty<int>(),
                             speed = sourceNote.speed,
@@ -252,6 +252,8 @@ namespace PigeonB1587.prpu
                                 start = sourceEvent.start,
                                 end = sourceEvent.end,
                                 easing = RpeEasingTypeToPrpu(sourceEvent.easingType),
+                                easingLeft = sourceEvent.easingLeft,
+                                easingRight = sourceEvent.easingRight,
                                 bezierPoints = sourceEvent.bezier == 1 ? sourceEvent.bezierPoints : Array.Empty<float>()
                             });
                         }

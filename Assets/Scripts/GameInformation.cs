@@ -258,8 +258,21 @@ namespace PigeonB1587.prpu
             public string start;
             public string end;
             public int easing;
-            public float[] easingCutting;
+            public float easingLeft; //OK
+            public float easingRight; //OK
             public float[] bezierPoints;
+        }
+        [Serializable]
+        public class ColorEvent //OK
+        {
+            public Time startTime; //OK
+            public Time endTime; //OK
+            public Color start; //OK
+            public Color end; //OK
+            public int easing; //OK
+            public float easingLeft; //OK
+            public float easingRight; //OK
+            public float[] bezierPoints; //OK
         }
 
         [Serializable]
@@ -302,7 +315,7 @@ namespace PigeonB1587.prpu
         [Serializable]
         public class Transform
         {
-            public JudgeLineEvent[] judgeLineColorEvents;
+            public ColorEvent[] judgeLineColorEvents;
             public TextEvent[] judgeLineTextEvents;
             public int fatherLineIndex; //OK
             public bool localPositionMode; //OK

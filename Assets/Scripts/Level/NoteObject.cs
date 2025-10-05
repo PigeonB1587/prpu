@@ -108,6 +108,6 @@ namespace PigeonB1587.prpu
             return visable;
         }
 
-        public virtual float GetFloorPosY() => (float)(noteData.floorPosition - judgeLine.floorPosition + (noteData.above ? 1 : -1) * noteData.positionY) * noteData.speed;
+        public virtual float GetFloorPosY() => (float)(noteData.floorPosition - judgeLine.floorPosition + noteData.positionY) * noteData.speed;
     }
 }

@@ -44,6 +44,8 @@ namespace PigeonB1587.prpu
                 var k = judgeLines[GameInformation.Instance.levelStartInfo.judgeLineImages[i].judgeLineIndex].GetComponent<SpriteRenderer>();
                 k.sprite = judgeLineSprites[i];
                 k.size = new Vector2(GameInformation.Instance.levelStartInfo.judgeLineImages[i].imageX, GameInformation.Instance.levelStartInfo.judgeLineImages[i].imageY);
+                judgeLines[GameInformation.Instance.levelStartInfo.judgeLineImages[i].judgeLineIndex].defautImageX = GameInformation.Instance.levelStartInfo.judgeLineImages[i].imageX;
+                judgeLines[GameInformation.Instance.levelStartInfo.judgeLineImages[i].judgeLineIndex].defautImageY = GameInformation.Instance.levelStartInfo.judgeLineImages[i].imageY;
             }
             judgeLines = SortJudgmentLine(judgeLines);
 

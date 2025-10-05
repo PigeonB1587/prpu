@@ -68,7 +68,7 @@ namespace PigeonB1587.prpu
         public static float GetCurFloorPosition(double t, ChartObject.SpeedEvent[] events)
         {
             double floorPosition = 0d;
-            var e = events[GetEventIndex(t, events)];
+            var e = events[GetSpeedEventIndex(t, events)];
             if (t <= e.endTime.curTime)
             {
                 floorPosition = e.floorPosition +
@@ -81,7 +81,7 @@ namespace PigeonB1587.prpu
             }
             return (float)floorPosition;
         }
-        private static int GetEventIndex(double curTime, ChartObject.SpeedEvent[] events)
+        private static int GetSpeedEventIndex(double curTime, ChartObject.SpeedEvent[] events)
         {
             int left = 0;
             int right = events.Length - 1;

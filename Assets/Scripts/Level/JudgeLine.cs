@@ -28,6 +28,12 @@ namespace PigeonB1587.prpu
 
         public float bpm = 120f;
 
+        public float defautImageX;
+        public float defautImageY;
+
+        public float colorR = 1, colorG = 1, colorB = 1;
+        public float scaleX = 1, scaleY = 1;
+
         public float floorPosition = 0;
 
         public Transform fatherLine;
@@ -36,6 +42,8 @@ namespace PigeonB1587.prpu
         {
             lineRenderer.color = GameInformation.Instance.isFCAPIndicator ? levelController.perfectLine : levelController.defaultLine;
             lineRenderer.sortingOrder = jugdeLineData.transform.zOrder;
+            defautImageX = lineRenderer.size.x;
+            defautImageY = lineRenderer.size.y;
             if (jugdeLineData.transform.judgeLineColorEvents.Length != 0)
             {
                 usingCustomColor = true;
@@ -108,6 +116,13 @@ namespace PigeonB1587.prpu
                 moveY = 0;
                 rotate = 0;
                 disappear = 0;
+
+                colorR = 0;
+                colorG = 0;
+                colorB = 0;
+
+                scaleX = 1;
+                scaleY = 1;
             }
             //
             UpdateEventLayers(curTime);
@@ -153,8 +168,10 @@ namespace PigeonB1587.prpu
             }
             else
             {
-
+                endColor = new Color(colorR, colorG, colorB, disappear);
             }
+
+            lineRenderer.size = new Vector2(scaleX * defautImageX, scaleY * defautImageY);
 
             lineRenderer.color = endColor;
         }
@@ -234,6 +251,20 @@ namespace PigeonB1587.prpu
                 UpdateEvent(currentTime, ref jugdeLineData.judgeLineEventLayers[i].judgeLineRotateEvents, ref rotate);
                 UpdateEvent(currentTime, ref jugdeLineData.judgeLineEventLayers[i].judgeLineDisappearEvents, ref disappear);
             }
+
+            if (usingCustomColor)
+            {
+                UpdateColorEvent(currentTime, ref jugdeLineData.transform.judgeLineColorEvents, ref colorR, ref colorG, ref colorB);
+            }
+
+            if (jugdeLineData.transform.judgeLineTextureScaleXEvents.Length != 0)
+            {
+                UpdateEvent(currentTime, ref jugdeLineData.transform.judgeLineTextureScaleXEvents, ref scaleX);
+            }
+            if (jugdeLineData.transform.judgeLineTextureScaleYEvents.Length != 0)
+            {
+                UpdateEvent(currentTime, ref jugdeLineData.transform.judgeLineTextureScaleYEvents, ref scaleY);
+            }
         }
 
         private void UpdateEvent(double currentTime, ref ChartObject.JudgeLineEvent[] events, ref float value)
@@ -255,6 +286,34 @@ namespace PigeonB1587.prpu
             }
         }
 
+        private void UpdateColorEvent(double currentTime, ref ChartObject.ColorEvent[] events, ref float value1, ref float value2, ref float value3)
+        {
+            if (events.Length == 0)
+                return;
+            int i = GetColorEventIndex(currentTime, ref events);
+            var @event = events[i];
+            if (currentTime >= @event.endTime.curTime)
+            {
+                value1 += @event.end.r;
+                value2 += @event.end.g;
+                value3 += @event.end.b;
+                return;
+            }
+            else
+            {
+                value1 += Easings.Lerp(@event.easing, currentTime, @event.startTime.curTime, @event.endTime.curTime,
+                @event.start.r, @event.end.r, @event.easingLeft, @event.easingRight, @event.bezierPoints != null && @event.bezierPoints.Length == 4 ? true : false,
+                @event.bezierPoints);
+                value2 += Easings.Lerp(@event.easing, currentTime, @event.startTime.curTime, @event.endTime.curTime,
+                @event.start.g, @event.end.g, @event.easingLeft, @event.easingRight, @event.bezierPoints != null && @event.bezierPoints.Length == 4 ? true : false,
+                @event.bezierPoints);
+                value3 += Easings.Lerp(@event.easing, currentTime, @event.startTime.curTime, @event.endTime.curTime,
+                @event.start.b, @event.end.b, @event.easingLeft, @event.easingRight, @event.bezierPoints != null && @event.bezierPoints.Length == 4 ? true : false,
+                @event.bezierPoints);
+            }
+        }
+
+
         private void UpdateBpms(double currentTime, ref ChartObject.BpmItems[] events, ref float value)
         {
             if (events.Length == 0)
@@ -270,6 +329,30 @@ namespace PigeonB1587.prpu
         }
 
         private int GetEventIndex(double curTime, ref ChartObject.JudgeLineEvent[] events)
+        {
+            int left = 0;
+            int right = events.Length - 1;
+            int index = 0;
+
+            while (left <= right)
+            {
+                int mid = left + (right - left) / 2;
+
+                if (events[mid].startTime.curTime <= curTime)
+                {
+                    index = mid;
+                    left = mid + 1;
+                }
+                else
+                {
+                    right = mid - 1;
+                }
+            }
+
+            return index;
+        }
+
+        private int GetColorEventIndex(double curTime, ref ChartObject.ColorEvent[] events)
         {
             int left = 0;
             int right = events.Length - 1;

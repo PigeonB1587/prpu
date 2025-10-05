@@ -48,7 +48,8 @@ namespace PigeonB1587.prpu
                 public string start { get; set; }
                 public string end { get; set; }
                 public int easing { get; set; }
-                public float[] easingCutting { get; set; }
+                public float easingLeft { get; set; }
+                public float easingRight { get; set; }
 
                 [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
                 public float[] bezierPoints { get; set; }

@@ -22,6 +22,7 @@ namespace PigeonB1587.prpu
 
         public Text musicNameText, levelText, comboText, subComboText, scoreText;
         public Image backgroundImage;
+        public Button pauseBtn;
 
         public RectTransform progressBarRect;
         public RectTransform guiRect;
@@ -71,6 +72,18 @@ namespace PigeonB1587.prpu
             backgroundImage.sprite = GameInformation.Instance.illustration;
 
             LevelStart().Forget();
+        }
+
+        public void SetLevelMods()
+        {
+            var mods = GameInformation.Instance.levelStartInfo.levelMods;
+            foreach (var mod in mods)
+            {
+                if (mod == "DisablePause")
+                {
+                    pauseBtn.interactable = false;
+                }
+            }
         }
 
         public async UniTask LoadStoryBoard()
@@ -143,6 +156,8 @@ namespace PigeonB1587.prpu
             musicPlayer.pitch = GameInformation.Instance.levelSpeed;
             musicPlayer.loop = false;
             musicPlayer.time = 0;
+
+            SetLevelMods();
 
             if (Reader.chart == null || Reader.chart.level != GameInformation.Instance.levelStartInfo.songsLevel || Reader.chart.songID != GameInformation.Instance.levelStartInfo.songsId)
             {
