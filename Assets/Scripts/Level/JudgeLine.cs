@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -218,12 +220,12 @@ namespace PigeonB1587.prpu
 
                 if (shouldGetNote)
                 {
-                    GetAndSetupNote(note, originalIndex, i);
+                    SetNote(note, originalIndex, i);
                 }
             }
         }
 
-        private void GetAndSetupNote(ChartObject.Note note, int originalIndex, int listIndex)
+        private void SetNote(ChartObject.Note note, int originalIndex, int listIndex)
         {
             NoteObject noteObject = note.type switch
             {
@@ -241,6 +243,32 @@ namespace PigeonB1587.prpu
             noteObject.Start();
             localNotes.RemoveAt(listIndex);
         }
+
+        public void AddNote(ChartObject.Note note, int noteIndex)
+        {
+            if (localNotes.Count <= 1) return;
+
+            int left = 0;
+            int right = localNotes.Count - 1;
+            int index = localNotes.Count;
+
+            while (left <= right)
+            {
+                int mid = left + (right - left) / 2;
+                if (localNotes[mid].note.startTime.curTime >= note.startTime.curTime)
+                {
+                    index = mid;
+                    right = mid - 1;
+                }
+                else
+                {
+                    left = mid + 1;
+                }
+            }
+
+            localNotes.Insert(index, (note, noteIndex));
+        }
+
 
         private void UpdateEventLayers(double currentTime)
         {

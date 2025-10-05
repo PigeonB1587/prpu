@@ -33,7 +33,7 @@ namespace PigeonB1587.prpu
         /// <param name="offset">ms</param>
         public static void Hit(HitType type, float offset)
         {
-            if (combo > maxCombo)
+            if (combo >= maxCombo)
                 maxCombo = combo;
 
             switch (type)

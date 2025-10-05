@@ -52,7 +52,7 @@ namespace PigeonB1587.prpu
 
             if (visable == false && !isJudge && !isHolding && judgeLine.levelController.time + GameInformation.Instance.noteToLargeTime < noteData.startTime.curTime)
             {
-                judgeLine.localNotes.Add((noteData, index));
+                judgeLine.AddNote(noteData, index);
                 judgeLine.holdPool.Release(this);
             }
         }
