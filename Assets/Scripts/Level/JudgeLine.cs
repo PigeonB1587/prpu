@@ -121,8 +121,8 @@ namespace PigeonB1587.prpu
                 colorG = 0;
                 colorB = 0;
 
-                scaleX = 1;
-                scaleY = 1;
+                scaleX = 0;
+                scaleY = 0;
             }
             //
             UpdateEventLayers(curTime);
@@ -261,9 +261,17 @@ namespace PigeonB1587.prpu
             {
                 UpdateEvent(currentTime, ref jugdeLineData.transform.judgeLineTextureScaleXEvents, ref scaleX);
             }
+            else
+            {
+                scaleX++;
+            }
             if (jugdeLineData.transform.judgeLineTextureScaleYEvents.Length != 0)
             {
                 UpdateEvent(currentTime, ref jugdeLineData.transform.judgeLineTextureScaleYEvents, ref scaleY);
+            }
+            else
+            {
+                scaleY++;
             }
         }
 
