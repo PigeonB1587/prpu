@@ -1571,18 +1571,18 @@ MonoBehaviour:
   offset: 0
   levelSpeed: 1
   noteScale: 1
-  hitFXVolume: 1
+  hitFXVolume: 0
   soundEffectVolume: 1
   musicVolume: 1
   backgroundAlpha: 0.5
   useLowResolution: 0
   levelStartInfo:
-    songsId: 
-    songsName: QieZikago Requiem
-    composer: 
-    charter: 
-    illustrator: 
-    songsLevel: IN  Lv.15
+    songsId: "\u5F41.LeaF"
+    songsName: "\u5F41"
+    composer: LeaF
+    charter: Ascmor1587
+    illustrator: fiz03_zip
+    songsLevel: SP  Lv.?
     musicAddressableKey: 
     chartAddressableKey: 
     illustrationKey: 
