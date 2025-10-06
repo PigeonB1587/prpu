@@ -243,10 +243,13 @@ namespace PigeonB1587.prpu
 
                     foreach (var item in eventLayers)
                     {
-                        foreach (var item1 in item.judgeLineDisappearEvents)
+                        if(item.judgeLineDisappearEvents != null)
                         {
-                            item1.start = 0;
-                            item1.end = 0;
+                            foreach (var item1 in item.judgeLineDisappearEvents)
+                            {
+                                item1.start = 0;
+                                item1.end = 0;
+                            }
                         }
                     }
                 }
