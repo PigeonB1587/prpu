@@ -41,8 +41,6 @@ namespace PigeonB1587.prpu
 
         private CanvasGroup comboTextCanvasGroup, subComboTextCanvasGroup;
 
-        public float _overProgress = 0.8f;
-
         public void Awake()
         {
             ScoreController.ResetScore();
@@ -187,12 +185,13 @@ namespace PigeonB1587.prpu
 
             while (true)
             {
-                if (levelAni.GetCurrentAnimatorStateInfo(0).normalizedTime >= _overProgress)
+                if (levelAni.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
                 {
                     break;
                 }
                 await UniTask.Yield();
             }
+            previewLineRenderer.gameObject.SetActive(false);
 
             gui.enabled = false;
             musicPlayer.Play();
