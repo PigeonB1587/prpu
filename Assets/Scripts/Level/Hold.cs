@@ -45,7 +45,7 @@ namespace PigeonB1587.prpu
             noteRenderer1.enabled = visable;
             noteRenderer2.enabled = visable;
 
-            if (isOverStartTime)
+            if (isOverStartTime || isHolding)
             {
                 noteRenderer1.enabled = false;
             }
@@ -83,7 +83,7 @@ namespace PigeonB1587.prpu
             while (isHolding)
             {
                 holdEffectTimer += Time.deltaTime;
-                if (holdEffectTimer > (60 / judgeLine.bpm) / 2 && !noteData.isFake)
+                if (holdEffectTimer > (60 / judgeLine.bpm) / 2 && !noteData.isFake && judgeLine.levelController.time <= noteData.endTime.curTime - 0.08f)
                 {
                     judgeLine.levelController.hitFxController.GetHitFx(HitType.Perfect,
                         judgeLine.transform.TransformPoint(new Vector3(transform.localPosition.x, 0, 0)),

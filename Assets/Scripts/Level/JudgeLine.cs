@@ -187,6 +187,7 @@ namespace PigeonB1587.prpu
             {
                 instanteTextObject.progress = textProgress;
                 instanteTextObject.text.color = endColor;
+                instanteTextObject.transform.localScale = new Vector2(scaleX, scaleY);
             }
             else
             {
