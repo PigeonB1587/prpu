@@ -174,4 +174,22 @@ This project is distributed under the [GNU General Public License v3.0](LICENSE)
 
 ---
 
+## 🪼 Acknowledgements
+
+### References & Inspirations
+
+- **Lchzh Docs**  
+  [Link](https://docs.lchzh.net/learning/phigros/)  
+  Referenced documentation structure and content.
+
+- **Phira** by TeamFlos  
+  [Repository](https://github.com/TeamFlos/phira/releases)  
+  Adopted its "aggressive optimization" approach for note generation, which significantly improved performance.
+
+- **Phiplayer**  
+  [Repository](https://gitee.com/z-1029/phiplayer)  
+  Borrowed judgment line update method.
+
+---
+
 _Built with Unity Engine | C#_
