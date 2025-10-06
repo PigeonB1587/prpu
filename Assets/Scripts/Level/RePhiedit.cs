@@ -83,7 +83,7 @@ namespace PigeonB1587.prpu
                     }
                 }
 
-                bool hasAttachUI = sourceLine.attachUI != null || sourceLine.attachUI != "";
+                bool hasAttachUI = sourceLine.attachUI != null;
 
                 notes = notes
      .OrderBy(s => GetBeat(s.startTime)).ToList();
@@ -175,8 +175,8 @@ namespace PigeonB1587.prpu
                                 {
                                     startTime = sourceEvent.startTime,
                                     endTime = sourceEvent.endTime,
-                                    start = hasAttachUI ? 0 : (sourceEvent.start / 255f),
-                                    end = hasAttachUI ? 0 : (sourceEvent.end / 255f),
+                                    start = sourceEvent.start / 255f,
+                                    end = sourceEvent.end / 255f,
                                     easing = RpeEasingTypeToPrpu(sourceEvent.easingType),
                                     easingLeft = sourceEvent.easingLeft,
                                     easingRight = sourceEvent.easingRight,
@@ -199,7 +199,18 @@ namespace PigeonB1587.prpu
                         for (int s = 0; s < eventLayers[0].judgeLineDisappearEvents.Length; s++)
                         {
                             storyBoardIndexs.Add(7);
-                            storyBoardEvents.Add(eventLayers[0].judgeLineDisappearEvents[s]);
+                            var eventK = new Prpu.Chart.JudgeLineEvent()
+                            {
+                                start = eventLayers[0].judgeLineDisappearEvents[s].start,
+                                end = eventLayers[0].judgeLineDisappearEvents[s].end,
+                                startTime = eventLayers[0].judgeLineDisappearEvents[s].startTime,
+                                endTime = eventLayers[0].judgeLineDisappearEvents[s].endTime,
+                                bezierPoints = eventLayers[0].judgeLineDisappearEvents[s].bezierPoints,
+                                easing = eventLayers[0].judgeLineDisappearEvents[s].easing,
+                                easingLeft = eventLayers[0].judgeLineDisappearEvents[s].easingLeft,
+                                easingRight = eventLayers[0].judgeLineDisappearEvents[s].easingRight
+                            };
+                            storyBoardEvents.Add(eventK);
                         }
                     }
                     else if (sourceLine.attachUI == "name")
@@ -207,7 +218,18 @@ namespace PigeonB1587.prpu
                         for (int s = 0; s < eventLayers[0].judgeLineDisappearEvents.Length; s++)
                         {
                             storyBoardIndexs.Add(2);
-                            storyBoardEvents.Add(eventLayers[0].judgeLineDisappearEvents[s]);
+                            var eventK = new Prpu.Chart.JudgeLineEvent()
+                            {
+                                start = eventLayers[0].judgeLineDisappearEvents[s].start,
+                                end = eventLayers[0].judgeLineDisappearEvents[s].end,
+                                startTime = eventLayers[0].judgeLineDisappearEvents[s].startTime,
+                                endTime = eventLayers[0].judgeLineDisappearEvents[s].endTime,
+                                bezierPoints = eventLayers[0].judgeLineDisappearEvents[s].bezierPoints,
+                                easing = eventLayers[0].judgeLineDisappearEvents[s].easing,
+                                easingLeft = eventLayers[0].judgeLineDisappearEvents[s].easingLeft,
+                                easingRight = eventLayers[0].judgeLineDisappearEvents[s].easingRight
+                            };
+                            storyBoardEvents.Add(eventK);
                         }
                     }
                     else if (sourceLine.attachUI == "level")
@@ -215,7 +237,18 @@ namespace PigeonB1587.prpu
                         for (int s = 0; s < eventLayers[0].judgeLineDisappearEvents.Length; s++)
                         {
                             storyBoardIndexs.Add(3);
-                            storyBoardEvents.Add(eventLayers[0].judgeLineDisappearEvents[s]);
+                            var eventK = new Prpu.Chart.JudgeLineEvent()
+                            {
+                                start = eventLayers[0].judgeLineDisappearEvents[s].start,
+                                end = eventLayers[0].judgeLineDisappearEvents[s].end,
+                                startTime = eventLayers[0].judgeLineDisappearEvents[s].startTime,
+                                endTime = eventLayers[0].judgeLineDisappearEvents[s].endTime,
+                                bezierPoints = eventLayers[0].judgeLineDisappearEvents[s].bezierPoints,
+                                easing = eventLayers[0].judgeLineDisappearEvents[s].easing,
+                                easingLeft = eventLayers[0].judgeLineDisappearEvents[s].easingLeft,
+                                easingRight = eventLayers[0].judgeLineDisappearEvents[s].easingRight
+                            };
+                            storyBoardEvents.Add(eventK);
                         }
                     }
                     else if (sourceLine.attachUI == "score")
@@ -223,7 +256,18 @@ namespace PigeonB1587.prpu
                         for (int s = 0; s < eventLayers[0].judgeLineDisappearEvents.Length; s++)
                         {
                             storyBoardIndexs.Add(4);
-                            storyBoardEvents.Add(eventLayers[0].judgeLineDisappearEvents[s]);
+                            var eventK = new Prpu.Chart.JudgeLineEvent()
+                            {
+                                start = eventLayers[0].judgeLineDisappearEvents[s].start,
+                                end = eventLayers[0].judgeLineDisappearEvents[s].end,
+                                startTime = eventLayers[0].judgeLineDisappearEvents[s].startTime,
+                                endTime = eventLayers[0].judgeLineDisappearEvents[s].endTime,
+                                bezierPoints = eventLayers[0].judgeLineDisappearEvents[s].bezierPoints,
+                                easing = eventLayers[0].judgeLineDisappearEvents[s].easing,
+                                easingLeft = eventLayers[0].judgeLineDisappearEvents[s].easingLeft,
+                                easingRight = eventLayers[0].judgeLineDisappearEvents[s].easingRight
+                            };
+                            storyBoardEvents.Add(eventK);
                         }
                     }
                     else if (sourceLine.attachUI == "combo")
@@ -231,7 +275,18 @@ namespace PigeonB1587.prpu
                         for (int s = 0; s < eventLayers[0].judgeLineDisappearEvents.Length; s++)
                         {
                             storyBoardIndexs.Add(5);
-                            storyBoardEvents.Add(eventLayers[0].judgeLineDisappearEvents[s]);
+                            var eventK = new Prpu.Chart.JudgeLineEvent()
+                            {
+                                start = eventLayers[0].judgeLineDisappearEvents[s].start,
+                                end = eventLayers[0].judgeLineDisappearEvents[s].end,
+                                startTime = eventLayers[0].judgeLineDisappearEvents[s].startTime,
+                                endTime = eventLayers[0].judgeLineDisappearEvents[s].endTime,
+                                bezierPoints = eventLayers[0].judgeLineDisappearEvents[s].bezierPoints,
+                                easing = eventLayers[0].judgeLineDisappearEvents[s].easing,
+                                easingLeft = eventLayers[0].judgeLineDisappearEvents[s].easingLeft,
+                                easingRight = eventLayers[0].judgeLineDisappearEvents[s].easingRight
+                            };
+                            storyBoardEvents.Add(eventK);
                         }
                     }
                     else if (sourceLine.attachUI == "combonumber")
@@ -239,7 +294,28 @@ namespace PigeonB1587.prpu
                         for (int s = 0; s < eventLayers[0].judgeLineDisappearEvents.Length; s++)
                         {
                             storyBoardIndexs.Add(6);
-                            storyBoardEvents.Add(eventLayers[0].judgeLineDisappearEvents[s]);
+                            var eventK = new Prpu.Chart.JudgeLineEvent()
+                            {
+                                start = eventLayers[0].judgeLineDisappearEvents[s].start,
+                                end = eventLayers[0].judgeLineDisappearEvents[s].end,
+                                startTime = eventLayers[0].judgeLineDisappearEvents[s].startTime,
+                                endTime = eventLayers[0].judgeLineDisappearEvents[s].endTime,
+                                bezierPoints = eventLayers[0].judgeLineDisappearEvents[s].bezierPoints,
+                                easing = eventLayers[0].judgeLineDisappearEvents[s].easing,
+                                easingLeft = eventLayers[0].judgeLineDisappearEvents[s].easingLeft,
+                                easingRight = eventLayers[0].judgeLineDisappearEvents[s].easingRight
+                            };
+                            storyBoardEvents.Add(eventK);
+                        }
+                    }
+
+
+                    foreach (var item in eventLayers)
+                    {
+                        foreach (var item1 in item.judgeLineDisappearEvents)
+                        {
+                            item1.start = 0;
+                            item1.end = 0;
                         }
                     }
                 }
