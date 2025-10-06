@@ -388,6 +388,7 @@ MonoBehaviour:
   isLoading: 1
   isPlaying: 0
   isOver: 0
+  _overProgress: 0.8
 --- !u!114 &144982130
 MonoBehaviour:
   m_ObjectHideFlags: 0
