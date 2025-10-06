@@ -192,6 +192,7 @@ namespace PigeonB1587.prpu
                 }
                 await UniTask.Yield();
             }
+            await UniTask.Yield();
 
             gameObjects.transform.localScale = new Vector3(1, 1, 1);
             previewLineRenderer.gameObject.SetActive(false);
