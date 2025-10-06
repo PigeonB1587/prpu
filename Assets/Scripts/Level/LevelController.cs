@@ -60,6 +60,8 @@ namespace PigeonB1587.prpu
             gui.speed = 0;
             levelAni.speed = 0;
 
+            pauseBtn.interactable = false;
+
             if (GameInformation.Instance == null)
             {
                 Debug.LogError("Cannot find the instace \"GameInformation\".");
@@ -194,6 +196,8 @@ namespace PigeonB1587.prpu
             }
             await UniTask.Yield();
 
+            pauseBtn.interactable = true;
+
             gameObjects.transform.localScale = new Vector3(1, 1, 1);
             previewLineRenderer.gameObject.SetActive(false);
             
@@ -216,6 +220,11 @@ namespace PigeonB1587.prpu
         {
             comboTextCanvasGroup.alpha = 1;
             subComboTextCanvasGroup.alpha = 1;
+        }
+
+        public void Pause()
+        {
+            musicPlayer.Pause();
         }
 
         public IEnumerator LevelUpdate()
