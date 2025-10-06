@@ -1,9 +1,0 @@
-#
-Name: 彁
-Path: 52098459
-Song: 52098459.mp3
-Picture: 52098459.png
-Chart: 52098459.json
-Level: SP Lv.?
-Composer: LeaF
-Charter: Null
