@@ -56,6 +56,7 @@ namespace PigeonB1587.prpu
         {
             musicPlayer.Pause();
 
+            gameObjects.transform.localScale = new Vector3(0, 1, 1);
             gui.speed = 0;
             levelAni.speed = 0;
 
@@ -173,7 +174,7 @@ namespace PigeonB1587.prpu
             await hitFxController.LoadCustomClip();
             await lineController.SpawnJudgmentLine();
 
-            isLoading = false; // 此处已经开始更新判定线
+            isLoading = false;
 
             gui.speed = 1;
             gui.Play("LevelStart");
@@ -191,8 +192,10 @@ namespace PigeonB1587.prpu
                 }
                 await UniTask.Yield();
             }
-            previewLineRenderer.gameObject.SetActive(false);
 
+            gameObjects.transform.localScale = new Vector3(1, 1, 1);
+            previewLineRenderer.gameObject.SetActive(false);
+            
             gui.enabled = false;
             musicPlayer.Play();
             isPlaying = true;
