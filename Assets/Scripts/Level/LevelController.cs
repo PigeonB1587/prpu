@@ -41,6 +41,8 @@ namespace PigeonB1587.prpu
 
         private CanvasGroup comboTextCanvasGroup, subComboTextCanvasGroup;
 
+        public float _overProgress = 0.8f;
+
         public void Awake()
         {
             ScoreController.ResetScore();
@@ -173,13 +175,24 @@ namespace PigeonB1587.prpu
             await hitFxController.LoadCustomClip();
             await lineController.SpawnJudgmentLine();
 
-            gui.Play("LevelStart");
-            gui.speed = 1;
-            levelAni.Play("Start");
-            levelAni.speed = 1;
-            isLoading = false;
+            isLoading = false; // 此处已经开始更新判定线
 
-            await UniTask.Delay(1084);
+            gui.speed = 1;
+            gui.Play("LevelStart");
+            gui.Update(0f);
+
+            levelAni.speed = 1;
+            levelAni.Play("Start");
+            levelAni.Update(0f);
+
+            while (true)
+            {
+                if (levelAni.GetCurrentAnimatorStateInfo(0).normalizedTime >= _overProgress)
+                {
+                    break;
+                }
+                await UniTask.Yield();
+            }
 
             gui.enabled = false;
             musicPlayer.Play();
@@ -242,10 +255,12 @@ namespace PigeonB1587.prpu
                 comboText.gameObject.SetActive(false);
                 subComboText.gameObject.SetActive(false);
             }
+
             gui.enabled = true;
             levelAni.enabled = false;
             gameObjects.SetActive(false);
             gui.Play("LevelEnd");
+
             ScoreController.CheckMissCount();
             Debug.Log($"Combo: {ScoreController.combo}, Score: {ScoreController.score}, Max Combo: {ScoreController.maxCombo}\n" +
               $"Perfect: {ScoreController.perfectCount}, Good: {ScoreController.goodCount}, Bad: {ScoreController.badCount}, Miss: {ScoreController.missCount}");

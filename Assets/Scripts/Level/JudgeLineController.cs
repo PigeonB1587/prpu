@@ -48,7 +48,7 @@ namespace PigeonB1587.prpu
                 judgeLines[GameInformation.Instance.levelStartInfo.judgeLineImages[i].judgeLineIndex].defautImageY = GameInformation.Instance.levelStartInfo.judgeLineImages[i].imageY;
             }
             judgeLines = SortJudgmentLine(judgeLines);
-
+            
             await UniTask.CompletedTask;
             return;
         }
