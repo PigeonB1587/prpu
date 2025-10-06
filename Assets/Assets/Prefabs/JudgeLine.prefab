@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8968837484667413541}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3094300152631381743
 SpriteRenderer:
@@ -71,8 +71,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -934156833
-  m_SortingLayer: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -1471921640, guid: 6d4f002e230165541b28842a04bb96b2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a28cb4f31b354468b4b5c2a8b3ac0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  index: 0
   jugdeLineData:
     bpms: []
     notes: []
@@ -111,9 +112,7 @@ MonoBehaviour:
     transform:
       judgeLineColorEvents: []
       judgeLineTextEvents: []
-      judgeLineTextureSize: []
       fatherLineIndex: 0
-      anchor: []
       localPositionMode: 0
       localEulerAnglesMode: 0
       zOrder: 0
@@ -121,19 +120,25 @@ MonoBehaviour:
       judgeLineTextureScaleYEvents: []
   lineRenderer: {fileID: 3094300152631381743}
   levelController: {fileID: 0}
-  localNotes: []
+  textObject: {fileID: 2536495044460007375, guid: a65afbf70a9bdcb49a0c222ff5f25624, type: 3}
   tapPrefab: {fileID: 1722302901583039603, guid: 2a235ecd62e47b347ab099b32bf24981, type: 3}
   dragPrefab: {fileID: 750897680319454010, guid: 522de36e4487707409b6350527b1b308, type: 3}
   flickPrefab: {fileID: 7749243044742340948, guid: 2796a18458baff3418e4c97d74588d15, type: 3}
   holdPrefab: {fileID: 4099813030507992694, guid: f4d2c391eb4c398458edc4926b9e51d7, type: 3}
   usingCustomColor: 0
-  perfectLine: {r: 0.99607843, g: 1, b: 0.6627451, a: 1}
-  goodLine: {r: 0.63529414, g: 0.93333334, b: 1, a: 1}
-  defaultLine: {r: 1, g: 1, b: 1, a: 1}
   moveX: 0
   moveY: 0
   rotate: 0
   disappear: 0
+  bpm: 120
+  defautImageX: 0
+  defautImageY: 0
+  colorR: 1
+  colorG: 1
+  colorB: 1
+  scaleX: 1
+  scaleY: 1
+  textProgress: 0
   floorPosition: 0
   fatherLine: {fileID: 0}
   endColor: {r: 0, g: 0, b: 0, a: 1}

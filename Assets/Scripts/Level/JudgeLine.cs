@@ -13,6 +13,8 @@ namespace PigeonB1587.prpu
         public ChartObject.JudgeLine jugdeLineData;
         public SpriteRenderer lineRenderer;
         public LevelController levelController;
+        public GameObject textObject;
+        private TextObject instanteTextObject;
 
         public List<(ChartObject.Note note, int index)> localNotes = new();
         public GameObject tapPrefab, dragPrefab, flickPrefab, holdPrefab;
@@ -35,6 +37,7 @@ namespace PigeonB1587.prpu
 
         public float colorR = 1, colorG = 1, colorB = 1;
         public float scaleX = 1, scaleY = 1;
+        public float textProgress = 0;
 
         public float floorPosition = 0;
 
@@ -49,6 +52,11 @@ namespace PigeonB1587.prpu
             if (jugdeLineData.transform.judgeLineColorEvents.Length != 0)
             {
                 usingCustomColor = true;
+            }
+            if (jugdeLineData.transform.judgeLineTextEvents.Length != 0)
+            {
+                instanteTextObject = Instantiate(textObject, transform).GetComponent<TextObject>();
+                lineRenderer.enabled = false;
             }
             localNotes = jugdeLineData.notes
                 .Select((note, idx) => (note, idx))
@@ -125,6 +133,8 @@ namespace PigeonB1587.prpu
 
                 scaleX = 0;
                 scaleY = 0;
+
+                textProgress = 0;
             }
             //
             UpdateEventLayers(curTime);
@@ -173,9 +183,17 @@ namespace PigeonB1587.prpu
                 endColor = new Color(colorR, colorG, colorB, disappear);
             }
 
-            lineRenderer.size = new Vector2(scaleX * defautImageX, scaleY * defautImageY);
+            if (jugdeLineData.transform.judgeLineTextEvents.Length != 0)
+            {
+                instanteTextObject.progress = textProgress;
+                instanteTextObject.text.color = endColor;
+            }
+            else
+            {
+                lineRenderer.size = new Vector2(scaleX * defautImageX, scaleY * defautImageY);
 
-            lineRenderer.color = endColor;
+                lineRenderer.color = endColor;
+            }
         }
 
         public void UpdateNote()
@@ -301,6 +319,10 @@ namespace PigeonB1587.prpu
             {
                 scaleY++;
             }
+            if (jugdeLineData.transform.judgeLineTextEvents.Length != 0)
+            {
+                UpdateTextEvent(currentTime, ref jugdeLineData.transform.judgeLineTextEvents, ref textProgress);
+            }
         }
 
         private void UpdateEvent(double currentTime, ref ChartObject.JudgeLineEvent[] events, ref float value)
@@ -349,6 +371,26 @@ namespace PigeonB1587.prpu
             }
         }
 
+        private void UpdateTextEvent(double currentTime, ref ChartObject.TextEvent[] events, ref float value)
+        {
+            if (events.Length == 0)
+                return;
+            int i = GetTextEventIndex(currentTime, ref events);
+            var @event = events[i];
+            instanteTextObject.endText = @event.end;
+            instanteTextObject.startText = @event.start;
+            if (currentTime >= @event.endTime.curTime)
+            {
+                value += 1;
+                return;
+            }
+            else
+            {
+                value += (Easings.Lerp(@event.easing, currentTime, @event.startTime.curTime, @event.endTime.curTime,
+                @event.start.Length, @event.end.Length, @event.easingLeft, @event.easingRight, @event.bezierPoints != null && @event.bezierPoints.Length == 4 ? true : false,
+                @event.bezierPoints)) / (float)@event.end.Length;
+            }
+        }
 
         private void UpdateBpms(double currentTime, ref ChartObject.BpmItems[] events, ref float value)
         {
@@ -389,6 +431,30 @@ namespace PigeonB1587.prpu
         }
 
         private int GetColorEventIndex(double curTime, ref ChartObject.ColorEvent[] events)
+        {
+            int left = 0;
+            int right = events.Length - 1;
+            int index = 0;
+
+            while (left <= right)
+            {
+                int mid = left + (right - left) / 2;
+
+                if (events[mid].startTime.curTime <= curTime)
+                {
+                    index = mid;
+                    left = mid + 1;
+                }
+                else
+                {
+                    right = mid - 1;
+                }
+            }
+
+            return index;
+        }
+
+        private int GetTextEventIndex(double curTime, ref ChartObject.TextEvent[] events)
         {
             int left = 0;
             int right = events.Length - 1;

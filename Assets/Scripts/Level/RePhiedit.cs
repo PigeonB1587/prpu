@@ -7,6 +7,21 @@ namespace PigeonB1587.prpu
 {
     public class RePhiedit
     {
+        public static List<Chart.Event> defautAlphaEvent = new List<Chart.Event>()
+        {
+            new Chart.Event()
+            {
+                start = 0,
+                end = 0,
+                easingLeft = 0,
+                easingRight = 0,
+                easingType = 1,
+                startTime = new int[3] { 0, 0 ,1 },
+                endTime = new int [3] { 1, 0 ,1 },
+                bezier = 0,
+                bezierPoints = Array.Empty<float>()
+            }
+        };
         public static Chart.Root GetJsonToObject(string chartJson) =>
             JsonConvert.DeserializeObject<Chart.Root>(chartJson);
 
@@ -67,6 +82,8 @@ namespace PigeonB1587.prpu
                         });
                     }
                 }
+
+                bool hasAttachUI = sourceLine.attachUI != null || sourceLine.attachUI != "";
 
                 notes = notes
      .OrderBy(s => GetBeat(s.startTime)).ToList();
@@ -158,8 +175,8 @@ namespace PigeonB1587.prpu
                                 {
                                     startTime = sourceEvent.startTime,
                                     endTime = sourceEvent.endTime,
-                                    start = sourceEvent.start / 255f,
-                                    end = sourceEvent.end / 255f,
+                                    start = hasAttachUI ? 0 : (sourceEvent.start / 255f),
+                                    end = hasAttachUI ? 0 : (sourceEvent.end / 255f),
                                     easing = RpeEasingTypeToPrpu(sourceEvent.easingType),
                                     easingLeft = sourceEvent.easingLeft,
                                     easingRight = sourceEvent.easingRight,
@@ -175,11 +192,11 @@ namespace PigeonB1587.prpu
                     }
                 }
 
-                if (sourceLine.attachUI != null || sourceLine.attachUI != "")
+                if (hasAttachUI)
                 {
-                    if(sourceLine.attachUI == "pause")
+                    if (sourceLine.attachUI == "pause")
                     {
-                        for(int s = 0; s < eventLayers[0].judgeLineDisappearEvents.Length; s++)
+                        for (int s = 0; s < eventLayers[0].judgeLineDisappearEvents.Length; s++)
                         {
                             storyBoardIndexs.Add(7);
                             storyBoardEvents.Add(eventLayers[0].judgeLineDisappearEvents[s]);
