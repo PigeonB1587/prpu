@@ -18,7 +18,6 @@ namespace PigeonB1587.prpu
         public bool overJudge = false;
 
         private float holdEffectTimer;
-
         public const float holdLengthScale = 0.0526316f;
 
         public override void Awake()
@@ -36,6 +35,28 @@ namespace PigeonB1587.prpu
             floorPosition = isOverStartTime ? 0 : GetFloorPosY();
             Judge(curTime);
 
+            SetNoteTransform(curTime);
+
+            var visable = GetNoteVisable(curTime);
+            noteRenderer.enabled = visable;
+            noteRenderer1.enabled = visable;
+            noteRenderer2.enabled = visable;
+
+            if (isOverStartTime || isHolding)
+            {
+                noteRenderer1.enabled = false;
+            }
+
+            if (visable == false && !isJudge && !isHolding && judgeLine.levelController.time + GameInformation.Instance.noteToLargeTime < noteData.startTime.curTime)
+            {
+                judgeLine.AddNote(noteData, index);
+                judgeLine.holdPool.Release(this);
+            }
+        }
+
+        public override void SetNoteTransform(double curTime)
+        {
+            var isOverStartTime = curTime >= noteData.startTime.curTime;
             var judgeData = judgeLine.judgeLineData.noteControls;
             var control = judgeLine;
             float xPosControl = control.GetControlValue(floorPosition, judgeData.xPosControl);
@@ -49,10 +70,9 @@ namespace PigeonB1587.prpu
             float scale = noteScale * sizeControl;
 
             transform.localPosition = new Vector2(xPos, yPos);
-            transform.localScale = new Vector3(scale, GetHoldLenght(curTime) * sizeControl,
-                scale);
-
+            transform.localScale = new Vector3(scale, GetHoldLenght(curTime) * sizeControl, scale);
             transform.localEulerAngles = new Vector3(0, 0, zRotation + rotateControl);
+
             noteRenderer.color = new Color(
                 noteColor.r,
                 noteColor.g,
@@ -71,21 +91,6 @@ namespace PigeonB1587.prpu
                 noteColor.b,
                 noteColor.a * disappearControl
             );
-            var visable = GetNoteVisable(curTime);
-            noteRenderer.enabled = visable;
-            noteRenderer1.enabled = visable;
-            noteRenderer2.enabled = visable;
-
-            if (isOverStartTime || isHolding)
-            {
-                noteRenderer1.enabled = false;
-            }
-
-            if (visable == false && !isJudge && !isHolding && judgeLine.levelController.time + GameInformation.Instance.noteToLargeTime < noteData.startTime.curTime)
-            {
-                judgeLine.AddNote(noteData, index);
-                judgeLine.holdPool.Release(this);
-            }
         }
 
         public override void Judge(double curTime)
@@ -140,6 +145,7 @@ namespace PigeonB1587.prpu
             }
             judgeLine.holdPool.Release(this);
         }
+
         IEnumerator FakeHolding()
         {
             while (isHolding)
@@ -157,7 +163,6 @@ namespace PigeonB1587.prpu
             judgeLine.holdPool.Release(this);
         }
 
-
         public void Hide()
         {
             noteRenderer.enabled = false;
@@ -171,39 +176,7 @@ namespace PigeonB1587.prpu
         {
             GetNoteData();
             floorPosition = GetFloorPosY();
-            var judgeData = judgeLine.judgeLineData.noteControls;
-            var control = judgeLine;
-            float xPosControl = control.GetControlValue(floorPosition, judgeData.xPosControl);
-            float yPosControl = control.GetControlValue(floorPosition, judgeData.yPosControl);
-            float rotateControl = control.GetControlValue(floorPosition, judgeData.rotateControls, 0);
-            float sizeControl = control.GetControlValue(floorPosition, judgeData.sizeControl);
-            float disappearControl = control.GetControlValue(floorPosition, judgeData.disappearControls);
-            float xPos = noteX * xPosControl;
-            float yPos = (noteData.above ? floorPosition : -floorPosition) * yPosControl;
-            float zRotation = noteData.above ? 0f : 180f;
-            float scale = noteScale * sizeControl;
-            transform.localPosition = new Vector2(xPos, yPos );
-            transform.localScale = new Vector3(scale, GetHoldLenght(curTime) * sizeControl,
-                scale);
-            transform.localEulerAngles = new Vector3(0, 0, zRotation + rotateControl);
-            noteRenderer.color = new Color(
-                noteColor.r,
-                noteColor.g,
-                noteColor.b,
-                noteColor.a * disappearControl
-            );
-            noteRenderer1.color = new Color(
-                noteColor.r,
-                noteColor.g,
-                noteColor.b,
-                noteColor.a * disappearControl
-            );
-            noteRenderer2.color = new Color(
-                noteColor.r,
-                noteColor.g,
-                noteColor.b,
-                noteColor.a * disappearControl
-            );
+            SetNoteTransform(curTime);
             var visable = GetNoteVisable(curTime);
             noteRenderer.enabled = visable;
             noteRenderer1.enabled = visable;
@@ -212,6 +185,7 @@ namespace PigeonB1587.prpu
 
         public override void GetNoteData()
         {
+            base.GetNoteData();
             holdEffectTimer = 0.0f;
             isJudge = false;
             isFirstJudge = true;
@@ -220,20 +194,14 @@ namespace PigeonB1587.prpu
 
             if (noteData.isHL)
             {
-                noteRenderer.sprite = hlImage;
                 noteRenderer1.sprite = hlImage1;
                 noteRenderer2.sprite = hlImage2;
             }
             else
             {
-                noteRenderer.sprite = defaultImage;
                 noteRenderer1.sprite = defaultImage1;
                 noteRenderer2.sprite = defaultImage2;
             }
-            noteColor = Utils.IntToColor(noteData.color);
-            hitFxColor = Utils.IntToColor(noteData.hitFXColor);
-            noteX = noteData.positionX * GameInformation.Instance.screenRadioScale;
-            noteScale = 0.22f * noteData.size * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale;
         }
 
         public override bool GetNoteVisable(double curTime)
