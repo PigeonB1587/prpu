@@ -20,6 +20,8 @@ namespace PigeonB1587.prpu
         private float holdEffectTimer;
         public const float holdLengthScale = 0.0526316f;
 
+
+
         public override void Awake()
         {
             base.Awake();
