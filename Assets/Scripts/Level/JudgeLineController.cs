@@ -30,14 +30,14 @@ namespace PigeonB1587.prpu
                 lineObj.name = $"JudgeLine ({i})";
                 JudgeLine line = lineObj.GetComponent<JudgeLine>();
                 judgeLines.Add(line);
-                line.jugdeLineData = Reader.chart.judgeLineList[i];
+                line.judgeLineData = Reader.chart.judgeLineList[i];
                 line.index = i;
                 line.levelController = levelController;
             }
             for (int i = 0; i < judgeLines.Count; i++)
             {
-                if (judgeLines[i].jugdeLineData.transform.fatherLineIndex != -1)
-                    judgeLines[i].fatherLine = judgeLines[judgeLines[i].jugdeLineData.transform.fatherLineIndex].transform;
+                if (judgeLines[i].judgeLineData.transform.fatherLineIndex != -1)
+                    judgeLines[i].fatherLine = judgeLines[judgeLines[i].judgeLineData.transform.fatherLineIndex].transform;
             }
             for (int i = 0; i < GameInformation.Instance.levelStartInfo.judgeLineImages.Count; i++)
             {
@@ -88,7 +88,7 @@ namespace PigeonB1587.prpu
 
             for (int i = 0; i < count; i++)
             {
-                int father = lines[i].jugdeLineData.transform.fatherLineIndex;
+                int father = lines[i].judgeLineData.transform.fatherLineIndex;
 
                 if (father == -1 || father < 0 || father >= count)
                     roots.Add(i);

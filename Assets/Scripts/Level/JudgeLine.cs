@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
+using static UnityEditor.Progress;
+using static UnityEngine.GraphicsBuffer;
 
 namespace PigeonB1587.prpu
 {
     public class JudgeLine : MonoBehaviour
     {
         public int index = 0;
-        public ChartObject.JudgeLine jugdeLineData;
+        public ChartObject.JudgeLine judgeLineData;
         public SpriteRenderer lineRenderer;
         public LevelController levelController;
         public GameObject textObject;
@@ -46,19 +49,19 @@ namespace PigeonB1587.prpu
         public void Start()
         {
             lineRenderer.color = GameInformation.Instance.isFCAPIndicator ? levelController.perfectLine : levelController.defaultLine;
-            lineRenderer.sortingOrder = jugdeLineData.transform.zOrder;
+            lineRenderer.sortingOrder = judgeLineData.transform.zOrder;
             defautImageX = lineRenderer.size.x;
             defautImageY = lineRenderer.size.y;
-            if (jugdeLineData.transform.judgeLineColorEvents.Length != 0)
+            if (judgeLineData.transform.judgeLineColorEvents.Length != 0)
             {
                 usingCustomColor = true;
             }
-            if (jugdeLineData.transform.judgeLineTextEvents.Length != 0)
+            if (judgeLineData.transform.judgeLineTextEvents.Length != 0)
             {
                 instanteTextObject = Instantiate(textObject, transform).GetComponent<TextObject>();
                 lineRenderer.enabled = false;
             }
-            localNotes = jugdeLineData.notes
+            localNotes = judgeLineData.notes
                 .Select((note, idx) => (note, idx))
                 .ToList();
             SetNotePool();
@@ -138,8 +141,8 @@ namespace PigeonB1587.prpu
             }
             //
             UpdateEventLayers(curTime);
-            UpdateBpms(curTime, ref jugdeLineData.bpms, ref bpm);
-            floorPosition = Utils.GetCurFloorPosition(curTime, jugdeLineData.speedEvents);
+            UpdateBpms(curTime, ref judgeLineData.bpms, ref bpm);
+            floorPosition = Utils.GetCurFloorPosition(curTime, judgeLineData.speedEvents);
         }
 
         public void UpdateTransform()
@@ -148,9 +151,9 @@ namespace PigeonB1587.prpu
             float y = moveY * 10f;
             Vector2 basePos = new Vector2(x, y);
 
-            if (jugdeLineData.transform.localPositionMode)
+            if (judgeLineData.transform.localPositionMode)
             {
-                transform.position = jugdeLineData.transform.fatherLineIndex == -1
+                transform.position = judgeLineData.transform.fatherLineIndex == -1
                     ? basePos
                     : Utils.LocalToWorld(basePos, fatherLine.transform.position, fatherLine.transform.eulerAngles.z);
             }
@@ -161,9 +164,9 @@ namespace PigeonB1587.prpu
 
             Quaternion targetRot = Quaternion.Euler(0, 0, rotate);
 
-            if (jugdeLineData.transform.localEulerAnglesMode)
+            if (judgeLineData.transform.localEulerAnglesMode)
             {
-                if (jugdeLineData.transform.fatherLineIndex != -1)
+                if (judgeLineData.transform.fatherLineIndex != -1)
                 {
                     targetRot = Quaternion.Euler(fatherLine.transform.eulerAngles) * targetRot;
                 }
@@ -183,7 +186,7 @@ namespace PigeonB1587.prpu
                 endColor = new Color(colorR, colorG, colorB, disappear);
             }
 
-            if (jugdeLineData.transform.judgeLineTextEvents.Length != 0)
+            if (judgeLineData.transform.judgeLineTextEvents.Length != 0)
             {
                 instanteTextObject.progress = textProgress;
                 instanteTextObject.text.color = endColor;
@@ -288,41 +291,53 @@ namespace PigeonB1587.prpu
             localNotes.Insert(index, (note, noteIndex));
         }
 
+        public float GetControlValue(float floorPos, ChartObject.ControlItem[] controlItems, float defautValue = 1)
+        {
+            if (controlItems.Length == 0 || controlItems == null) return defautValue;
+
+            var index = GetControlIndex(floorPos, ref controlItems);
+            if (index == -1)
+                return defautValue;
+            var item = controlItems[index];
+            if (index == 0)
+                return item.value;
+            return Easings.Lerp(item.easing, floorPos, controlItems[index - 1].x, item.x, controlItems[index - 1].value, item.value);
+        }
 
         private void UpdateEventLayers(double currentTime)
         {
-            for (int i = 0; i < jugdeLineData.judgeLineEventLayers.Length; i++)
+            for (int i = 0; i < judgeLineData.judgeLineEventLayers.Length; i++)
             {
-                UpdateEvent(currentTime, ref jugdeLineData.judgeLineEventLayers[i].judgeLineMoveXEvents, ref moveX);
-                UpdateEvent(currentTime, ref jugdeLineData.judgeLineEventLayers[i].judgeLineMoveYEvents, ref moveY);
-                UpdateEvent(currentTime, ref jugdeLineData.judgeLineEventLayers[i].judgeLineRotateEvents, ref rotate);
-                UpdateEvent(currentTime, ref jugdeLineData.judgeLineEventLayers[i].judgeLineDisappearEvents, ref disappear);
+                UpdateEvent(currentTime, ref judgeLineData.judgeLineEventLayers[i].judgeLineMoveXEvents, ref moveX);
+                UpdateEvent(currentTime, ref judgeLineData.judgeLineEventLayers[i].judgeLineMoveYEvents, ref moveY);
+                UpdateEvent(currentTime, ref judgeLineData.judgeLineEventLayers[i].judgeLineRotateEvents, ref rotate);
+                UpdateEvent(currentTime, ref judgeLineData.judgeLineEventLayers[i].judgeLineDisappearEvents, ref disappear);
             }
 
             if (usingCustomColor)
             {
-                UpdateColorEvent(currentTime, ref jugdeLineData.transform.judgeLineColorEvents, ref colorR, ref colorG, ref colorB);
+                UpdateColorEvent(currentTime, ref judgeLineData.transform.judgeLineColorEvents, ref colorR, ref colorG, ref colorB);
             }
 
-            if (jugdeLineData.transform.judgeLineTextureScaleXEvents.Length != 0)
+            if (judgeLineData.transform.judgeLineTextureScaleXEvents.Length != 0)
             {
-                UpdateEvent(currentTime, ref jugdeLineData.transform.judgeLineTextureScaleXEvents, ref scaleX);
+                UpdateEvent(currentTime, ref judgeLineData.transform.judgeLineTextureScaleXEvents, ref scaleX);
             }
             else
             {
                 scaleX++;
             }
-            if (jugdeLineData.transform.judgeLineTextureScaleYEvents.Length != 0)
+            if (judgeLineData.transform.judgeLineTextureScaleYEvents.Length != 0)
             {
-                UpdateEvent(currentTime, ref jugdeLineData.transform.judgeLineTextureScaleYEvents, ref scaleY);
+                UpdateEvent(currentTime, ref judgeLineData.transform.judgeLineTextureScaleYEvents, ref scaleY);
             }
             else
             {
                 scaleY++;
             }
-            if (jugdeLineData.transform.judgeLineTextEvents.Length != 0)
+            if (judgeLineData.transform.judgeLineTextEvents.Length != 0)
             {
-                UpdateTextEvent(currentTime, ref jugdeLineData.transform.judgeLineTextEvents, ref textProgress);
+                UpdateTextEvent(currentTime, ref judgeLineData.transform.judgeLineTextEvents, ref textProgress);
             }
         }
 
@@ -501,6 +516,31 @@ namespace PigeonB1587.prpu
             }
 
             return index;
+        }
+
+        private int GetControlIndex(float x, ref ChartObject.ControlItem[] events)
+        {
+            if (events == null || events.Length == 0)
+                return 0;
+            if (events.Length == 1)
+                return 0;
+            int left = 0;
+            int right = events.Length - 1;
+            if (x > events[right].x)
+                return right;
+            while (left < right)
+            {
+                int mid = left + (right - left) / 2;
+                if (events[mid].x >= x)
+                {
+                    right = mid;
+                }
+                else
+                {
+                    left = mid + 1;
+                }
+            }
+            return left > 0 && x > events[left - 1].x ? left : left - 1;
         }
     }
 }

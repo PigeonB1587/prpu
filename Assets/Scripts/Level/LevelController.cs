@@ -200,6 +200,8 @@ namespace PigeonB1587.prpu
 
             gameObjects.transform.localScale = new Vector3(1, 1, 1);
             previewLineRenderer.gameObject.SetActive(false);
+
+            await UniTask.DelayFrame(15);
             
             gui.enabled = false;
             musicPlayer.Play();

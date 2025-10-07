@@ -7,21 +7,6 @@ namespace PigeonB1587.prpu
 {
     public class RePhiedit
     {
-        public static List<Chart.Event> defautAlphaEvent = new List<Chart.Event>()
-        {
-            new Chart.Event()
-            {
-                start = 0,
-                end = 0,
-                easingLeft = 0,
-                easingRight = 0,
-                easingType = 1,
-                startTime = new int[3] { 0, 0 ,1 },
-                endTime = new int [3] { 1, 0 ,1 },
-                bezier = 0,
-                bezierPoints = Array.Empty<float>()
-            }
-        };
         public static Chart.Root GetJsonToObject(string chartJson) =>
             JsonConvert.DeserializeObject<Chart.Root>(chartJson);
 
@@ -257,25 +242,19 @@ namespace PigeonB1587.prpu
                 var speedEvents = new List<Prpu.Chart.JudgeLineEvent>();
                 if (sourceLine.eventLayers != null)
                 {
-                    foreach (var layer in sourceLine.eventLayers)
+                    foreach (var sourceEvent in sourceLine.eventLayers[0].speedEvents)
                     {
-                        if (layer.speedEvents != null)
+                        speedEvents.Add(new Prpu.Chart.JudgeLineEvent
                         {
-                            foreach (var sourceEvent in layer.speedEvents)
-                            {
-                                speedEvents.Add(new Prpu.Chart.JudgeLineEvent
-                                {
-                                    startTime = sourceEvent.startTime,
-                                    endTime = sourceEvent.endTime,
-                                    start = sourceEvent.start * (float)speedScale,
-                                    end = sourceEvent.end * (float)speedScale,
-                                    easing = RpeEasingTypeToPrpu(sourceEvent.easingType),
-                                    easingLeft = 0,
-                                    easingRight = 1,
-                                    bezierPoints = Array.Empty<float>()
-                                });
-                            }
-                        }
+                            startTime = sourceEvent.startTime,
+                            endTime = sourceEvent.endTime,
+                            start = sourceEvent.start * (float)speedScale,
+                            end = sourceEvent.end * (float)speedScale,
+                            easing = RpeEasingTypeToPrpu(sourceEvent.easingType),
+                            easingLeft = 0,
+                            easingRight = 1,
+                            bezierPoints = Array.Empty<float>()
+                        });
                     }
                 }
 
@@ -374,6 +353,75 @@ namespace PigeonB1587.prpu
                     }
                 }
 
+                var posControls = new List<Prpu.Chart.ControlItem>();
+                var yControls = new List<Prpu.Chart.ControlItem>();
+                var alphaControls = new List<Prpu.Chart.ControlItem>();
+                var sizeControls = new List<Prpu.Chart.ControlItem>();
+
+                if (sourceLine.posControl != null)
+                {
+                    foreach (var item in sourceLine.posControl)
+                    {
+                        posControls.Add(new Prpu.Chart.ControlItem()
+                        {
+                            easing = RpeEasingTypeToPrpu(item.easing),
+                            value = item.pos,
+                            x = item.x * 0.0111111f
+                        });
+                    }
+                }
+
+                posControls = posControls
+    .OrderBy(s => s.x).ToList();
+
+                if (sourceLine.yControl != null)
+                {
+                    foreach (var item in sourceLine.yControl)
+                    {
+                        yControls.Add(new Prpu.Chart.ControlItem()
+                        {
+                            easing = RpeEasingTypeToPrpu(item.easing),
+                            value = item.y,
+                            x = item.x * 0.0111111f
+                        });
+                    }
+                }
+
+                yControls = yControls
+    .OrderBy(s => s.x).ToList();
+
+                if (sourceLine.alphaControl != null)
+                {
+                    foreach (var item in sourceLine.alphaControl)
+                    {
+                        alphaControls.Add(new Prpu.Chart.ControlItem()
+                        {
+                            easing = RpeEasingTypeToPrpu(item.easing),
+                            value = item.alpha,
+                            x = item.x * 0.0111111f
+                        });
+                    }
+                }
+
+                alphaControls = alphaControls
+    .OrderBy(s => s.x).ToList();
+
+                if (sourceLine.sizeControl != null)
+                {
+                    foreach (var item in sourceLine.sizeControl)
+                    {
+                        sizeControls.Add(new Prpu.Chart.ControlItem()
+                        {
+                            easing = RpeEasingTypeToPrpu(item.easing),
+                            value = item.size,
+                            x = item.x * 0.0111111f
+                        });
+                    }
+                }
+
+                sizeControls = sizeControls
+    .OrderBy(s => s.x).ToList();
+
                 var transform = new Prpu.Chart.Transform
                 {
                     judgeLineColorEvents = colorEvents.Count > 0 ? colorEvents.ToArray() : null,
@@ -390,7 +438,14 @@ namespace PigeonB1587.prpu
                 {
                     bpms = bpmItems.ToArray(),
                     notes = notes.ToArray(),
-                    noteControls = null,
+                    noteControls = new Prpu.Chart.NoteControl()
+                    {
+                        sizeControl = sizeControls.ToArray(),
+                        disappearControls = alphaControls.ToArray(),
+                        xPosControl = posControls.ToArray(),
+                        yPosControl = yControls.ToArray(),
+                        rotateControls = Array.Empty<Prpu.Chart.ControlItem>()
+                    },
                     speedEvents = speedEvents.ToArray(),
                     judgeLineEventLayers = eventLayers.ToArray(),
                     transform = transform
@@ -629,6 +684,38 @@ namespace PigeonB1587.prpu
                 public int father { get; set; }
                 public int zOrder { get; set; }
                 public string attachUI { get; set; } = null;
+                public PosControl[] posControl { get; set; }
+                public SizeControl[] sizeControl { get; set; }
+                public YControl[] yControl { get; set; }
+                public AlphaControl[] alphaControl { get; set; }
+            }
+            [Serializable]
+            public class AlphaControl
+            {
+                public int easing { get; set; }
+                public float alpha { get; set; }
+                public float x { get; set; }
+            }
+            [Serializable]
+            public class SizeControl
+            {
+                public int easing { get; set; }
+                public float size { get; set; }
+                public float x { get; set; }
+            }
+            [Serializable]
+            public class PosControl
+            {
+                public int easing { get; set; }
+                public float pos { get; set; }
+                public float x { get; set; }
+            }
+            [Serializable]
+            public class YControl
+            {
+                public int easing { get; set; }
+                public float y { get; set; }
+                public float x { get; set; }
             }
             [Serializable]
             public class Note
