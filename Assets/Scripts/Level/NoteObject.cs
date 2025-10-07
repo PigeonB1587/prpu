@@ -16,6 +16,8 @@ namespace PigeonB1587.prpu
 
         public Color noteColor;
         public Color hitFxColor;
+        public float noteScale;
+        public float noteX;
 
         public virtual void Awake()
         {
@@ -30,36 +32,42 @@ namespace PigeonB1587.prpu
         public virtual void Update()
         {
             double curTime = judgeLine.levelController.time;
-            floorPosition = GetFloorPosY();
-            SetNoteTransform();
             Judge(curTime);
+            floorPosition = GetFloorPosY();
+            SetNoteTransform(curTime);
+        }
+
+        public virtual void SetNoteTransform(double curTime)
+        {
+            var judgeData = judgeLine.judgeLineData.noteControls;
+            var control = judgeLine;
+            float xPosControl = control.GetControlValue(floorPosition, judgeData.xPosControl);
+            float yPosControl = control.GetControlValue(floorPosition, judgeData.yPosControl);
+            float rotateControl = control.GetControlValue(floorPosition, judgeData.rotateControls, 0);
+            float sizeControl = control.GetControlValue(floorPosition, judgeData.sizeControl);
+            float disappearControl = control.GetControlValue(floorPosition, judgeData.disappearControls);
+            float xPos = noteX * xPosControl;
+            float yPos = (noteData.above ? floorPosition : -floorPosition) * yPosControl;
+            transform.localPosition = new Vector2(xPos, yPos);
+            float zRotation = noteData.above ? 0f : 180f;
+            transform.localEulerAngles = new Vector3(0, 0, zRotation + rotateControl);
+            float scale = noteScale * sizeControl;
+            transform.localScale = new Vector3(scale, scale, scale);
+            noteRenderer.color = new Color(
+                noteColor.r,
+                noteColor.g,
+                noteColor.b,
+                noteColor.a * disappearControl
+            );
             noteRenderer.enabled = GetNoteVisable(curTime);
         }
-        
-        public virtual void SetNoteTransform()
-        {
-            transform.localPosition = new Vector2(noteData.positionX * GameInformation.Instance.screenRadioScale * judgeLine.GetControlValue(floorPosition, judgeLine.judgeLineData.noteControls.xPosControl), (noteData.above ? floorPosition : -floorPosition) * judgeLine.GetControlValue(floorPosition, judgeLine.judgeLineData.noteControls.yPosControl));
-            if (noteData.above)
-            {
-                transform.localEulerAngles = new Vector3(0, 0, 0 * judgeLine.GetControlValue(floorPosition, judgeLine.judgeLineData.noteControls.rotateControls));
-            }
-            else
-            {
-                transform.localEulerAngles = new Vector3(0, 0, 180 * judgeLine.GetControlValue(floorPosition, judgeLine.judgeLineData.noteControls.rotateControls));
-            }
-            var scale = 0.22f * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale * judgeLine.GetControlValue(floorPosition, judgeLine.judgeLineData.noteControls.sizeControl);
-            transform.localScale = new Vector3(scale,
-                scale,
-                scale);
-            noteRenderer.color = new Color(noteColor.r, noteColor.g, noteColor.b, noteColor.a * judgeLine.GetControlValue(floorPosition, judgeLine.judgeLineData.noteControls.disappearControls));
-        }
+
 
         public virtual void ResetNote(double curTime)
         {
             GetNoteData();
             floorPosition = GetFloorPosY();
-            SetNoteTransform();
-            noteRenderer.enabled = GetNoteVisable(curTime);
+            SetNoteTransform(curTime);
         }
 
         public virtual void Judge(double curTime)
@@ -80,6 +88,8 @@ namespace PigeonB1587.prpu
             }
             noteColor = Utils.IntToColor(noteData.color);
             hitFxColor = Utils.IntToColor(noteData.hitFXColor);
+            noteScale = 0.22f * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale;
+            noteX = noteData.positionX * GameInformation.Instance.screenRadioScale;
         }
 
         public virtual bool GetNoteVisable(double curTime)

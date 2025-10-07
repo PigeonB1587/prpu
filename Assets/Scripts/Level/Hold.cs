@@ -36,10 +36,41 @@ namespace PigeonB1587.prpu
             floorPosition = isOverStartTime ? 0 : GetFloorPosY();
             Judge(curTime);
 
-            transform.localPosition = new Vector2(transform.localPosition.x, isOverStartTime ? noteData.positionY : noteData.above ? floorPosition : -floorPosition);
-            transform.localScale = new Vector3(0.22f * noteData.size * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale, GetHoldLenght(curTime),
-                0.22f * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale);
+            var judgeData = judgeLine.judgeLineData.noteControls;
+            var control = judgeLine;
+            float xPosControl = control.GetControlValue(floorPosition, judgeData.xPosControl);
+            float yPosControl = control.GetControlValue(floorPosition, judgeData.yPosControl);
+            float rotateControl = control.GetControlValue(floorPosition, judgeData.rotateControls, 0);
+            float sizeControl = control.GetControlValue(floorPosition, judgeData.sizeControl);
+            float disappearControl = control.GetControlValue(floorPosition, judgeData.disappearControls);
+            float xPos = noteX * xPosControl;
+            float yPos = (isOverStartTime ? noteData.positionY : (noteData.above ? floorPosition : -floorPosition)) * yPosControl;
+            float zRotation = noteData.above ? 0f : 180f;
+            float scale = noteScale * sizeControl;
 
+            transform.localPosition = new Vector2(xPos, yPos);
+            transform.localScale = new Vector3(scale, GetHoldLenght(curTime) * sizeControl,
+                scale);
+
+            transform.localEulerAngles = new Vector3(0, 0, zRotation + rotateControl);
+            noteRenderer.color = new Color(
+                noteColor.r,
+                noteColor.g,
+                noteColor.b,
+                noteColor.a * disappearControl
+            );
+            noteRenderer1.color = new Color(
+                noteColor.r,
+                noteColor.g,
+                noteColor.b,
+                noteColor.a * disappearControl
+            );
+            noteRenderer2.color = new Color(
+                noteColor.r,
+                noteColor.g,
+                noteColor.b,
+                noteColor.a * disappearControl
+            );
             var visable = GetNoteVisable(curTime);
             noteRenderer.enabled = visable;
             noteRenderer1.enabled = visable;
@@ -140,9 +171,39 @@ namespace PigeonB1587.prpu
         {
             GetNoteData();
             floorPosition = GetFloorPosY();
-            transform.localPosition = new Vector2(noteData.positionX * GameInformation.Instance.screenRadioScale, noteData.above ? floorPosition : -floorPosition);
-            transform.localScale = new Vector3(0.22f * noteData.size * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale, GetHoldLenght(curTime),
-                0.22f * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale);
+            var judgeData = judgeLine.judgeLineData.noteControls;
+            var control = judgeLine;
+            float xPosControl = control.GetControlValue(floorPosition, judgeData.xPosControl);
+            float yPosControl = control.GetControlValue(floorPosition, judgeData.yPosControl);
+            float rotateControl = control.GetControlValue(floorPosition, judgeData.rotateControls, 0);
+            float sizeControl = control.GetControlValue(floorPosition, judgeData.sizeControl);
+            float disappearControl = control.GetControlValue(floorPosition, judgeData.disappearControls);
+            float xPos = noteX * xPosControl;
+            float yPos = (noteData.above ? floorPosition : -floorPosition) * yPosControl;
+            float zRotation = noteData.above ? 0f : 180f;
+            float scale = noteScale * sizeControl;
+            transform.localPosition = new Vector2(xPos, yPos );
+            transform.localScale = new Vector3(scale, GetHoldLenght(curTime) * sizeControl,
+                scale);
+            transform.localEulerAngles = new Vector3(0, 0, zRotation + rotateControl);
+            noteRenderer.color = new Color(
+                noteColor.r,
+                noteColor.g,
+                noteColor.b,
+                noteColor.a * disappearControl
+            );
+            noteRenderer1.color = new Color(
+                noteColor.r,
+                noteColor.g,
+                noteColor.b,
+                noteColor.a * disappearControl
+            );
+            noteRenderer2.color = new Color(
+                noteColor.r,
+                noteColor.g,
+                noteColor.b,
+                noteColor.a * disappearControl
+            );
             var visable = GetNoteVisable(curTime);
             noteRenderer.enabled = visable;
             noteRenderer1.enabled = visable;
@@ -169,18 +230,10 @@ namespace PigeonB1587.prpu
                 noteRenderer1.sprite = defaultImage1;
                 noteRenderer2.sprite = defaultImage2;
             }
-            if (noteData.above)
-            {
-                transform.localEulerAngles = new Vector3(0, 0, 0);
-            }
-            else
-            {
-                transform.localEulerAngles = new Vector3(0, 0, 180);
-            }
-            noteRenderer.color = Utils.IntToColor(noteData.color);
-            noteRenderer1.color = Utils.IntToColor(noteData.color);
-            noteRenderer2.color = Utils.IntToColor(noteData.color);
+            noteColor = Utils.IntToColor(noteData.color);
             hitFxColor = Utils.IntToColor(noteData.hitFXColor);
+            noteX = noteData.positionX * GameInformation.Instance.screenRadioScale;
+            noteScale = 0.22f * noteData.size * GameInformation.Instance.noteScale * GameInformation.Instance.screenRadioScale;
         }
 
         public override bool GetNoteVisable(double curTime)
