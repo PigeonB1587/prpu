@@ -1721,7 +1721,7 @@ MonoBehaviour:
   - -15
   - 15
   screenRadioScale: 0
-  chart: {fileID: 4900000, guid: f98386197bd2fae4894062ffdfc94ca5, type: 3}
+  chart: {fileID: 4900000, guid: 20d6750564dcba64692340aa30a1c2be, type: 3}
   illustration: {fileID: 21300000, guid: 687284baee295ae459233d2311b4affe, type: 3}
   music: {fileID: 8300000, guid: 8a568a7c7d8ea7741a017f6c4b6fa30c, type: 3}
   isHitFXEnabled: 1
