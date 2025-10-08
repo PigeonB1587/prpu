@@ -59,11 +59,13 @@ namespace PigeonB1587.prpu
             var isOverStartTime = curTime >= noteData.startTime.curTime;
             var judgeData = judgeLine.judgeLineData.noteControls;
             var control = judgeLine;
-            float xPosControl = control.GetControlValue(floorPosition, judgeData.xPosControl);
-            float yPosControl = control.GetControlValue(floorPosition, judgeData.yPosControl);
-            float rotateControl = control.GetControlValue(floorPosition, judgeData.rotateControls, 0);
-            float sizeControl = control.GetControlValue(floorPosition, judgeData.sizeControl);
-            float disappearControl = control.GetControlValue(floorPosition, judgeData.disappearControls);
+
+            xPosControl = control.GetControlValue(floorPosition, judgeData.xPosControl);
+            yPosControl = control.GetControlValue(floorPosition, judgeData.yPosControl);
+            rotateControl = control.GetControlValue(floorPosition, judgeData.rotateControls, 0);
+            sizeControl = control.GetControlValue(floorPosition, judgeData.sizeControl);
+            disappearControl = control.GetControlValue(floorPosition, judgeData.disappearControls);
+
             float xPos = noteX * xPosControl;
             float yPos = (isOverStartTime ? noteData.positionY : (noteData.above ? floorPosition : -floorPosition)) * yPosControl;
             float zRotation = noteData.above ? 0f : 180f;

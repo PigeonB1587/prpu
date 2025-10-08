@@ -8,15 +8,18 @@ namespace PigeonB1587.prpu
     {
         public Transform parentTr;
 
+        private Hold hold;
+
         void OnEnable()
         {
             parentTr ??= transform.parent;
+            hold ??= parentTr.GetComponent<Hold>();
             UpdateScale();
         }
 
         void OnValidate() => UpdateScale();
         void OnDrawGizmos() => UpdateScale();
-        void Update() => UpdateScale();
+        void LateUpdate() => UpdateScale();
 
         void UpdateScale()
         {
