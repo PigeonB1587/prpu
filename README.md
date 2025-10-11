@@ -4,6 +4,9 @@ A feature-rich Phigros player implementation built with Unity Engine and C#.
 
 ---
 
+## ⚠️ Important Project Notice: Core Refactoring and Archiving Plan
+Due to critical issues with the program core, the current project has entered the **archived and rewrite phase**.  
+
 ## 🛠️ Development Environment
 
 | Requirement               | Specification                                                      |
